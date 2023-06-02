@@ -4,20 +4,18 @@ from .models import CustomUser
 
 
 class CustomUserRegistration(forms.ModelForm):
-
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
-    password_repeat = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    email = forms.EmailField(widget=forms.EmailInput(attrs={"class": "form-control"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+    password_repeat = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
 
     class Meta:
         model = CustomUser
-        fields = (
-            "username",
-            "email",
-            "password",
-            "password_repeat"
-        )
+        fields = ("username", "email", "password", "password_repeat")
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -37,5 +35,7 @@ class CustomUserRegistration(forms.ModelForm):
 
 
 class CustomUserLogin(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control"}))
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )

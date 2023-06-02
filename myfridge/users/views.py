@@ -22,8 +22,8 @@ load_dotenv()
 
 class RegisterUserView(FormView):
     form_class = CustomUserRegistration
-    template_name = 'register.html'
-    success_url = reverse_lazy('users:success_register')
+    template_name = "register.html"
+    success_url = reverse_lazy("users:success_register")
 
     def form_valid(self, form):
         user = form.save(commit=False)
@@ -64,7 +64,7 @@ def register_activate(request: HttpRequest, uidb64: str, token: str) -> HttpResp
 
 
 class SuccessRegisterView(TemplateView):
-    template_name = 'success_register.html'
+    template_name = "success_register.html"
 
 
 class LoginUserView(FormView):
@@ -82,8 +82,6 @@ class LoginUserView(FormView):
 
 
 class LogoutUserView(LogoutView):
-
     def get(self, request):
         logout(request)
-        return redirect('dishes:home')
-
+        return redirect("dishes:home")

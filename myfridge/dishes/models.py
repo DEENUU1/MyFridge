@@ -55,7 +55,7 @@ class TimeToMake(models.Model):
 
 class Dish(models.Model):
     name = models.CharField(max_length=50)
-    #author = ...
+    # author = ...
     time_to_make = models.ForeignKey(TimeToMake, on_delete=models.CASCADE)
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
@@ -67,7 +67,7 @@ class Dish(models.Model):
     vegetarian = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    #rates = ...
+    # rates = ...
     level = models.ForeignKey(DifficultyLevel, on_delete=models.CASCADE)
     main_ingredient = models.ManyToManyField(MainIngredient)
     other_ingredients = models.ManyToManyField(OtherIngredient)
@@ -75,4 +75,3 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
-
