@@ -19,10 +19,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Change dir
-        run: cd .\myfridge\
-
-      - name: Run pytest
+      - name: Change directory and run pytest
+        working-directory: ./myfridge/
         run: |
           coverage run -m pytest
           coverage report -m
