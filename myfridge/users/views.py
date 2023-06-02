@@ -33,3 +33,31 @@ class RegisterUserView(FormView):
         # send email method
 
         return super().form_valid(form)
+
+
+def register_activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
+    """
+    The function register_activate() takes in three arguments:
+    - request: the request object sent by the user to activate their account
+    - idb64: the unique identifier in base64 encoded format
+    - token: the token sent in the activation link
+    The function attempts to decode the idb64 value and retrieve the corresponding user from the database.
+    If the user is found and the token is valid, the user's account is activated, they are logged in,
+    and a success message is returned. If the user is not found or the token is invalid, an error message is returned.
+    Returns:
+        - HttpResponse: A success or error message to be displayed to the user upon attempting to activate their account
+    """
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = CustomUser.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):
+        user = None
+    if user is not None and account_activation_token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        login(request, user)
+        return HttpResponse(
+            "Thank you for your email confirmation. Now you can login your account."
+        )
+    else:
+        return HttpResponse("Activation link is invalid!")
