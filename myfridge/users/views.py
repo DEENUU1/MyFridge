@@ -61,3 +61,21 @@ def register_activate(request: HttpRequest, uidb64: str, token: str) -> HttpResp
         )
     else:
         return HttpResponse("Activation link is invalid!")
+
+
+class SuccessRegisterView(TemplateView):
+    template_name = 'success_register.html'
+
+
+class LoginUserView(FormView):
+    template_name = "login.html"
+    form_class = CustomUserLogin
+    success_url = reverse_lazy("dishes:home")
+
+    def form_valid(self, form):
+        """
+        Overrides the parent class method to log the user in upon successful
+        authentication and redirect them to the success URL.
+        """
+        login(self.request, form.get_user())
+        return super().form_valid(form)
