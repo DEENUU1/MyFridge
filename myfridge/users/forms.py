@@ -35,3 +35,7 @@ class CustomUserRegistration(forms.ModelForm):
     def send_email(self, message):
         pass
 
+
+class CustomUserLogin(AuthenticationForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
