@@ -79,3 +79,11 @@ class LoginUserView(FormView):
         """
         login(self.request, form.get_user())
         return super().form_valid(form)
+
+
+class LogoutUserView(LogoutView):
+
+    def get(self, request):
+        logout(request)
+        return redirect('dishes:home')
+
