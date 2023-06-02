@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import CustomUser
 
 
 class Type(models.Model):
@@ -55,7 +56,7 @@ class TimeToMake(models.Model):
 
 class Dish(models.Model):
     name = models.CharField(max_length=50)
-    # author = ...
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     time_to_make = models.ForeignKey(TimeToMake, on_delete=models.CASCADE)
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
@@ -67,7 +68,6 @@ class Dish(models.Model):
     vegetarian = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
-    # rates = ...
     level = models.ForeignKey(DifficultyLevel, on_delete=models.CASCADE)
     main_ingredient = models.ManyToManyField(MainIngredient)
     other_ingredients = models.ManyToManyField(OtherIngredient)
@@ -75,3 +75,16 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Rate(models.Model):
+    RATES = [(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+
+    choose_rate = models.IntegerField(choices=RATES)
+    date_created = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=150)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE, related_name="rates")
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.dish.name} {self.choose_rate}"
