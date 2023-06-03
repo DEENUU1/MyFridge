@@ -10,8 +10,6 @@ from django.views.generic import (
     DeleteView,
 )
 
-from django.contrib.auth import get_user_model
-
 
 class HomeView(ListView):
     model = Dish

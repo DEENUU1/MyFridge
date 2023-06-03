@@ -4,6 +4,7 @@
 </form>
 
 <a href="{% url 'dishes:dish-update' object.id %}">Update dish</a> <br>
+<a href="{% url 'social:rate-add' object.id %}">Add rate</a>
 
 
 {{object.name}} <br>
