@@ -69,6 +69,39 @@ class DishCreateView(CreateView):
         return context
 
 
+class UpdateDishView(UpdateView):
+    model = Dish
+    template_name = "dish_update.html"
+    success_url = reverse_lazy("dishes:home")
+    fields = (
+        "name",
+        "time_to_make",
+        "description",
+        "image",
+        "kcal",
+        "gluten",
+        "lactose",
+        "meal",
+        "vegetarian",
+        "vegan",
+        "country",
+        "level",
+        "main_ingredient",
+        "other_ingredients",
+        "category",
+    )
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
 class DeleteDishView(DeleteView):
     model = Dish
     success_url = reverse_lazy("dishes:home")

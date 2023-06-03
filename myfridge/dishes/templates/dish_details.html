@@ -3,6 +3,7 @@
     <button type="submit">Delete</button>
 </form>
 
+<a href="{% url 'dishes:dish-update' object.id %}">Update dish</a> <br>
 
 
 {{object.name}} <br>

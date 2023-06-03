@@ -2,7 +2,7 @@
 <a href="{% url 'dishes:dish-create' %}">Create new dish</a> <br>
 
 {% for data in object_list %}
-    {{data.name}} <br>
+<a href="{% url 'dishes:dish-detail' data.id %}">{{data.name}}</a> <br>
     <img src="http://127.0.0.1:8000/media/{{data.image}}"> <br>
     {{data.author}} <br>
     {{data.time_to_make}} <br>
