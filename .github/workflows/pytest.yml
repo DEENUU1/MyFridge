@@ -19,6 +19,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Set up SQLite database
+        working-directory: ./myfridge/
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+
       - name: Change directory and run pytest
         working-directory: ./myfridge/
         run: |
