@@ -35,3 +35,30 @@ class DishDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class DishCreateView(CreateView):
+    model = Dish
+    template_name = "dish_create.html"
+    fields = (
+        "name",
+        "time_to_make",
+        "description",
+        "image",
+        "kcal",
+        "gluten",
+        "lactose",
+        "meal",
+        "vegetarian",
+        "vegan",
+        "country",
+        "level",
+        "main_ingredient",
+        "other_ingredients",
+        "category",
+    )
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context
