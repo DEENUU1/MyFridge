@@ -25,3 +25,13 @@ class HomeView(ListView):
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class DishDetailView(DetailView):
+    model = Dish
+    template_name = "dish_details.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context

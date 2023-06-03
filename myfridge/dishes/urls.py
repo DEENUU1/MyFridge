@@ -6,4 +6,5 @@ app_name = "dishes"
 
 urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
+    path("dish/<int:pk>/", views.DishDetailView.as_view(), name="dish-detail"),
 ]
