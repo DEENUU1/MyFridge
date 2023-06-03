@@ -67,6 +67,10 @@ class SuccessRegisterView(TemplateView):
     template_name = "success_register.html"
 
 
+class StatuteView(TemplateView):
+    template_name = "statute.html"
+
+
 class LoginUserView(FormView):
     template_name = "login.html"
     form_class = CustomUserLogin

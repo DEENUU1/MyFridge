@@ -1,0 +1,35 @@
+name: Run Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Run pytest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Set up SQLite database
+        working-directory: ./myfridge/
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+
+      - name: Change directory and run pytest
+        working-directory: ./myfridge/
+        run: |
+          coverage run -m pytest
+          coverage report -m
+
+      - name: Publish code coverage
+        uses: codecov/codecov-action@v2
