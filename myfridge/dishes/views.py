@@ -40,6 +40,7 @@ class DishDetailView(DetailView):
 class DishCreateView(CreateView):
     model = Dish
     template_name = "dish_create.html"
+    success_url = reverse_lazy("dishes:home")
     fields = (
         "name",
         "time_to_make",
@@ -58,7 +59,21 @@ class DishCreateView(CreateView):
         "category",
     )
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class DeleteDishView(DeleteView):
+    model = Dish
+    success_url = reverse_lazy("dishes:home")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        return queryset
