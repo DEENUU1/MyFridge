@@ -18,12 +18,14 @@ import pytest
 def test_model_type_successfully_created():
     type_obj = Type.objects.create(name="Milk")
     assert type_obj.name == "Milk"
+    assert type_obj.__str__() == "Milk"
 
 
 @pytest.mark.django_db
 def test_model_country_successfully_created():
     country = Country.objects.create(name="Poland")
     assert country.name == "Poland"
+    assert country.__str__() == "Poland"
 
 
 @pytest.mark.django_db
@@ -33,6 +35,7 @@ def test_model_main_ingredient_successfully_created():
     )
     assert main_ingredient.name == "Cheese"
     assert main_ingredient.type.name == "Milk"
+    assert main_ingredient.__str__() == "Cheese"
 
 
 @pytest.mark.django_db
@@ -42,18 +45,21 @@ def test_model_other_ingredient_successfully_created():
     )
     assert other_ingredient.name == "Paper"
     assert other_ingredient.type.name == "Seasoning"
+    assert other_ingredient.__str__() == "Paper"
 
 
 @pytest.mark.django_db
 def test_model_difficulty_level_successfully_created():
     difficulty_level = DifficultyLevel.objects.create(name="Easy")
     assert difficulty_level.name == "Easy"
+    assert difficulty_level.__str__() == "Easy"
 
 
 @pytest.mark.django_db
 def test_model_dish_category_successfully_created():
     dish_category = DishCategory.objects.create(name="Breakfast")
     assert dish_category.name == "Breakfast"
+    assert dish_category.__str__() == "Breakfast"
 
 
 @pytest.mark.django_db
@@ -112,6 +118,7 @@ def test_model_dish_successfully_created(dish_data):
     assert dish_data.main_ingredient.count() == 1
     assert dish_data.other_ingredients.count() == 1
     assert dish_data.category.name == "Main Course"
+    assert dish_data.__str__() == "Pasta"
 
 
 @pytest.mark.django_db
@@ -129,3 +136,4 @@ def test_model_rate_successfully_created(dish_data):
     assert rate.comment == "Great dish!"
     assert rate.dish == dish_data
     assert rate.author.username == "anotheruser"
+    assert rate.__str__() == "Pasta 5"
