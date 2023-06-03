@@ -10,6 +10,8 @@ from django.views.generic import (
     DeleteView,
 )
 
+from django.contrib.auth import get_user_model
+
 
 class HomeView(ListView):
     model = Dish
@@ -61,6 +63,11 @@ class DishCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+
+        user = self.request.user
+        user.points += 10
+        user.save()
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
