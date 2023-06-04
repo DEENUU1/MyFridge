@@ -1,7 +1,6 @@
 from typing import Any, Dict
 
 from django.db.models import Q
-from django.shortcuts import render
 
 from .models import Dish
 from django.urls import reverse_lazy
@@ -139,7 +138,7 @@ class DishCreateView(CreateView):
         "kcal",
         "gluten",
         "lactose",
-        "meal",
+        "meat",
         "vegetarian",
         "vegan",
         "country",
@@ -176,7 +175,7 @@ class UpdateDishView(UpdateView):
         "kcal",
         "gluten",
         "lactose",
-        "meal",
+        "meat",
         "vegetarian",
         "vegan",
         "country",
