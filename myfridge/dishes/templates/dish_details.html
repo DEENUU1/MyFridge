@@ -4,6 +4,7 @@
 </form>
 
 <a href="{% url 'dishes:dish-update' object.id %}">Update dish</a> <br>
+<a href="{% url 'social:rate-add' object.id %}">Add rate</a>
 
 
 {{object.name}} <br>
@@ -12,3 +13,14 @@
 {{object.time_to_make}} <br>
 {{object.date_created}} <br>
 
+{% if rates %}
+    {% for rate in rates %}
+        {{rate}}
+        <a href="{% url 'social:rate-update' object.id %}">Update rate</a>
+
+        <form method="POST" action="{% url 'social:rate-delete' object.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
+    {% endfor %}
+{% endif %}

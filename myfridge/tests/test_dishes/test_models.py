@@ -7,7 +7,6 @@ from dishes.models import (
     DishCategory,
     TimeToMake,
     Dish,
-    Rate,
 )
 from users.models import CustomUser
 
@@ -119,21 +118,3 @@ def test_model_dish_successfully_created(dish_data):
     assert dish_data.other_ingredients.count() == 1
     assert dish_data.category.name == "Main Course"
     assert dish_data.__str__() == "Pasta"
-
-
-@pytest.mark.django_db
-def test_model_rate_successfully_created(dish_data):
-    user = CustomUser.objects.create(username="anotheruser", password="testpassword")
-    rate = Rate.objects.create(
-        choose_rate=5,
-        comment="Great dish!",
-        dish=dish_data,
-        author=user,
-    )
-
-    assert isinstance(rate, Rate)
-    assert rate.choose_rate == 5
-    assert rate.comment == "Great dish!"
-    assert rate.dish == dish_data
-    assert rate.author.username == "anotheruser"
-    assert rate.__str__() == "Pasta 5"
