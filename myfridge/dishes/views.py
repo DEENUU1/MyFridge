@@ -1,5 +1,7 @@
 from typing import Any, Dict
 
+from django.db.models import Count
+
 from .models import Dish
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -10,6 +12,18 @@ from django.views.generic import (
     DeleteView,
 )
 from social.models import Rate
+from .forms import (
+    DishFilterForm,
+    DateSortingForm,
+    GlutenFilterForm,
+    LactoseFilterForm,
+    MeatFilterForm,
+    VeganFilterForm,
+    VegetarianFilterForm,
+    CountryFilterForm,
+    DifficultyLevelFilterForm,
+    CategoryFilterForm,
+)
 
 
 class HomeView(ListView):
@@ -20,11 +34,61 @@ class HomeView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        form = DishFilterForm(self.request.GET)
+
+        order_by = self.request.GET.get("order_by")
+        if order_by:
+            if order_by == "1":
+                queryset = queryset.order_by("date_created")
+            if order_by == "2":
+                queryset = queryset.order_by("-date_created")
+
+        gluten = self.request.GET.get("gluten")
+        if gluten:
+            queryset = queryset.filter(gluten=True)
+
+        lactose = self.request.GET.get("lactose")
+        if lactose:
+            queryset = queryset.filter(lactose=True)
+
+        meat = self.request.GET.get("meat")
+        if meat:
+            queryset = queryset.filter(meal=True)
+
+        vegan = self.request.GET.get("vegan")
+        if vegan:
+            queryset = queryset.filter(vegan=True)
+
+        vegetarian = self.request.GET.get("vegetarian")
+        if vegetarian:
+            queryset = queryset.filter(vegetarian=True)
+
+        country = self.request.GET.get("country")
+        if country:
+            queryset = queryset.filter(country=country)
+
+        level = self.request.GET.get("level")
+        if level:
+            queryset = queryset.filter(level=level)
+
+        category = self.request.GET.get("category")
+        if category:
+            queryset = queryset.filter(category=category)
+
         return queryset
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context["filter_form"] = DishFilterForm(self.request.GET)
+        context["date_sorting_form"] = DateSortingForm(self.request.GET)
+        context["gluten_form"] = GlutenFilterForm(self.request.GET)
+        context["lactose_form"] = LactoseFilterForm(self.request.GET)
+        context["meat_form"] = MeatFilterForm(self.request.GET)
+        context["vegan_form"] = VeganFilterForm(self.request.GET)
+        context["vegetarian_form"] = VegetarianFilterForm(self.request.GET)
+        context["country_form"] = CountryFilterForm(self.request.GET)
+        context["difficulty_level_form"] = DifficultyLevelFilterForm(self.request.GET)
+        context["category_form"] = CategoryFilterForm(self.request.GET)
         return context
 
 

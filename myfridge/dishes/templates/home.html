@@ -1,6 +1,22 @@
+{% load crispy_forms_tags %}
 
 <a href="{% url 'dishes:dish-create' %}">Create new dish</a> <br>
 
+<form method="GET" action="">
+  {{ filter_form|crispy }}
+  {{ date_sorting_form|crispy }}
+  {{ gluten_form|crispy }}
+  {{ lactose_form|crispy }}
+  {{ meat_form|crispy }}
+  {{ vegan_form|crispy }}
+  {{ vegetarian_form|crispy }}
+  {{ country_form|crispy }}
+  {{ difficulty_level_form|crispy }}
+  {{ category_form|crispy }}
+  <button type="submit">Filtruj</button>
+</form>
+
+{% if object_list %}
 {% for data in object_list %}
 <a href="{% url 'dishes:dish-detail' data.id %}">{{data.name}}</a> <br>
     <img src="http://127.0.0.1:8000/media/{{data.image}}"> <br>
@@ -8,3 +24,10 @@
     {{data.time_to_make}} <br>
     {{data.date_created}} <br>
 {% endfor %}
+{% else %}
+<a href="{% url 'dishes:dish-detail' object.id %}">{{object.name}}</a> <br>
+    <img src="http://127.0.0.1:8000/media/{{object.image}}"> <br>
+    {{object.author}} <br>
+    {{object.time_to_make}} <br>
+    {{object.date_created}} <br>
+{% endif %}
