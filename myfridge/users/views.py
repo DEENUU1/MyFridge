@@ -30,7 +30,7 @@ class RegisterUserView(FormView):
         user.is_active = False
         user.set_password(form.cleaned_data["password"])
         user.save()
-        # send email method
+        # TODO send email method
 
         return super().form_valid(form)
 

@@ -56,9 +56,9 @@ class DishCategoryAdmin(admin.ModelAdmin):
 
 @admin.register(TimeToMake)
 class TimeToMakeAdmin(admin.ModelAdmin):
-    list_display = ["time", "name"]
+    list_display = ["value"]
 
-    list_filter = ["time", "name"]
+    list_filter = ["value"]
 
 
 @admin.register(Dish)
@@ -82,7 +82,7 @@ class DishAdmin(admin.ModelAdmin):
         "kcal",
         "gluten",
         "lactose",
-        "meal",
+        "meat",
         "vegetarian",
         "vegan",
         "country",

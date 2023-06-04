@@ -63,13 +63,13 @@ def test_model_dish_category_successfully_created():
 
 @pytest.mark.django_db
 def test_model_time_to_make_successfully_created():
-    time_to_make = TimeToMake.objects.create(name="minutes", time=30)
-    assert time_to_make.__str__() == "30 minutes"
+    time_to_make = TimeToMake.objects.create(value=30)
+    assert time_to_make.__str__() == "30"
 
 
 @pytest.fixture
 def dish_data():
-    time_to_make = TimeToMake.objects.create(time=30, name="minutes")
+    time_to_make = TimeToMake.objects.create(value=30)
     country = Country.objects.create(name="Italy")
     level = DifficultyLevel.objects.create(name="Easy")
     category = DishCategory.objects.create(name="Main Course")
@@ -86,7 +86,7 @@ def dish_data():
         kcal=500,
         gluten=True,
         lactose=False,
-        meal=True,
+        meat=True,
         vegetarian=True,
         vegan=False,
         country=country,
@@ -104,12 +104,12 @@ def test_model_dish_successfully_created(dish_data):
     assert isinstance(dish_data, Dish)
     assert dish_data.name == "Pasta"
     assert dish_data.author.username == "testuser"
-    assert dish_data.time_to_make.time == 30
+    assert dish_data.time_to_make.get_values == "30 minutes"
     assert dish_data.description == "Delicious pasta dish"
     assert dish_data.kcal == 500
     assert dish_data.gluten is True
     assert dish_data.lactose is False
-    assert dish_data.meal is True
+    assert dish_data.meat is True
     assert dish_data.vegetarian is True
     assert dish_data.vegan is False
     assert dish_data.country.name == "Italy"

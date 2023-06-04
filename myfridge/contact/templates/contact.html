@@ -1,0 +1,12 @@
+{% load crispy_forms_tags %}
+
+
+<div class="container mt-5 mb-5">
+    <form method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <a href="{% url 'contact:contact-statute' %}">Statute</a>
+        <button class="btn btn-success" type="submit">Send message</button>
+    </form>
+</div>
+
