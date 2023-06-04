@@ -10,7 +10,7 @@ from django.views.generic import (
     DeleteView,
 )
 from social.models import Rate
-from .forms import DishFilterForm
+from .forms import DishFilterForm, DateSortingForm
 
 
 class HomeView(ListView):
@@ -25,11 +25,19 @@ class HomeView(ListView):
         if form.is_valid():
             queryset = form.filter_dishes()
 
+        order_by = self.request.GET.get("order_by")
+        if order_by:
+            if order_by == "1":
+                queryset = queryset.order_by("date_created")
+            if order_by == "2":
+                queryset = queryset.order_by("-date_created")
+
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["filter_form"] = DishFilterForm(self.request.GET)
+        context["date_sorting_form"] = DateSortingForm(self.request.GET)
         return context
 
 
