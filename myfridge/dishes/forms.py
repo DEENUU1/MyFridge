@@ -1,30 +1,9 @@
 from django import forms
-from .models import MainIngredient
 from .models import (
-    Type,
     Country,
     DifficultyLevel,
     DishCategory,
 )
-
-
-class DishFilterForm(forms.Form):
-    # TODO
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        types = Type.objects.all()
-        for type_obj in types:
-            field_name = f"main_ingredient_{type_obj.id}"
-            field_label = f"Main Ingredient ({type_obj.name})"
-            self.fields[field_name] = forms.MultipleChoiceField(
-                choices=[
-                    (str(ingredient.id), str(ingredient))
-                    for ingredient in MainIngredient.objects.filter(type=type_obj)
-                ],
-                label=field_label,
-                required=False,
-                widget=forms.CheckboxSelectMultiple,
-            )
 
 
 class DateSortingForm(forms.Form):

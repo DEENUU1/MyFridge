@@ -1,6 +1,6 @@
 from typing import Any, Dict
 
-from django.db.models import Count
+from django.db.models import Q
 
 from .models import Dish
 from django.urls import reverse_lazy
@@ -13,7 +13,6 @@ from django.views.generic import (
 )
 from social.models import Rate
 from .forms import (
-    DishFilterForm,
     DateSortingForm,
     GlutenFilterForm,
     LactoseFilterForm,
@@ -29,12 +28,10 @@ from .forms import (
 class HomeView(ListView):
     model = Dish
     template_name = "home.html"
-    paginated_by = 10
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
-        form = DishFilterForm(self.request.GET)
 
         order_by = self.request.GET.get("order_by")
         if order_by:
@@ -79,7 +76,6 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["filter_form"] = DishFilterForm(self.request.GET)
         context["date_sorting_form"] = DateSortingForm(self.request.GET)
         context["gluten_form"] = GlutenFilterForm(self.request.GET)
         context["lactose_form"] = LactoseFilterForm(self.request.GET)
