@@ -1,5 +1,7 @@
 from typing import Any, Dict
 
+from django.db.models import Count
+
 from .models import Dish
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -33,8 +35,6 @@ class HomeView(ListView):
         queryset = super().get_queryset()
 
         form = DishFilterForm(self.request.GET)
-        if form.is_valid():
-            queryset = form.filter_dishes()
 
         order_by = self.request.GET.get("order_by")
         if order_by:

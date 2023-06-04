@@ -16,6 +16,7 @@
   <button type="submit">Filtruj</button>
 </form>
 
+{% if object_list %}
 {% for data in object_list %}
 <a href="{% url 'dishes:dish-detail' data.id %}">{{data.name}}</a> <br>
     <img src="http://127.0.0.1:8000/media/{{data.image}}"> <br>
@@ -23,3 +24,10 @@
     {{data.time_to_make}} <br>
     {{data.date_created}} <br>
 {% endfor %}
+{% else %}
+<a href="{% url 'dishes:dish-detail' object.id %}">{{object.name}}</a> <br>
+    <img src="http://127.0.0.1:8000/media/{{object.image}}"> <br>
+    {{object.author}} <br>
+    {{object.time_to_make}} <br>
+    {{object.date_created}} <br>
+{% endif %}
