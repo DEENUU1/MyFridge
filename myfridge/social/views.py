@@ -12,9 +12,10 @@ from django.views.generic import (
 from dishes.models import Dish
 
 from typing import Dict, Any
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class CreateRateView(CreateView):
+class CreateRateView(LoginRequiredMixin, CreateView):
     model = Rate
     fields = ("choose_rate", "comment")
     success_url = reverse_lazy("dishes:home")
