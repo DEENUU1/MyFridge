@@ -112,3 +112,11 @@ class VegetarianFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["vegetarian"].label = "Is vegatarian"
+
+
+class CountryFilterForm(forms.Form):
+    country = forms.ModelChoiceField(queryset=Country.objects.all(), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["country"].label = "Country"
