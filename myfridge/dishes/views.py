@@ -10,6 +10,7 @@ from django.views.generic import (
     DeleteView,
 )
 from social.models import Rate
+from .forms import DishFilterForm
 
 
 class HomeView(ListView):
@@ -20,11 +21,15 @@ class HomeView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
 
+        form = DishFilterForm(self.request.GET)
+        if form.is_valid():
+            queryset = form.filter_dishes()
+
         return queryset
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        context["filter_form"] = DishFilterForm(self.request.GET)
         return context
 
 

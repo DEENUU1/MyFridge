@@ -1,5 +1,11 @@
+{% load crispy_forms_tags %}
 
 <a href="{% url 'dishes:dish-create' %}">Create new dish</a> <br>
+
+<form method="GET" action="">
+  {{ filter_form|crispy }}
+  <button type="submit">Filtruj</button>
+</form>
 
 {% for data in object_list %}
 <a href="{% url 'dishes:dish-detail' data.id %}">{{data.name}}</a> <br>
