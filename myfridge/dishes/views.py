@@ -26,6 +26,7 @@ from .forms import (
     SearchForm,
     MainIngredientForm,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(ListView):
@@ -126,7 +127,7 @@ class DishDetailView(DetailView):
         return context
 
 
-class DishCreateView(CreateView):
+class DishCreateView(LoginRequiredMixin, CreateView):
     model = Dish
     template_name = "dish_create.html"
     success_url = reverse_lazy("dishes:home")
