@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "dishes",
     "users",
     "social",
+    "contact",
 ]
 
 MIDDLEWARE = [
