@@ -88,3 +88,19 @@ class LactoseFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["lactose"].label = "Has lactose"
+
+
+class MeatFilterForm(forms.Form):
+    meat = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["meat"].label = "Has meat"
+
+
+class VeganFilterForm(forms.Form):
+    vegan = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["vegan"].label = "Is vegan"

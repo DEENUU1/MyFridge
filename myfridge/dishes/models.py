@@ -100,7 +100,7 @@ class Dish(models.Model):
     kcal = models.IntegerField(null=True, blank=True)
     gluten = models.BooleanField(default=False)
     lactose = models.BooleanField(default=False)
-    meal = models.BooleanField(default=False)
+    meal = models.BooleanField(default=False)  # TODO change meal to meat!
     vegetarian = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
