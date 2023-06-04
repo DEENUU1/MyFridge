@@ -9,6 +9,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
 )
+from social.models import Rate
 
 
 class HomeView(ListView):
@@ -33,7 +34,7 @@ class DishDetailView(DetailView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
+        context["rates"] = Rate.objects.filter(dish=self.object)
         return context
 
 

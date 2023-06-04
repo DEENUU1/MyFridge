@@ -11,6 +11,8 @@ from django.views.generic import (
 
 from dishes.models import Dish
 
+from typing import Dict, Any
+
 
 class CreateRateView(CreateView):
     model = Rate
@@ -35,6 +37,28 @@ class CreateRateView(CreateView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["dish"] = self.kwargs["pk"]
+        return context
+
+
+class UpdateRateView(UpdateView):
+    model = Rate
+    fields = ("choose_rate", "comment")
+    template_name = "rate_update.html"
+    success_url = reverse_lazy("dishes:home")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+
+        return super().form_valid(form)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["dish"] = self.kwargs["pk"]
         return context

@@ -13,3 +13,9 @@
 {{object.time_to_make}} <br>
 {{object.date_created}} <br>
 
+{% if rates %}
+    {% for rate in rates %}
+        {{rate}}
+        <a href="{% url 'social:rate-update' object.id %}">Update rate</a>
+    {% endfor %}
+{% endif %}
