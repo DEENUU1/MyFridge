@@ -15,7 +15,7 @@ from dishes.models import (
 
 @pytest.fixture
 def dish_data():
-    time_to_make = TimeToMake.objects.create(time=30, name="minutes")
+    time_to_make = TimeToMake.objects.create(value=30)
     country = Country.objects.create(name="Italy")
     level = DifficultyLevel.objects.create(name="Easy")
     category = DishCategory.objects.create(name="Main Course")
@@ -32,7 +32,7 @@ def dish_data():
         kcal=500,
         gluten=True,
         lactose=False,
-        meal=True,
+        meat=True,
         vegetarian=True,
         vegan=False,
         country=country,
