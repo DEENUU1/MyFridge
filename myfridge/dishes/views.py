@@ -50,7 +50,7 @@ class HomeView(ListView):
 
         meat = self.request.GET.get("meat")
         if meat:
-            queryset = queryset.filter(meal=True)
+            queryset = queryset.filter(meat=True)
 
         vegan = self.request.GET.get("vegan")
         if vegan:
