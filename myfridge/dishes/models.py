@@ -77,16 +77,21 @@ class DishCategory(models.Model):
 
 
 class TimeToMake(models.Model):
-    time = models.IntegerField()
-    name = models.CharField(max_length=50)
+    value = models.IntegerField()
 
     class Meta:
-        ordering = ("time",)
+        ordering = ("value",)
         verbose_name = "TimeToMake"
         verbose_name_plural = "TimeToMake"
 
     def __str__(self):
-        return f"{self.time} {self.name}"
+        return str(self.value)
+
+    @property
+    def get_values(self):
+        if self.value == 1:
+            return "1 minute"
+        return f"{self.value} minutes"
 
 
 class Dish(models.Model):
@@ -100,7 +105,7 @@ class Dish(models.Model):
     kcal = models.IntegerField(null=True, blank=True)
     gluten = models.BooleanField(default=False)
     lactose = models.BooleanField(default=False)
-    meal = models.BooleanField(default=False)  # TODO change meal to meat!
+    meat = models.BooleanField(default=False)
     vegetarian = models.BooleanField(default=False)
     vegan = models.BooleanField(default=False)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)

@@ -5,6 +5,11 @@ __pycache__/
 myfridge/contact/migrations/0001_initial.py
 myfridge/social/migrations/0001_initial.py
 myfridge/social/migrations/0002_initial.py
+myfridge\social\migrations\0001_initial.py
+myfridge/users/migrations/0001_initial.py
+myfridge/dishes/migrations/0001_initial.py
+myfridge/dishes/migrations/0002_initial.py
+myfridge/contact/migrations/0001_initial.py
 # C extensions
 *.so
 .idea/

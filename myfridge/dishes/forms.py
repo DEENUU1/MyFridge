@@ -1,34 +1,41 @@
 from django import forms
-from .models import MainIngredient
 from .models import (
-    Type,
     Country,
     DifficultyLevel,
     DishCategory,
+    Dish,
 )
-
-
-class DishFilterForm(forms.Form):
-    # TODO
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        types = Type.objects.all()
-        for type_obj in types:
-            field_name = f"main_ingredient_{type_obj.id}"
-            field_label = f"Main Ingredient ({type_obj.name})"
-            self.fields[field_name] = forms.MultipleChoiceField(
-                choices=[
-                    (str(ingredient.id), str(ingredient))
-                    for ingredient in MainIngredient.objects.filter(type=type_obj)
-                ],
-                label=field_label,
-                required=False,
-                widget=forms.CheckboxSelectMultiple,
-            )
 
 
 class DateSortingForm(forms.Form):
     CHOICES = (("1", "Newest"), ("2", "Oldest"))
+
+    order_by = forms.ChoiceField(
+        choices=CHOICES,
+        required=False,
+    )
+
+
+class CaloriesSortingForm(forms.Form):
+    CHOICES = (("1", "Highest"), ("2", "Lowest"))
+
+    order_by = forms.ChoiceField(
+        choices=CHOICES,
+        required=False,
+    )
+
+
+class SearchForm(forms.Form):
+    search_query = forms.CharField(
+        label="Search",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Search for dishes"}),
+    )
+
+
+class TimeToMake(forms.Form):
+    CHOICES = (("1", "Shortest"), ("2", "Longest"))
 
     order_by = forms.ChoiceField(
         choices=CHOICES,

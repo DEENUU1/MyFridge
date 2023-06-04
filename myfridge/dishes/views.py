@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
-from django.db.models import Count
+from django.db.models import Q
+from django.shortcuts import render
 
 from .models import Dish
 from django.urls import reverse_lazy
@@ -13,7 +14,6 @@ from django.views.generic import (
 )
 from social.models import Rate
 from .forms import (
-    DishFilterForm,
     DateSortingForm,
     GlutenFilterForm,
     LactoseFilterForm,
@@ -23,18 +23,22 @@ from .forms import (
     CountryFilterForm,
     DifficultyLevelFilterForm,
     CategoryFilterForm,
+    CaloriesSortingForm,
+    SearchForm,
 )
 
 
 class HomeView(ListView):
     model = Dish
     template_name = "home.html"
-    paginated_by = 10
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        form = DishFilterForm(self.request.GET)
+        search_query = self.request.GET.get("search_query")
+        if search_query:
+            queryset = queryset.filter(Q(name__icontains=search_query))
 
         order_by = self.request.GET.get("order_by")
         if order_by:
@@ -42,6 +46,20 @@ class HomeView(ListView):
                 queryset = queryset.order_by("date_created")
             if order_by == "2":
                 queryset = queryset.order_by("-date_created")
+
+        calories = self.request.GET.get("calories")
+        if calories:
+            if calories == "1":
+                queryset = queryset.order_by("calories")
+            if calories == "2":
+                queryset = queryset.order_by("-calories")
+
+        time_to_make = self.request.GET.get("time_to_make")
+        if time_to_make:
+            if time_to_make == "1":
+                queryset = queryset.order_by("time_to_make")
+            if time_to_make == "2":
+                queryset = queryset.order_by("-time_to_make")
 
         gluten = self.request.GET.get("gluten")
         if gluten:
@@ -53,7 +71,7 @@ class HomeView(ListView):
 
         meat = self.request.GET.get("meat")
         if meat:
-            queryset = queryset.filter(meal=True)
+            queryset = queryset.filter(meat=True)
 
         vegan = self.request.GET.get("vegan")
         if vegan:
@@ -79,7 +97,6 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["filter_form"] = DishFilterForm(self.request.GET)
         context["date_sorting_form"] = DateSortingForm(self.request.GET)
         context["gluten_form"] = GlutenFilterForm(self.request.GET)
         context["lactose_form"] = LactoseFilterForm(self.request.GET)
@@ -89,6 +106,8 @@ class HomeView(ListView):
         context["country_form"] = CountryFilterForm(self.request.GET)
         context["difficulty_level_form"] = DifficultyLevelFilterForm(self.request.GET)
         context["category_form"] = CategoryFilterForm(self.request.GET)
+        context["calories_sorting_form"] = CaloriesSortingForm(self.request.GET)
+        context["search_form"] = SearchForm(self.request.GET)
         return context
 
 
