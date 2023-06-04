@@ -48,10 +48,20 @@ class UpdateRateView(UpdateView):
     template_name = "rate_update.html"
     success_url = reverse_lazy("dishes:home")
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        return queryset
 
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["dish"] = self.kwargs["pk"]
+        return context
+
+
+class DeleteRateView(DeleteView):
+    model = Rate
+    success_url = reverse_lazy("dishes:home")
 
     def get_queryset(self):
         queryset = super().get_queryset()

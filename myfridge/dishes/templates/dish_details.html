@@ -17,5 +17,10 @@
     {% for rate in rates %}
         {{rate}}
         <a href="{% url 'social:rate-update' object.id %}">Update rate</a>
+
+        <form method="POST" action="{% url 'social:rate-delete' object.id %}">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+        </form>
     {% endfor %}
 {% endif %}
