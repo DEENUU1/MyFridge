@@ -4,6 +4,7 @@
 
 <form method="GET" action="">
   {% csrf_token %}
+  {{ main_ingredient_form|crispy }}
   {{ search_form|crispy }}
   {{ date_sorting_form|crispy }}
   {{ gluten_form|crispy }}
@@ -24,5 +25,11 @@
     {{data.author}} <br>
     {{data.time_to_make}} <br>
     {{data.date_created}} <br>
+    {% for ingredient in data.main_ingredient.all %}
+        {% if ingredient not in main_ingredient_form.cleaned_data.ingredients %}
+            <span style="color: red">{{ ingredient }}</span>
+        {% else %}
+            {{ ingredient }}
+        {% endif %}
+    {% endfor %} <br>
 {% endfor %}
-

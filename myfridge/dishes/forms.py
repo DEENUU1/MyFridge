@@ -3,8 +3,16 @@ from .models import (
     Country,
     DifficultyLevel,
     DishCategory,
-    Dish,
+    MainIngredient,
 )
+
+
+class MainIngredientForm(forms.Form):
+    ingredients = forms.ModelMultipleChoiceField(
+        queryset=MainIngredient.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
 
 
 class DateSortingForm(forms.Form):
