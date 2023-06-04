@@ -130,3 +130,13 @@ class DifficultyLevelFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["level"].label = "Difficulty Level"
+
+
+class CategoryFilterForm(forms.Form):
+    category = forms.ModelChoiceField(
+        queryset=DishCategory.objects.all(), required=False
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["category"].label = "Category"

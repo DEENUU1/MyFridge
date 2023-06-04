@@ -20,6 +20,7 @@ from .forms import (
     VegetarianFilterForm,
     CountryFilterForm,
     DifficultyLevelFilterForm,
+    CategoryFilterForm,
 )
 
 
@@ -70,6 +71,10 @@ class HomeView(ListView):
         if level:
             queryset = queryset.filter(level=level)
 
+        category = self.request.GET.get("category")
+        if category:
+            queryset = queryset.filter(category=category)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -83,6 +88,7 @@ class HomeView(ListView):
         context["vegetarian_form"] = VegetarianFilterForm(self.request.GET)
         context["country_form"] = CountryFilterForm(self.request.GET)
         context["difficulty_level_form"] = DifficultyLevelFilterForm(self.request.GET)
+        context["category_form"] = CategoryFilterForm(self.request.GET)
         return context
 
 
