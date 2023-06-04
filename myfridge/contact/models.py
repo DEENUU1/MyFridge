@@ -10,6 +10,7 @@ class ContactSubject(models.Model):
 
 class Contact(models.Model):
     username = models.CharField(max_length=50)
+    date_created = models.DateTimeField(auto_now_add=True)
     email = models.EmailField()
     subject = models.ForeignKey(ContactSubject, on_delete=models.CASCADE)
     message = models.CharField(max_length=500)
