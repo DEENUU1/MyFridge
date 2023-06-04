@@ -3,11 +3,39 @@ from .models import (
     Country,
     DifficultyLevel,
     DishCategory,
+    Dish,
 )
 
 
 class DateSortingForm(forms.Form):
     CHOICES = (("1", "Newest"), ("2", "Oldest"))
+
+    order_by = forms.ChoiceField(
+        choices=CHOICES,
+        required=False,
+    )
+
+
+class CaloriesSortingForm(forms.Form):
+    CHOICES = (("1", "Highest"), ("2", "Lowest"))
+
+    order_by = forms.ChoiceField(
+        choices=CHOICES,
+        required=False,
+    )
+
+
+class SearchForm(forms.Form):
+    search_query = forms.CharField(
+        label="Search",
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Search for dishes"}),
+    )
+
+
+class TimeToMake(forms.Form):
+    CHOICES = (("1", "Shortest"), ("2", "Longest"))
 
     order_by = forms.ChoiceField(
         choices=CHOICES,

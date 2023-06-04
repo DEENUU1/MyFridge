@@ -4,6 +4,7 @@
 
 <form method="GET" action="">
   {% csrf_token %}
+  {{ search_form|crispy }}
   {{ date_sorting_form|crispy }}
   {{ gluten_form|crispy }}
   {{ lactose_form|crispy }}
@@ -13,6 +14,7 @@
   {{ country_form|crispy }}
   {{ difficulty_level_form|crispy }}
   {{ category_form|crispy }}
+  {{ calories_sorting_form|crispy }}
   <button type="submit">Filtruj</button>
 </form>
 
