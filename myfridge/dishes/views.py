@@ -17,6 +17,7 @@ from .forms import (
     LactoseFilterForm,
     MeatFilterForm,
     VeganFilterForm,
+    VegetarianFilterForm,
 )
 
 
@@ -55,6 +56,10 @@ class HomeView(ListView):
         if vegan:
             queryset = queryset.filter(vegan=True)
 
+        vegetarian = self.request.GET.get("vegetarian")
+        if vegetarian:
+            queryset = queryset.filter(vegetarian=True)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -65,6 +70,7 @@ class HomeView(ListView):
         context["lactose_form"] = LactoseFilterForm(self.request.GET)
         context["meat_form"] = MeatFilterForm(self.request.GET)
         context["vegan_form"] = VeganFilterForm(self.request.GET)
+        context["vegetarian_form"] = VegetarianFilterForm(self.request.GET)
         return context
 
 

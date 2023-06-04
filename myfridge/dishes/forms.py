@@ -104,3 +104,11 @@ class VeganFilterForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["vegan"].label = "Is vegan"
+
+
+class VegetarianFilterForm(forms.Form):
+    vegetarian = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["vegetarian"].label = "Is vegatarian"
