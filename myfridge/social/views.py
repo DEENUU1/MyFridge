@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404
 from .models import Rate
 from django.urls import reverse_lazy
@@ -43,7 +44,7 @@ class CreateRateView(LoginRequiredMixin, CreateView):
         return context
 
 
-class UpdateRateView(UpdateView):
+class UpdateRateView(LoginRequiredMixin, UpdateView):
     model = Rate
     fields = ("choose_rate", "comment")
     template_name = "rate_update.html"
@@ -52,6 +53,8 @@ class UpdateRateView(UpdateView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Rate.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -60,13 +63,15 @@ class UpdateRateView(UpdateView):
         return context
 
 
-class DeleteRateView(DeleteView):
+class DeleteRateView(LoginRequiredMixin, DeleteView):
     model = Rate
     success_url = reverse_lazy("dishes:home")
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to delete this Rate.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
