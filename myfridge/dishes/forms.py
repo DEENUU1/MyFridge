@@ -72,3 +72,19 @@ class DateSortingForm(forms.Form):
         choices=CHOICES,
         required=False,
     )
+
+
+class GlutenFilterForm(forms.Form):
+    gluten = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["gluten"].label = "Has gluten"
+
+
+class LactoseFilterForm(forms.Form):
+    lactose = forms.BooleanField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["lactose"].label = "Has lactose"
