@@ -33,6 +33,7 @@ class CustomUserRegistration(forms.ModelForm):
 
     def send_email(self, message):
         pass
+        # TODO
 
 
 class CustomUserLogin(AuthenticationForm):
