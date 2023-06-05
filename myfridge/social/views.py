@@ -11,7 +11,7 @@ from django.views.generic import (
 )
 
 from dishes.models import Dish
-
+from users.models import CustomUser
 from typing import Dict, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -77,4 +77,19 @@ class DeleteRateView(LoginRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["dish"] = self.kwargs["pk"]
+        return context
+
+
+class UserRankingView(ListView):
+    model = CustomUser
+    template_name = "user_ranking.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.order_by("-points")
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
         return context
