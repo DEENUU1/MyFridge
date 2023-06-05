@@ -1,5 +1,6 @@
 from django import views
 from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse, HttpRequest
@@ -9,6 +10,7 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.views import View
 from django.views.generic import UpdateView, TemplateView, CreateView
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
@@ -153,3 +155,15 @@ class SuccessDeleteAccountView(CreateView):
     model = Feedback
     fields = ("message",)
     success_url = reverse_lazy("dishes:home")
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        context = {
+            "user": user,
+        }
+        return render(request, "profile.html", context)
+
+    def post(self, request):
+        pass

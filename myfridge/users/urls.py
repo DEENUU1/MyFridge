@@ -29,4 +29,5 @@ urlpatterns = [
         views.SuccessDeleteAccountView.as_view(),
         name="success_delete_account",
     ),
+    path("profile/", views.UserProfileView.as_view(), name="profile"),
 ]
