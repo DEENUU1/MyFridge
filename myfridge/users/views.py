@@ -3,6 +3,8 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -167,3 +169,15 @@ class UserProfileView(LoginRequiredMixin, View):
 
     def post(self, request):
         pass
+
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    fields = ("image", "description")
+    template_name = "update_profile.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(id=self.request.user.id)
+        return queryset

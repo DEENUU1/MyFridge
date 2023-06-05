@@ -30,4 +30,9 @@ urlpatterns = [
         name="success_delete_account",
     ),
     path("profile/", views.UserProfileView.as_view(), name="profile"),
+    path(
+        "profile/update/<int:pk>/",
+        views.UpdateProfileView.as_view(),
+        name="edit_profile",
+    ),
 ]

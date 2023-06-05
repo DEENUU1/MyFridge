@@ -1,3 +1,6 @@
-{{user.username}}
-{{user.image}}
+<img style="width: 100px" src="http://127.0.0.1:8000/media/{{user.image}}"> <br>
+
+<h2>{{user.username}}</h2>
 {{user.description}}
+
+<a href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
