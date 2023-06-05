@@ -14,7 +14,8 @@ from django.views.generic.edit import FormView
 from dotenv import load_dotenv
 from .models import CustomUser
 
-from .forms import CustomUserRegistration, CustomUserLogin
+from .forms import CustomUserRegistration, CustomUserLogin, ChangePasswordForm
+
 from .tokens import account_activation_token
 
 load_dotenv()
@@ -35,7 +36,7 @@ class RegisterUserView(FormView):
         return super().form_valid(form)
 
 
-def register_activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
+def send_activation_url(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
     """
     The function register_activate() takes in three arguments:
     - request: the request object sent by the user to activate their account
@@ -89,3 +90,31 @@ class LogoutUserView(LogoutView):
     def get(self, request):
         logout(request)
         return redirect("dishes:home")
+
+
+class ChangePasswordView(FormView):
+    form_class = ChangePasswordForm
+    template_name = "change_password.html"
+    success_url = reverse_lazy("users:success_password_change")
+
+    def form_valid(self, form):
+        try:
+            user = CustomUser.objects.get(email=form.cleaned_data["email"])
+        except CustomUser.DoesNotExist:
+            form.add_error(None, "User with this email does not exist")
+            return super().form_invalid(form)
+
+        if not user.check_password(form.cleaned_data["old_password"]):
+            form.add_error("old_password", "Old password is incorrect")
+            return super().form_invalid(form)
+
+        user.set_password(form.cleaned_data["new_password"])
+        user.is_active = False
+        user.save()
+        # TODO send email method
+
+        return super().form_valid(form)
+
+
+class SuccessPasswordChangeView(TemplateView):
+    template_name = "password_change_success.html"

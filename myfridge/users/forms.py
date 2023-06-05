@@ -41,3 +41,13 @@ class CustomUserLogin(AuthenticationForm):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={"class": "form-control"})
     )
+
+
+class ChangePasswordForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput)
+    old_password = forms.CharField(widget=forms.PasswordInput)
+    new_password = forms.CharField(widget=forms.PasswordInput)
+
+    def send_email(self, message):
+        pass
+        # TODO
