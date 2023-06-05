@@ -51,3 +51,13 @@ class ChangePasswordForm(forms.Form):
     def send_email(self, message):
         pass
         # TODO
+
+
+class DeleteAccountForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput)
+    password = forms.CharField(widget=forms.PasswordInput)
+    password_repeat = forms.CharField(widget=forms.PasswordInput)
+
+    def send_email(self, message):
+        pass
+        # TODO

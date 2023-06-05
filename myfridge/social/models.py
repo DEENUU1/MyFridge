@@ -19,3 +19,16 @@ class Rate(models.Model):
 
     def __str__(self):
         return f"{self.dish.name} {self.choose_rate}"
+
+
+class Feedback(models.Model):
+    date_created = models.DateTimeField(auto_now_add=True)
+    message = models.CharField(max_length=150)
+
+    class Meta:
+        ordering = ("date_created",)
+        verbose_name = "Feedback"
+        verbose_name_plural = "Feedbacks"
+
+    def __str__(self):
+        return f"{self.message[:15]}"

@@ -23,4 +23,10 @@ urlpatterns = [
         views.SuccessPasswordChangeView.as_view(),
         name="success_password_change",
     ),
+    path("delete_account/", views.DeleteAccountView.as_view(), name="delete_account"),
+    path(
+        "delete_account_success/",
+        views.SuccessDeleteAccountView.as_view(),
+        name="success_delete_account",
+    ),
 ]

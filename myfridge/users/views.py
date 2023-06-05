@@ -9,14 +9,20 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import UpdateView, TemplateView, CreateView
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
 from .models import CustomUser
 
-from .forms import CustomUserRegistration, CustomUserLogin, ChangePasswordForm
+from .forms import (
+    CustomUserRegistration,
+    CustomUserLogin,
+    ChangePasswordForm,
+    DeleteAccountForm,
+)
 
 from .tokens import account_activation_token
+from social.models import Feedback
 
 load_dotenv()
 
@@ -97,7 +103,7 @@ class ChangePasswordView(FormView):
     template_name = "change_password.html"
     success_url = reverse_lazy("users:success_password_change")
 
-    def form_valid(self, form):
+    def form_valid(self, form):  # TODO move this logic to form
         try:
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
@@ -118,3 +124,32 @@ class ChangePasswordView(FormView):
 
 class SuccessPasswordChangeView(TemplateView):
     template_name = "password_change_success.html"
+
+
+class DeleteAccountView(FormView):
+    form_class = DeleteAccountForm
+    template_name = "delete_account.html"
+    success_url = reverse_lazy("users:success_delete_account")
+
+    def form_valid(self, form):  # TODO move this logic to form
+        try:
+            user = CustomUser.objects.get(email=form.cleaned_data["email"])
+        except CustomUser.DoesNotExist:
+            form.add_error(None, "User with this email does not exist")
+            return super().form_invalid(form)
+
+        if not user.check_password(form.cleaned_data["password"]):
+            form.add_error("password", "Password is incorrect")
+            return super().form_invalid(form)
+
+        user.delete()
+        # TODO send email method
+
+        return super().form_valid(form)
+
+
+class SuccessDeleteAccountView(CreateView):
+    template_name = "delete_account_success.html"
+    model = Feedback
+    fields = ("message",)
+    success_url = reverse_lazy("dishes:home")
