@@ -1,5 +1,5 @@
 import pytest
-from social.models import Rate
+from social.models import Rate, Feedback
 from users.models import CustomUser
 from dishes.models import (
     Dish,
@@ -61,3 +61,10 @@ def test_model_rate_successfully_created(dish_data):
     assert rate.dish == dish_data
     assert rate.author.username == "anotheruser"
     assert rate.__str__() == "Pasta 5"
+
+
+@pytest.mark.django_db
+def test_model_feedback_successfully_created(dish_data):
+    feedback = Feedback.objects.create(message="I dont need that website anymore!")
+    assert feedback.message == "I dont need that website anymore!"
+    assert len(feedback.__str__()) == 15

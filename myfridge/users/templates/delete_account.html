@@ -1,0 +1,16 @@
+{% load crispy_forms_tags %}
+
+
+<div class="p-5 mt-5 text-center">
+    <h1 class="mb-5">Delete Account</h1>
+</div>
+
+
+<div class="container mt-5 mb-5">
+    <form method="post">
+        {% csrf_token %}
+        {{form|crispy}}
+        <button class="btn btn-success" type="submit">Delete Account</button>
+    </form>
+</div>
+
