@@ -1,7 +1,7 @@
 from typing import Any, Dict
 
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
-from django.shortcuts import render
 
 from .models import Dish
 from django.urls import reverse_lazy
@@ -27,6 +27,7 @@ from .forms import (
     SearchForm,
     MainIngredientForm,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class HomeView(ListView):
@@ -127,7 +128,7 @@ class DishDetailView(DetailView):
         return context
 
 
-class DishCreateView(CreateView):
+class DishCreateView(LoginRequiredMixin, CreateView):
     model = Dish
     template_name = "dish_create.html"
     success_url = reverse_lazy("dishes:home")
@@ -139,7 +140,7 @@ class DishCreateView(CreateView):
         "kcal",
         "gluten",
         "lactose",
-        "meal",
+        "meat",
         "vegetarian",
         "vegan",
         "country",
@@ -164,7 +165,7 @@ class DishCreateView(CreateView):
         return context
 
 
-class UpdateDishView(UpdateView):
+class UpdateDishView(LoginRequiredMixin, UpdateView):
     model = Dish
     template_name = "dish_update.html"
     success_url = reverse_lazy("dishes:home")
@@ -176,7 +177,7 @@ class UpdateDishView(UpdateView):
         "kcal",
         "gluten",
         "lactose",
-        "meal",
+        "meat",
         "vegetarian",
         "vegan",
         "country",
@@ -189,6 +190,8 @@ class UpdateDishView(UpdateView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Dish.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -197,11 +200,13 @@ class UpdateDishView(UpdateView):
         return context
 
 
-class DeleteDishView(DeleteView):
+class DeleteDishView(LoginRequiredMixin, DeleteView):
     model = Dish
     success_url = reverse_lazy("dishes:home")
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Dish.")
         return queryset

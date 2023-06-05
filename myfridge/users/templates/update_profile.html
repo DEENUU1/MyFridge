@@ -1,0 +1,15 @@
+{% load crispy_forms_tags %}
+
+
+<div class="p-5 mt-5 text-center">
+    <h1 class="mb-5">Update profile</h1>
+</div>
+
+
+<div class="container">
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form|crispy}}
+    <button class="btn btn-primary" type="submit">Update profile</button>
+  <form>
+</div>

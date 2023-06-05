@@ -1,7 +1,10 @@
 from django import views
 from django.contrib.auth import login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.sites.shortcuts import get_current_site
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
@@ -9,13 +12,22 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.views.generic import UpdateView, TemplateView
+from django.views import View
+from django.views.generic import UpdateView, TemplateView, CreateView
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
 from .models import CustomUser
+from dishes.models import Dish
+from social.models import Rate
+from .forms import (
+    CustomUserRegistration,
+    CustomUserLogin,
+    ChangePasswordForm,
+    DeleteAccountForm,
+)
 
-from .forms import CustomUserRegistration, CustomUserLogin
 from .tokens import account_activation_token
+from social.models import Feedback
 
 load_dotenv()
 
@@ -35,7 +47,7 @@ class RegisterUserView(FormView):
         return super().form_valid(form)
 
 
-def register_activate(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
+def send_activation_url(request: HttpRequest, uidb64: str, token: str) -> HttpResponse:
     """
     The function register_activate() takes in three arguments:
     - request: the request object sent by the user to activate their account
@@ -89,3 +101,89 @@ class LogoutUserView(LogoutView):
     def get(self, request):
         logout(request)
         return redirect("dishes:home")
+
+
+class ChangePasswordView(FormView):
+    form_class = ChangePasswordForm
+    template_name = "change_password.html"
+    success_url = reverse_lazy("users:success_password_change")
+
+    def form_valid(self, form):  # TODO move this logic to form
+        try:
+            user = CustomUser.objects.get(email=form.cleaned_data["email"])
+        except CustomUser.DoesNotExist:
+            form.add_error(None, "User with this email does not exist")
+            return super().form_invalid(form)
+
+        if not user.check_password(form.cleaned_data["old_password"]):
+            form.add_error("old_password", "Old password is incorrect")
+            return super().form_invalid(form)
+
+        user.set_password(form.cleaned_data["new_password"])
+        user.is_active = False
+        user.save()
+        # TODO send email method
+
+        return super().form_valid(form)
+
+
+class SuccessPasswordChangeView(TemplateView):
+    template_name = "password_change_success.html"
+
+
+class DeleteAccountView(FormView):
+    form_class = DeleteAccountForm
+    template_name = "delete_account.html"
+    success_url = reverse_lazy("users:success_delete_account")
+
+    def form_valid(self, form):  # TODO move this logic to form
+        try:
+            user = CustomUser.objects.get(email=form.cleaned_data["email"])
+        except CustomUser.DoesNotExist:
+            form.add_error(None, "User with this email does not exist")
+            return super().form_invalid(form)
+
+        if not user.check_password(form.cleaned_data["password"]):
+            form.add_error("password", "Password is incorrect")
+            return super().form_invalid(form)
+
+        user.delete()
+        # TODO send email method
+
+        return super().form_valid(form)
+
+
+class SuccessDeleteAccountView(CreateView):
+    template_name = "delete_account_success.html"
+    model = Feedback
+    fields = ("message",)
+    success_url = reverse_lazy("dishes:home")
+
+
+class UserProfileView(LoginRequiredMixin, View):
+    def get(self, request):
+        user = request.user
+        user_dishes = Dish.objects.filter(author=user)
+        user_rates = Rate.objects.filter(author=user)
+        context = {
+            "user": user,
+            "user_dishes": user_dishes,
+            "user_rates": user_rates,
+        }
+
+        return render(request, "profile.html", context)
+
+    def post(self, request):
+        pass
+
+
+class UpdateProfileView(LoginRequiredMixin, UpdateView):
+    model = CustomUser
+    fields = ("image", "description")
+    template_name = "update_profile.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(id=self.request.user.id)
+        return queryset
