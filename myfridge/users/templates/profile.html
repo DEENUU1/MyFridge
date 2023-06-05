@@ -1,6 +1,19 @@
 <img style="width: 100px" src="http://127.0.0.1:8000/media/{{user.image}}"> <br>
-
+<a href="{% url 'users:edit_profile' user.id %}">Edit your profile</a> <br>
 <h2>{{user.username}}</h2>
 {{user.description}}
 
-<a href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
+<h3>Dishes</h3>
+{% for data in user_dishes %}
+    {{data}}
+    <a href="{% url 'dishes:dish-update' data.id %}">Update Dish</a>
+    <a href="{% url 'dishes:dish-delete' data.id %}">Delete Dish</a>
+{% endfor %}
+
+<h3>Rates</h3>
+{% for data in user_rates %}
+    {{data}}
+    <a href="{% url 'social:rate-update' data.id %}">Update Rate</a>
+    <a href="{% url 'social:rate-delete' data.id %}">Delete Rate</a>
+{% endfor %}
+

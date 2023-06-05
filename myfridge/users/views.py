@@ -17,7 +17,8 @@ from django.views.generic import UpdateView, TemplateView, CreateView
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
 from .models import CustomUser
-
+from dishes.models import Dish
+from social.models import Rate
 from .forms import (
     CustomUserRegistration,
     CustomUserLogin,
@@ -162,9 +163,14 @@ class SuccessDeleteAccountView(CreateView):
 class UserProfileView(LoginRequiredMixin, View):
     def get(self, request):
         user = request.user
+        user_dishes = Dish.objects.filter(author=user)
+        user_rates = Rate.objects.filter(author=user)
         context = {
             "user": user,
+            "user_dishes": user_dishes,
+            "user_rates": user_rates,
         }
+
         return render(request, "profile.html", context)
 
     def post(self, request):
