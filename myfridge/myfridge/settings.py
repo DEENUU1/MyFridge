@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "users",
     "social",
     "contact",
+    "tools",
 ]
 
 MIDDLEWARE = [
