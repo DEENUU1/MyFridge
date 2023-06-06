@@ -8,4 +8,5 @@ urlpatterns = [
     path("", views.FakListView.as_view(), name="fak_home"),
     path("create/", views.FakCreateView.as_view(), name="fak_create"),
     path("update/<int:pk>/", views.FakUpdateView.as_view(), name="fak_update"),
+    path("delete/<int:pk>/", views.FakDeleteView.as_view(), name="fak_delete"),
 ]

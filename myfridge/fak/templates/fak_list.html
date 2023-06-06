@@ -3,4 +3,9 @@
 
 {% for data in object_list %}
     {{data}} <a href="{% url 'fak:fak_update' data.id %}">Update fak</a>
+    <form method="POST" action="{% url 'fak:fak_delete' data.id %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+
 {% endfor %}
