@@ -1,0 +1,6 @@
+
+<a href="{% url 'fak:fak_create' %}">Create fak</a>
+
+{% for data in object_list %}
+    {{data}} <a href="{% url 'fak:fak_update' data.id %}">Update fak</a>
+{% endfor %}
