@@ -1,0 +1,13 @@
+{{object}} <br>
+
+<a href="{% url 'fak:medicine_create' %}">Add medicine</a>
+
+
+{% for data in medicines %}
+  {{data}} <br>
+  <a href="{% url 'fak:medicine_update' data.id %}">Medicine update</a>
+  <form method="POST" action="{% url 'fak:medicine_delete' data.id %}">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+  </form>
+{% endfor %}

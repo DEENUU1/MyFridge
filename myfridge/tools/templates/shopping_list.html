@@ -1,0 +1,10 @@
+<a href="{% url 'tools:shopping_list_create' %}">Add shopping list</a> <br>
+
+{% for data in object_list %}
+  {{data}}
+  <a href="{% url 'tools:shopping_list_update' data.id %}">Edit</a>
+  <form method="POST" action="{% url 'tools:shopping_list_delete' data.id %}">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+  </form>
+{% endfor %}
