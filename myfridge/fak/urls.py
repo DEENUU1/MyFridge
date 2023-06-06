@@ -6,9 +6,10 @@ app_name = "fak"
 
 urlpatterns = [
     path("", views.FakListView.as_view(), name="fak_home"),
-    path("create/", views.FakCreateView.as_view(), name="fak_create"),
-    path("update/<int:pk>/", views.FakUpdateView.as_view(), name="fak_update"),
-    path("delete/<int:pk>/", views.FakDeleteView.as_view(), name="fak_delete"),
+    path("fak/<int:pk>/", views.FakDetailsView.as_view(), name="fak_detail"),
+    path("fak/create/", views.FakCreateView.as_view(), name="fak_create"),
+    path("fak/update/<int:pk>/", views.FakUpdateView.as_view(), name="fak_update"),
+    path("fak/delete/<int:pk>/", views.FakDeleteView.as_view(), name="fak_delete"),
     path("medicine/create", views.MedicineCreateView.as_view(), name="medicine_create"),
     path(
         "medicine/update/<int:pk>/",

@@ -10,6 +10,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    DetailView,
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -90,7 +91,7 @@ class MedicineCreateView(LoginRequiredMixin, CreateView):
 
 
 class MedicineUpdateView(LoginRequiredMixin, UpdateView):
-    model = Fak
+    model = Medicine
     template_name = "medicine_update.html"
     fields = ("name", "expiration_date", "quantity", "fak")
     success_url = reverse_lazy("fak:fak_home")
@@ -104,7 +105,7 @@ class MedicineUpdateView(LoginRequiredMixin, UpdateView):
 
 
 class MedicineDeleteView(LoginRequiredMixin, DeleteView):
-    model = Fak
+    model = Medicine
     success_url = reverse_lazy("fak:fak_home")
 
     def get_queryset(self):
@@ -113,3 +114,20 @@ class MedicineDeleteView(LoginRequiredMixin, DeleteView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to delete this Medicine.")
         return queryset
+
+
+class FakDetailsView(LoginRequiredMixin, DetailView):
+    model = Fak
+    template_name = "fak_details.html"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["medicines"] = Medicine.objects.filter(fak=self.object)
+        return context
