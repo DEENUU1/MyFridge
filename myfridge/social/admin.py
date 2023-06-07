@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Rate, Feedback
+from .models import Rate, Feedback, FavouriteDish
 
 
 class RateInline(admin.TabularInline):
@@ -18,3 +18,10 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ["message", "date_created"]
 
     list_filter = ["date_created"]
+
+
+@admin.register(FavouriteDish)
+class FavouriteDishAdmin(admin.ModelAdmin):
+    list_display = ["user", "dish"]
+
+    list_filter = ["user", "dish"]

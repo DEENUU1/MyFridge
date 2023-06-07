@@ -1,6 +1,8 @@
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, get_object_or_404
-from .models import Rate
+from django.shortcuts import get_object_or_404, redirect
+from django.views import View
+
+from .models import Rate, FavouriteDish
 from django.urls import reverse_lazy
 from django.views.generic import (
     ListView,
@@ -14,6 +16,7 @@ from dishes.models import Dish
 from users.models import CustomUser
 from typing import Dict, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import F
 
 
 class CreateRateView(LoginRequiredMixin, CreateView):
@@ -93,3 +96,20 @@ class UserRankingView(ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         return context
+
+
+class AddToFavouritesView(LoginRequiredMixin, View):
+    def post(self, request, dish_id):
+        dish = get_object_or_404(Dish, pk=dish_id)
+        user = request.user
+        existing_favourite = FavouriteDish.objects.filter(user=user, dish=dish)
+        if existing_favourite:
+            return redirect("dishes:home")
+
+        favourite_dish = FavouriteDish(user=user, dish=dish)
+        favourite_dish.save()
+
+        dish.author.points = F("points") + 3
+        dish.author.save()
+
+        return redirect("dishes:home")

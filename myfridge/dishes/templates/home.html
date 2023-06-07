@@ -32,4 +32,10 @@
             {{ ingredient }}
         {% endif %}
     {% endfor %} <br>
+
+    <form action="{% url 'social:favourite-add' data.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Add to favourite</button>
+    </form>
+
 {% endfor %}
