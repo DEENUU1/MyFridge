@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from .models import CustomUser
+from .task import send_email_task
 
 
 class CustomUserRegistration(forms.ModelForm):
@@ -32,8 +33,11 @@ class CustomUserRegistration(forms.ModelForm):
         return password_repeat
 
     def send_email(self, message):
-        pass
-        # TODO
+        send_email_task.delay(
+            self.cleaned_data.get("email"),
+            subject="Activate your account",
+            message=message
+        )
 
 
 class CustomUserLogin(AuthenticationForm):
@@ -49,15 +53,14 @@ class ChangePasswordForm(forms.Form):
     new_password = forms.CharField(widget=forms.PasswordInput)
 
     def send_email(self, message):
-        pass
-        # TODO
+        send_email_task.delay(
+            self.cleaned_data.get("email"),
+            subject="Activate your account",
+            message=message
+        )
 
 
 class DeleteAccountForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
     password_repeat = forms.CharField(widget=forms.PasswordInput)
-
-    def send_email(self, message):
-        pass
-        # TODO
