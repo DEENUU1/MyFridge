@@ -113,3 +113,15 @@ class AddToFavouritesView(LoginRequiredMixin, View):
         dish.author.save()
 
         return redirect("dishes:home")
+
+
+class DeleteFromFavouriteView(LoginRequiredMixin, View):
+    def post(self, request, favourite_id):
+        favourite_dish = get_object_or_404(FavouriteDish, id=favourite_id, user=request.user)
+
+        if not favourite_dish:
+            return redirect("dishes:home")
+
+        favourite_dish.delete()
+
+        return redirect("users:profile")

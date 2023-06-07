@@ -28,6 +28,7 @@ from .forms import (
 
 from .tokens import account_activation_token
 from social.models import Feedback
+from social.models import FavouriteDish
 
 load_dotenv()
 
@@ -165,10 +166,13 @@ class UserProfileView(LoginRequiredMixin, View):
         user = request.user
         user_dishes = Dish.objects.filter(author=user)
         user_rates = Rate.objects.filter(author=user)
+        user_favourite_dish = FavouriteDish.objects.filter(user=user)
+
         context = {
             "user": user,
             "user_dishes": user_dishes,
             "user_rates": user_rates,
+            "user_favourite_dish": user_favourite_dish,
         }
 
         return render(request, "profile.html", context)
