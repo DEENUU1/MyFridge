@@ -1,3 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Profile {% endblock %}
+
+
+{% block content %}
+
 <img style="width: 100px" src="http://127.0.0.1:8000/media/{{user.image}}"> <br>
 <a href="{% url 'users:edit_profile' user.id %}">Edit your profile</a> <br>
 <h2>{{user.username}}</h2>
@@ -25,3 +33,5 @@
       <button type="submit">Delete dish from favourite</button>
     </form>
 {% endfor %}
+
+{% endblock %}

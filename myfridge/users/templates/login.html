@@ -1,4 +1,11 @@
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Login {% endblock %}
+
+
+{% block content %}
+
 
 
 <div class="p-5 mt-5 text-center">
@@ -15,3 +22,4 @@
     <a href="{% url 'users:register' %}">If you do not have an account, you can sign up here</a>
 </div>
 
+{% endblock %}
