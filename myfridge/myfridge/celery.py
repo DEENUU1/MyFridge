@@ -4,7 +4,7 @@ from celery import Celery
 from django.conf import settings
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-app = Celery('config')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myfridge.settings')
+app = Celery('myfridge')
 app.config_from_object(settings, namespace='CELERY')
 app.autodiscover_tasks()
