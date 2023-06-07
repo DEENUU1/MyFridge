@@ -1,3 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Shopping list{% endblock %}
+
+
+{% block content %}
+
 <a href="{% url 'tools:shopping_list_create' %}">Add shopping list</a> <br>
 
 {% for data in object_list %}
@@ -8,3 +16,5 @@
     <button type="submit">Delete</button>
   </form>
 {% endfor %}
+
+{% endblock %}
