@@ -17,3 +17,11 @@
     <a href="{% url 'social:rate-delete' data.id %}">Delete Rate</a>
 {% endfor %}
 
+<h3>Favourite Dishes</h3>
+{% for data in user_favourite_dish %}
+    {{data}}
+    <form action="{% url 'social:favourite-remove' data.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Delete dish from favourite</button>
+    </form>
+{% endfor %}

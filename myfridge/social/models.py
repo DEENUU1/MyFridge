@@ -32,3 +32,16 @@ class Feedback(models.Model):
 
     def __str__(self):
         return f"{self.message[:15]}"
+
+
+class FavouriteDish(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = "Favourite dish"
+        verbose_name_plural = "Favourite dishes"
+        unique_together = ("user", "dish")
+
+    def __str__(self):
+        return f"{self.user} {self.dish.name}"

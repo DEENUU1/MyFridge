@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import CustomUser
+from ckeditor.fields import RichTextField
 
 
 class Type(models.Model):
@@ -98,7 +99,7 @@ class Dish(models.Model):
     name = models.CharField(max_length=50)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     time_to_make = models.ForeignKey(TimeToMake, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = RichTextField(blank=True, null=True)
     image = models.ImageField(upload_to="images", default=None, blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_edited = models.DateTimeField(auto_now=True)
