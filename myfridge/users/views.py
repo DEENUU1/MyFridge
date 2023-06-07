@@ -43,8 +43,17 @@ class RegisterUserView(FormView):
         user.is_active = False
         user.set_password(form.cleaned_data["password"])
         user.save()
-        # TODO send email method
-
+        form.send_email(
+            message=render_to_string(
+                "acc_activate_email.html",
+                {
+                    "user": user,
+                    "domain": get_current_site(self.request).domain,
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "token": account_activation_token.make_token(user),
+                },
+            )
+        )
         return super().form_valid(form)
 
 
@@ -109,7 +118,7 @@ class ChangePasswordView(FormView):
     template_name = "change_password.html"
     success_url = reverse_lazy("users:success_password_change")
 
-    def form_valid(self, form):  # TODO move this logic to form
+    def form_valid(self, form):
         try:
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
@@ -123,7 +132,17 @@ class ChangePasswordView(FormView):
         user.set_password(form.cleaned_data["new_password"])
         user.is_active = False
         user.save()
-        # TODO send email method
+        form.send_email(
+            message=render_to_string(
+                "acc_activate_email.html",
+                {
+                    "user": user,
+                    "domain": get_current_site(self.request).domain,
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "token": account_activation_token.make_token(user),
+                },
+            )
+        )
 
         return super().form_valid(form)
 
@@ -149,7 +168,6 @@ class DeleteAccountView(FormView):
             return super().form_invalid(form)
 
         user.delete()
-        # TODO send email method
 
         return super().form_valid(form)
 
