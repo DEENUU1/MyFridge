@@ -86,7 +86,9 @@ ROOT_URLCONF = "myfridge.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "base" / "templates"],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'myfridge', 'templates'),
+        ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -1,3 +1,12 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | {{object.name}} {% endblock %}
+
+
+{% block content %}
+
+
 <form method="POST" action="{% url 'dishes:dish-delete' object.id %}">
     {% csrf_token %}
     <button type="submit">Delete</button>
@@ -25,3 +34,5 @@
         </form>
     {% endfor %}
 {% endif %}
+
+{% endblock %}
