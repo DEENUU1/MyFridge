@@ -1,4 +1,10 @@
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Update profile {% endblock %}
+
+
+{% block content %}
 
 
 <div class="p-5 mt-5 text-center">
@@ -13,3 +19,5 @@
     <button class="btn btn-primary" type="submit">Update profile</button>
   <form>
 </div>
+
+{% endblock %}

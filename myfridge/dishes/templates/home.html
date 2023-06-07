@@ -1,4 +1,10 @@
+{% extends 'base.html' %}
 {% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge {% endblock %}
+
+
+{% block content %}
 
 <a href="{% url 'dishes:dish-create' %}">Create new dish</a> <br>
 
@@ -39,3 +45,6 @@
     </form>
 
 {% endfor %}
+
+
+{% endblock %}
