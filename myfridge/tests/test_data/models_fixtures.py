@@ -14,7 +14,6 @@ from dishes.models import (
 )
 from fak.models import Fak, Medicine
 
-
 @pytest.fixture
 def user():
     return CustomUser.objects.create_user(username="testuser", password="testpass")
