@@ -1,12 +1,7 @@
 import pytest
 from django.contrib.auth import get_user_model
 from tools.models import ShoppingList
-
-
-@pytest.fixture
-def user():
-    User = get_user_model()
-    return User.objects.create(username="testuser")
+from test_data.models_fixtures import user 
 
 
 @pytest.mark.django_db
