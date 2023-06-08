@@ -13,28 +13,8 @@ from fak.views import (
     FakDetailsView,
 )
 from fak.models import Fak, Medicine
+from test_data.models_fixtures import factory, user, fak, medicine
 
-@pytest.fixture
-def factory():
-    return RequestFactory()
-
-@pytest.fixture
-def user():
-    return User.objects.create(username="testuser")
-
-@pytest.fixture
-def fak(user):
-    return Fak.objects.create(name="Test Fak", author=user)
-
-@pytest.fixture
-def medicine(user, fak):
-    return Medicine.objects.create(
-        name="Test Medicine",
-        expiration_date="2023-06-30",
-        quantity="LOW",
-        fak=fak,
-        author=user,
-    )
 
 @pytest.mark.django_db
 def test_fak_list_view(factory, user, fak):

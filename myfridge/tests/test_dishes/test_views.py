@@ -4,19 +4,11 @@ from django.test import RequestFactory
 from users.models import CustomUser
 from dishes.models import Dish
 from dishes.views import HomeView, DishCreateView, UpdateDishView, DeleteDishView, DishDetailView
-from .test_models import dish_data
+from test_data.models_fixtures import dish_data
+from test_data.models_fixtures import user, factory
+
 
 pytestmark = pytest.mark.django_db
-
-
-@pytest.fixture
-def user():
-    return CustomUser.objects.create_user(username="testuser", password="testpass")
-
-
-@pytest.fixture
-def factory():
-    return RequestFactory()
 
 
 def test_home_view(client, factory):

@@ -2,17 +2,8 @@ from fak.models import Fak, Medicine
 import datetime
 import pytest
 from django.contrib.auth import get_user_model
+from test_data.models_fixtures import user, fak, medicine 
 
-
-@pytest.fixture
-def user():
-    User = get_user_model()
-    return User.objects.create(username="testuser")
-
-
-@pytest.fixture
-def fak(user):
-    return Fak.objects.create(name="Test Fak", author=user)
 
 
 @pytest.mark.django_db
@@ -20,17 +11,6 @@ def test_model_fak_successfully_created(user):
     fak = Fak.objects.create(name="Fak 1", author=user)
     assert fak.name == "Fak 1"
     assert fak.__str__() == "Fak 1"
-
-
-@pytest.fixture
-def medicine(fak, user):
-    return Medicine.objects.create(
-        name="Test Medicine",
-        expiration_date=datetime.date.today() + datetime.timedelta(days=7),
-        quantity="MEDIUM",
-        fak=fak,
-        author=user,
-    )
 
 
 @pytest.mark.django_db
