@@ -1,48 +1,7 @@
 import pytest
 from social.models import Rate, Feedback, FavouriteDish
 from users.models import CustomUser
-from dishes.models import (
-    Dish,
-    TimeToMake,
-    Country,
-    DifficultyLevel,
-    DishCategory,
-    Type,
-    MainIngredient,
-    OtherIngredient,
-)
-
-
-@pytest.fixture
-def dish_data():
-    time_to_make = TimeToMake.objects.create(value=30)
-    country = Country.objects.create(name="Italy")
-    level = DifficultyLevel.objects.create(name="Easy")
-    category = DishCategory.objects.create(name="Main Course")
-    type = Type.objects.create(name="Ingredient")
-    main_ingredient = MainIngredient.objects.create(name="Tomato", type=type)
-    other_ingredient = OtherIngredient.objects.create(name="Garlic", type=type)
-    user = CustomUser.objects.create(username="testuser", password="testpassword")
-
-    dish = Dish.objects.create(
-        name="Pasta",
-        author=user,
-        time_to_make=time_to_make,
-        description="Delicious pasta dish",
-        kcal=500,
-        gluten=True,
-        lactose=False,
-        meat=True,
-        vegetarian=True,
-        vegan=False,
-        country=country,
-        level=level,
-        category=category,
-    )
-    dish.main_ingredient.add(main_ingredient)
-    dish.other_ingredients.add(other_ingredient)
-
-    return dish
+from test_data.models_fixtures import dish_data
 
 
 @pytest.mark.django_db

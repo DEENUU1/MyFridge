@@ -27,6 +27,8 @@ jobs:
           python manage.py migrate
 
       - name: Change directory and run pytest
+        env: 
+          DJANGO_SECRET_KEY: ${{secrets.SECRET_KEY}}
         working-directory: ./myfridge/
         run: |
           coverage run -m pytest
