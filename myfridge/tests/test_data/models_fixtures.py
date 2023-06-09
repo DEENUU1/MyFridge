@@ -13,11 +13,18 @@ from dishes.models import (
     Dish
 )
 from fak.models import Fak, Medicine
+from django.test import Client
 
 @pytest.fixture
 def user():
     return CustomUser.objects.create_user(username="testuser", password="testpass")
 
+@pytest.fixture
+def user_inactive():
+    user = CustomUser.objects.create_user(username='testuser_inactive', password='12345')
+    user.is_active = False
+    user.save()
+    return user
 
 @pytest.fixture
 def factory():
@@ -53,6 +60,10 @@ def dish_data():
     dish.other_ingredients.add(other_ingredient)
 
     return dish
+
+@pytest.fixture
+def client():
+    return Client()
 
 @pytest.fixture
 def fak(user):
