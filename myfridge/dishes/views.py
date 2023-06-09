@@ -202,6 +202,7 @@ class UpdateDishView(LoginRequiredMixin, UpdateView):
 
 class DeleteDishView(LoginRequiredMixin, DeleteView):
     model = Dish
+
     success_url = reverse_lazy("dishes:home")
 
     def get_queryset(self):
@@ -210,3 +211,4 @@ class DeleteDishView(LoginRequiredMixin, DeleteView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Dish.")
         return queryset
+

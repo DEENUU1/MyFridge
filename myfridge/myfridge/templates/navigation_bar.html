@@ -13,9 +13,9 @@
       </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mt-2 mt-lg-0" href="/">
+            <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'dishes:home' %}">
             <img
-                src="https://cdn4.iconfinder.com/data/icons/human-resources-2-2/512/56-512.png"
+                src="https://simpleicon.com/wp-content/uploads/dish.png"
                 height="35"
                 alt="MDB Logo"
                 loading="lazy"
@@ -23,25 +23,29 @@
             </a>
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="/">Link 1</a>
+                <a class="nav-link" href="{% url 'dishes:home' %}">Dishes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Link 2</a>
+                <a class="nav-link" href="{% url 'fak:fak_home' %}">Shopping list</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/">Link 3</a>
+                <a class="nav-link" href="{% url 'social:user-ranking' %}">Ranking</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'tools:bmi' %}">BMI</a>
             </li>
             </ul>
         </div>
 
         <div class="d-flex align-items-center">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item" style="margin-right: 10px">
-                <a style="color: black; font-weight: 600" class="nav-link" href="{% url 'users:profile' %}"> Profile </a>
-            </li>
-          </ul>
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            
             {% if user.is_authenticated %}
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item" style="margin-right: 10px">
+                  <a style="color: black; font-weight: 600" class="nav-link" href="{% url 'users:profile' %}"> Profile </a>
+              </li>
+            </ul>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'users:logout' %}"> Logout </a>
             </li>
