@@ -14,6 +14,7 @@ from dishes.models import (
 )
 from fak.models import Fak, Medicine
 from django.test import Client
+from tools.models import ShoppingList
 
 @pytest.fixture
 def user():
@@ -69,7 +70,6 @@ def client():
 def fak(user):
     return Fak.objects.create(name="Test Fak", author=user)
 
-
 @pytest.fixture
 def medicine(fak, user):
     return Medicine.objects.create(
@@ -79,3 +79,22 @@ def medicine(fak, user):
         fak=fak,
         author=user,
     )
+
+@pytest.fixture
+def authenticated_user(db):
+    user = CustomUser.objects.create_user(username='testuser', password='12345')
+    return user
+
+@pytest.fixture
+def client_with_authenticated_user(db, authenticated_user):
+    client = Client()
+    client.login(username=authenticated_user.username, password='12345')
+    return client
+
+@pytest.fixture
+def shopping_list(db, authenticated_user):
+    return ShoppingList.objects.create(name='test', author=authenticated_user, quantity=5)
+
+@pytest.fixture
+def bmi_form_data():
+    return {'weight': 70, 'height': 170}
