@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "crispy_bootstrap5",
+    "django_celery_beat",
     "ckeditor",
     "dishes",  # project
     "users",  # project
