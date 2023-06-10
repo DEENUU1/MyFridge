@@ -52,6 +52,9 @@ class ChangePasswordForm(forms.Form):
     old_password = forms.CharField(widget=forms.PasswordInput)
     new_password = forms.CharField(widget=forms.PasswordInput)
 
+    def form_valid(self):
+        pass
+
     def send_email(self, message):
         send_email_task.delay(
             self.cleaned_data.get("email"),
