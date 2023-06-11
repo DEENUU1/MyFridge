@@ -16,3 +16,15 @@ def get_random_dish():
     random_dish = random.choice(dishes)
     return random_dish
 
+
+@shared_task()
+def send_random_dish_to_newsletter_users():
+    users = get_users_with_newsletter_true()
+    random_dish = get_random_dish()
+
+    SUBJECT = "Random Dish of the Day"
+    MESSAGE = f"Enjoy today's random dish: {random_dish.name}"
+
+    for user in users:
+        send_email_task.delay(user.email, SUBJECT, MESSAGE)
+
