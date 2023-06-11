@@ -13,7 +13,7 @@
 
 
 {% for data in medicines %}
-  {{data}} <br>
+  {{data.name}} {{data.expiration_date}} {{data.quantity}}
   <a href="{% url 'fak:medicine_update' data.id %}">Medicine update</a>
   <form method="POST" action="{% url 'fak:medicine_delete' data.id %}">
     {% csrf_token %}

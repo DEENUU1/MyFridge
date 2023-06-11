@@ -7,10 +7,16 @@
 {% block content %}
 
 
-<form method="POST">
-    {% csrf_token %}
-    {{form|crispy}}
-    <button type="submit">Medicine create</button>
-</form>
 
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <form method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+                <button type="submit" class="btn btn-primary">Medicine create</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
