@@ -201,7 +201,7 @@ class UserProfileView(LoginRequiredMixin, View):
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model = CustomUser
-    fields = ("image", "description")
+    fields = ("image", "description", "newsletter")
     template_name = "update_profile.html"
     success_url = reverse_lazy("users:profile")
 
