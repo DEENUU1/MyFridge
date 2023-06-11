@@ -5,15 +5,26 @@
 
 {% block content %}
 
-<a href="{% url 'fak:fak_create' %}">Create fak</a>
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <a href="{% url 'fak:fak_create' %}" class="btn btn-success mb-3">Create fak</a>
 
-{% for data in object_list %}
-<a href="{% url 'fak:fak_detail' data.id %}">{{data}}</a> <a href="{% url 'fak:fak_update' data.id %}">Update fak</a>
-    <form method="POST" action="{% url 'fak:fak_delete' data.id %}">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
+            {% for data in object_list %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'fak:fak_detail' data.id %}">{{data}}</a></h5>
+                    <a href="{% url 'fak:fak_update' data.id %}" class="btn btn-primary">Update fak</a>
 
-{% endfor %}
+                    <form method="POST" action="{% url 'fak:fak_delete' data.id %}" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}

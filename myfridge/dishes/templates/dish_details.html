@@ -1,38 +1,87 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block meta_title%} MyFridge | {{object.name}} {% endblock %}
-
+{% block meta_title%} MyFridge | {{ object.name }} {% endblock %}
 
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{ object.name }}</h1>
+      <div class="d-flex justify-content-center">
+        <img src="http://127.0.0.1:8000/media/{{ object.image }}" class="img-fluid">
+      </div>
+      <p>Author: {{ object.author }}</p>
+      <p>Time to make: {{ object.time_to_make }}</p>
+      <p>Date created: {{ object.date_created }}</p>
+      <p>Kcal: {{ object.kcal }}</p>
+      <p>Country: {{ object.country.name }}</p>
+      <p>Level: {{ object.level.name }}</p>
+      <p>Category: {{ object.category.name }}</p>
+
+      <h3>Main Ingredients:</h3>
+      <ul>
+        {% for ingredient in object.main_ingredient.all %}
+        <li>{{ ingredient }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Other Ingredients:</h3>
+      <ul>
+        {% for ingredient in object.other_ingredient.all %}
+        <li>{{ ingredient }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Can have:</h3>
+      <ul>
+        {% if object.gluten %}
+        <li>Gluten</li>
+        {% endif %}
+        {% if object.lactose %}
+        <li>Lactose</li>
+        {% endif %}
+        {% if object.meat %}
+        <li>Meat</li>
+        {% endif %}
+        {% if object.vegetarian %}
+        <li>Vegetarian</li>
+        {% endif %}
+        {% if object.vegan %}
+        <li>Vegan</li>
+        {% endif %}
+      </ul>
+
+      <p>{{ object.description|safe }}</p>
 
 
-<form method="POST" action="{% url 'dishes:dish-delete' object.id %}">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-</form>
+      <a href="{% url 'social:rate-add' object.id %}" class="btn btn-success">Add rate</a>
 
-<a href="{% url 'dishes:dish-update' object.id %}">Update dish</a> <br>
-<a href="{% url 'social:rate-add' object.id %}">Add rate</a>
+      {% if rates %}
+          {% for rate in rates %}
+              <div class="card mb-3">
+                  <div class="card-header bg-primary text-white">
+                      <h5>{{ rate.choose_rate }}</h5>
+                  </div>
+                  <div class="card-body">
+                      <p class="card-text"><strong>Date Created:</strong> {{ rate.date_created }}</p>
+                      <p class="card-text"><strong>Comment:</strong> {{ rate.comment }}</p>
+                      <p class="card-text"><strong>Author:</strong> {{ rate.author.username }}</p>
+                  </div>
+                  <div class="card-footer text-muted">
+                      <a href="{% url 'social:rate-update' object.id %}" class="btn btn-secondary">Update rate</a>
+                      <form method="POST" action="{% url 'social:rate-delete' object.id %}" class="d-inline">
+                          {% csrf_token %}
+                          <button type="submit" class="btn btn-danger">Delete</button>
+                      </form>
+                  </div>
+              </div>
+          {% endfor %}
+      {% endif %}
 
 
-{{object.name}} <br>
-<img src="http://127.0.0.1:8000/media/{{object.image}}"> <br>
-{{object.author}} <br>
-{{object.time_to_make}} <br>
-{{object.date_created}} <br>
-{{object.description|safe}} <br>
 
-{% if rates %}
-    {% for rate in rates %}
-        {{rate}}
-        <a href="{% url 'social:rate-update' object.id %}">Update rate</a>
-
-        <form method="POST" action="{% url 'social:rate-delete' object.id %}">
-            {% csrf_token %}
-            <button type="submit">Delete</button>
-        </form>
-    {% endfor %}
-{% endif %}
-
+    </div>
+  </div>
+</div>
 {% endblock %}

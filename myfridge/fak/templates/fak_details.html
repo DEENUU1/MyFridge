@@ -5,21 +5,28 @@
 
 {% block content %}
 
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-sm-12">
+            <h2 class="mb-3">{{object}}</h2>
 
+            <a href="{% url 'fak:medicine_create' %}" class="btn btn-success mb-3">Add medicine</a>
 
-{{object}} <br>
+            {% for data in medicines %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{data.name}} - Expiry: {{data.expiration_date}} - Quantity: {{data.quantity}}</h5>
+                    <a href="{% url 'fak:medicine_update' data.id %}" class="btn btn-primary">Medicine update</a>
 
-<a href="{% url 'fak:medicine_create' %}">Add medicine</a>
-
-
-{% for data in medicines %}
-  {{data}} <br>
-  <a href="{% url 'fak:medicine_update' data.id %}">Medicine update</a>
-  <form method="POST" action="{% url 'fak:medicine_delete' data.id %}">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-  </form>
-{% endfor %}
-
+                    <form method="POST" action="{% url 'fak:medicine_delete' data.id %}" class="d-inline-block">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
