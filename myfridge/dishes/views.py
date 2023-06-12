@@ -28,6 +28,7 @@ from .forms import (
     MainIngredientForm,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 
 class HomeView(ListView):
@@ -44,7 +45,12 @@ class HomeView(ListView):
 
         search_query = self.request.GET.get("search_query")
         if search_query:
-            queryset = queryset.filter(Q(name__icontains=search_query))
+            ingredients = [ingredient.strip() for ingredient in search_query.split(",")]
+            conditions = [Q(main_ingredient__name__icontains=ingredient) for ingredient in ingredients]
+            combined_conditions = conditions[0]
+            for condition in conditions[1:]:
+                combined_conditions |= condition
+            queryset = queryset.filter(combined_conditions).distinct()
 
         order_by = self.request.GET.get("order_by")
         if order_by:
