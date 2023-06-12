@@ -22,6 +22,8 @@ jobs:
 
       - name: Set up SQLite database
         working-directory: ./myfridge/
+        env:
+          USE_SQLITE: "true"
         run: |
           python manage.py makemigrations
           python manage.py migrate
@@ -29,7 +31,6 @@ jobs:
       - name: Change directory and run pytest
         env:
           DJANGO_SECRET_KEY: ${{secrets.SECRET_KEY}}
-          USE_SQLITE: "true"
         working-directory: ./myfridge/
         run: |
           coverage run -m pytest

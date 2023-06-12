@@ -107,7 +107,7 @@ WSGI_APPLICATION = "myfridge.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-USE_SQLITE = os.getenv("USE_SQLITE")
+USE_SQLITE = os.getenv("USE_SQLITE", "false").lower() == "true"
 
 if USE_SQLITE:
     DATABASES = {
