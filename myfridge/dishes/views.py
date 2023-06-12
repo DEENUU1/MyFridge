@@ -44,7 +44,12 @@ class HomeView(ListView):
 
         search_query = self.request.GET.get("search_query")
         if search_query:
-            queryset = queryset.filter(Q(name__icontains=search_query))
+            ingredients = [ingredient.strip() for ingredient in search_query.split(",")]
+            conditions = [Q(main_ingredient__name__icontains=ingredient) for ingredient in ingredients]
+            combined_conditions = conditions[0]
+            for condition in conditions[1:]:
+                combined_conditions |= condition
+            queryset = queryset.filter(combined_conditions).distinct()
 
         order_by = self.request.GET.get("order_by")
         if order_by:
@@ -115,6 +120,8 @@ class HomeView(ListView):
         context["calories_sorting_form"] = CaloriesSortingForm(self.request.GET)
         context["search_form"] = SearchForm(self.request.GET)
         context["main_ingredient_form"] = MainIngredientForm(self.request.GET)
+        search_query = self.request.GET.get("search_query")
+        context["search_query"] = search_query if search_query else None
         return context
 
 
