@@ -28,7 +28,6 @@ from .forms import (
     MainIngredientForm,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 
 class HomeView(ListView):
@@ -121,6 +120,8 @@ class HomeView(ListView):
         context["calories_sorting_form"] = CaloriesSortingForm(self.request.GET)
         context["search_form"] = SearchForm(self.request.GET)
         context["main_ingredient_form"] = MainIngredientForm(self.request.GET)
+        search_query = self.request.GET.get("search_query")
+        context["search_query"] = search_query if search_query else None
         return context
 
 

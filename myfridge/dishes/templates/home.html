@@ -41,7 +41,6 @@
         <div>{{ search_form|crispy }}</div>
         <button type="submit" class="btn btn-success">Filter</button>
     </form>
-
     {% for data in object_list %}
     <div class="mb-4">
         <a href="{% url 'dishes:dish-detail' data.id %}" class="h4">{{ data.name }}</a>
@@ -50,9 +49,16 @@
         <p>Time to make: {{ data.time_to_make }}</p>
         <p>Date Created: {{ data.date_created }}</p>
 
-        {% for ingredient in data.main_ingredient.all %}
-        <span class="{% if ingredient not in main_ingredient_form.cleaned_data.ingredients %}text-danger{% endif %}">{{ ingredient }}</span>
-        {% endfor %}
+{% for ingredient in data.main_ingredient.all %}
+    <span class="
+    {% if ingredient in main_ingredient_form.cleaned_data.ingredients or ingredient.name in search_query  %}
+    text-success
+    {% else %}
+    text-black
+    {% endif %}">{{ ingredient }}</span>
+{% endfor %}
+
+
         <br>
         <form action="{% url 'social:favourite-add' data.id %}" method="post">
             {% csrf_token %}
