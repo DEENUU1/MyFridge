@@ -6,14 +6,15 @@
 
 {% block content %}
 
-
-
 <div class="container mt-5 mb-5">
-    <form method="post">
+    <form method="post" class="needs-validation">
         {% csrf_token %}
-        {{form|crispy}}
-        <a href="{% url 'contact:contact-statute' %}">Statute</a>
-        <button class="btn btn-success" type="submit">Send message</button>
+        <div class="form-group row">
+            {{form|crispy}}
+        </div>
+        <div class="form-group row justify-content-between">
+            <button class="btn btn-success" type="submit">Send message</button>
+        </div>
     </form>
 </div>
 
