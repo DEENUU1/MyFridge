@@ -30,6 +30,7 @@ from .forms import (
     SendIngredientForm
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 
 
 class HomeView(ListView):
@@ -150,10 +151,9 @@ class SendIngredientsView(FormView):
         other_ingredients_names = ", ".join([str(ingredients) for ingredients in other_ingredients])
 
         form.send_email(
-            main_ingredients_names=main_ingredients_names,
-            other_ingredients_names=other_ingredients_names,
+            f"{main_ingredients_names} and {other_ingredients_names} are the ingredients of {dish.name}."
         )
-
+        return redirect(self.get_success_url())
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
