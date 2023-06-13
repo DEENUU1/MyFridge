@@ -143,7 +143,17 @@ class SendIngredientsView(FormView):
     success_url = reverse_lazy("dishes:home")
 
     def form_valid(self, form):
-        pass
+        dish = Dish.objects.get(pk=self.kwargs["pk"])
+        main_ingredients = dish.main_ingredient.all()
+        other_ingredients = dish.other_ingredients.all()
+        main_ingredients_names = ", ".join([str(ingredients) for ingredients in main_ingredients])
+        other_ingredients_names = ", ".join([str(ingredients) for ingredients in other_ingredients])
+
+        form.send_email(
+            main_ingredients_names=main_ingredients_names,
+            other_ingredients_names=other_ingredients_names,
+        )
+
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
