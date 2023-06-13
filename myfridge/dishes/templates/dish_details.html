@@ -56,7 +56,7 @@
 
 
       <a href="{% url 'social:rate-add' object.id %}" class="btn btn-success">Add rate</a>
-
+      <a href="{% url 'dishes:send-ingredients' object.id %}" class="btn btn-success">Send Ingredients</a>
       {% if rates %}
           {% for rate in rates %}
               <div class="card mb-3">

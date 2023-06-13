@@ -11,6 +11,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    FormView
 )
 from social.models import Rate
 from .forms import (
@@ -26,8 +27,10 @@ from .forms import (
     CaloriesSortingForm,
     SearchForm,
     MainIngredientForm,
+    SendIngredientForm
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 
 
 class HomeView(ListView):
@@ -133,6 +136,24 @@ class DishDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["rates"] = Rate.objects.filter(dish=self.object)
         return context
+
+
+class SendIngredientsView(FormView):
+    template_name = "send_ingredients.html"
+    form_class = SendIngredientForm
+    success_url = reverse_lazy("dishes:home")
+
+    def form_valid(self, form):
+        dish = Dish.objects.get(pk=self.kwargs["pk"])
+        main_ingredients = dish.main_ingredient.all()
+        other_ingredients = dish.other_ingredients.all()
+        main_ingredients_names = ", ".join([str(ingredients) for ingredients in main_ingredients])
+        other_ingredients_names = ", ".join([str(ingredients) for ingredients in other_ingredients])
+
+        form.send_email(
+            f"{main_ingredients_names} and {other_ingredients_names} are the ingredients of {dish.name}."
+        )
+        return redirect(self.get_success_url())
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):

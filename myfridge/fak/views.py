@@ -11,6 +11,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     DetailView,
+    FormView
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
