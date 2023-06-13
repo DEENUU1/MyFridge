@@ -132,7 +132,3 @@ class FakDetailsView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["medicines"] = Medicine.objects.filter(fak=self.object)
         return context
-
-
-class SendIngredientsView(FormView):
-    pass

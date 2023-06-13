@@ -11,6 +11,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
+    FormView
 )
 from social.models import Rate
 from .forms import (
@@ -26,6 +27,7 @@ from .forms import (
     CaloriesSortingForm,
     SearchForm,
     MainIngredientForm,
+    SendIngredientForm
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -133,6 +135,10 @@ class DishDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["rates"] = Rate.objects.filter(dish=self.object)
         return context
+
+
+class SendIngredientsView(FormView):
+    pass
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
