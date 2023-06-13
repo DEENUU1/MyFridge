@@ -138,7 +138,12 @@ class DishDetailView(DetailView):
 
 
 class SendIngredientsView(FormView):
-    pass
+    template_name = "send_ingredients.html"
+    form_class = SendIngredientForm
+    success_url = reverse_lazy("dishes:home")
+
+    def form_valid(self, form):
+        pass
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
