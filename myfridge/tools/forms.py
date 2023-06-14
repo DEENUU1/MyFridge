@@ -4,7 +4,7 @@ from django import forms
 class CaloriesCalculatorForm(forms.Form):
     weight = forms.FloatField(label="Weight", required=True)
     height = forms.IntegerField(label="Height", required=True)
-    age = forms.IntegerField(label="Age", required=Ture)
+    age = forms.IntegerField(label="Age", required=True)
     gender = forms.ChoiceField(label="Gender", choices=(("M", "Male"), ("F", "Female")), required=True)
     ACTIVITY_CHOICES = (
         (1.2, "Brak aktywności zawodowej, chory, leżący"),
@@ -15,7 +15,7 @@ class CaloriesCalculatorForm(forms.Form):
     )
     activity = forms.ChoiceField(label="Activity", choices=ACTIVITY_CHOICES, required=True)
 
-    def calculate_calories(self) -> int:
+    def return_caloric_needs(self) -> int:
         cleaned_data = super().clean()
         weight = cleaned_data.get("weight")
         height = cleaned_data.get("height")

@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 
-from .forms import BMIForm
+from .forms import BMIForm, CaloriesNeedsForm
 from .models import ShoppingList
 
 
@@ -22,7 +22,37 @@ def bmiView(request):
     else:
         form = BMIForm()
 
-    return render(request, "bmi_form.html", {"form": form})
+    return render(
+        request,
+        "bmi_form.html",
+        {
+            "form": form
+        }
+    )
+
+
+def caloricNeedsView(request):
+    if request.method == "POST":
+        form = CaloriesNeedsForm(request.POST)
+        if form.is_valid():
+            caloric_needs = form.return_caloric_needs()
+            return render(
+                request,
+                "calories_needs_result.html",
+                {
+                    "calories_needs": caloric_needs
+                },
+            )
+    else:
+        form = CaloriesNeedsForm()
+
+    return render(
+        request,
+        "calories_needs_form.html",
+        {
+            "form": form
+        }
+    )
 
 
 class ShoppingListCreateView(LoginRequiredMixin, CreateView):
