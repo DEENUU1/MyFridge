@@ -15,6 +15,18 @@ class CaloriesCalculatorForm(forms.Form):
     )
     activity = forms.ChoiceField(label="Activity", choices=ACTIVITY_CHOICES, required=True)
 
+    def calculate_calories(self) -> int:
+        cleaned_data = super().clean()
+        weight = cleaned_data.get("weight")
+        height = cleaned_data.get("height")
+        age = cleaned_data.get("age")
+        gender = cleaned_data.get("gender")
+        activity = float(cleaned_data.get("activity"))
+
+        if gender == "M":
+            return round(66 + (13.7 * weight) + (5 * height) - (6.8 * age) * activity)
+        else:
+            return round(655 + (9.6 * weight) + (1.8 * height) - (4.7 * age))
 
 
 class BMIForm(forms.Form):
