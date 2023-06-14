@@ -9,6 +9,7 @@ from .models import (
     DishCategory,
     TimeToMake,
     Dish,
+    Quantity
 )
 
 
@@ -17,6 +18,13 @@ class TypeAdmin(admin.ModelAdmin):
     list_display = ["name"]
 
     list_filter = ["name"]
+
+
+@admin.register(Quantity)
+class QuantityAdmin(admin.TabularInline):
+    list_display = ["name", "value"]
+
+    list_filter = ["name", "value"]
 
 
 @admin.register(Country)

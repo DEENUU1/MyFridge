@@ -31,6 +31,11 @@ class Quantity(models.Model):
     value = models.IntegerField()
     unit = models.CharField()
 
+    class Meta:
+        ordering = ("value",)
+        verbose_name = "Quantity"
+        verbose_name_plural = "Quantities"
+
     def __str__(self):
         return f"{self.value} {self.unit}"
 
