@@ -1,6 +1,38 @@
 from django import forms
 
 
+class CaloricNeedsForm(forms.Form):
+    weight = forms.FloatField(label="Weight", required=True)
+    height = forms.IntegerField(label="Height", required=True)
+    age = forms.IntegerField(label="Age", required=True)
+    gender = forms.ChoiceField(label="Gender", choices=(("M", "Male"), ("F", "Female")), required=True)
+    ACTIVITY_CHOICES = (
+        (1.2, "Brak aktywności zawodowej, chory, leżący"),
+        (1.4, "Pracownik biurowy, którego aktywność związana jest wyłącznie z obowiązkami domowymi"),
+        (1.6, "Pracownik biurowy, trenujący 2-3 razy w tygodniu przez minimum godzinę"),
+        (1.8, "Pracownik biurowy, trenujący 3-4 razy w tygodniu przez minimum godzinę"),
+        (2.0, "Zawodowy sportowiec, trenujący minimum 6 godzin tygodniowo lub osoba ciężko pracująca fizycznie")
+    )
+    activity = forms.ChoiceField(label="Activity", choices=ACTIVITY_CHOICES, required=True)
+
+    def calculate_caloric_needs(self) -> float | int:
+        cleaned_data = super().clean()
+        weight = cleaned_data.get("weight")
+        height = cleaned_data.get("height")
+        age = cleaned_data.get("age")
+        gender = cleaned_data.get("gender")
+        activity = float(cleaned_data.get("activity"))
+
+        if gender == "M":
+            return (66 + (13.7 * weight) + (5 * height) - (6.8 * age)) * activity
+        else:
+            return (655 + (9.6 * weight) + (1.8 * height) - (4.7 * age)) * activity
+
+    def return_caloric_needs(self) -> str | int:
+        caloric_needs = self.calculate_caloric_needs()
+        return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
+
+
 class BMIForm(forms.Form):
     weight = forms.FloatField(label="Weight")
     height = forms.IntegerField(label="Height")
