@@ -1,7 +1,7 @@
 from django import forms
 
 
-class CaloriesCalculatorForm(forms.Form):
+class CaloriesNeedsForm(forms.Form):
     weight = forms.FloatField(label="Weight", required=True)
     height = forms.IntegerField(label="Height", required=True)
     age = forms.IntegerField(label="Age", required=True)

@@ -22,4 +22,5 @@ urlpatterns = [
         views.ShoppingListDeleteView.as_view(),
         name="shopping_list_delete",
     ),
+    path("caloric-needs/", views.caloricNeedsView, name="caloric-needs"),
 ]

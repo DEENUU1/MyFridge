@@ -38,7 +38,7 @@ def caloricNeedsView(request):
             caloric_needs = form.return_caloric_needs()
             return render(
                 request,
-                "calories_needs_result.html",
+                "caloric_needs_result.html",
                 {
                     "calories_needs": caloric_needs
                 },
@@ -48,7 +48,7 @@ def caloricNeedsView(request):
 
     return render(
         request,
-        "calories_needs_form.html",
+        "caloric_needs_form.html",
         {
             "form": form
         }
