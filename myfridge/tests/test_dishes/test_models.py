@@ -7,6 +7,7 @@ from dishes.models import (
     DishCategory,
     TimeToMake,
     Dish,
+    Quantity
 )
 from test_data.models_fixtures import dish_data 
 
@@ -65,6 +66,12 @@ def test_model_dish_category_successfully_created():
 def test_model_time_to_make_successfully_created():
     time_to_make = TimeToMake.objects.create(value=30)
     assert time_to_make.__str__() == "30"
+
+
+@pytest.mark.django_db
+def test_model_quantity_successfully_created():
+    quantity = Quantity.objects.create(value=1, unit="gram")
+    assert quantity.__str__() == "1 gram"
 
 
 @pytest.mark.django_db

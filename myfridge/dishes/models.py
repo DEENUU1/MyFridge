@@ -38,7 +38,7 @@ class Quantity(models.Model):
 class MainIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE)
+    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ("name",)
@@ -52,7 +52,7 @@ class MainIngredient(models.Model):
 class OtherIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE)
+    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ("name",)
