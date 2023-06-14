@@ -21,10 +21,10 @@ class TypeAdmin(admin.ModelAdmin):
 
 
 @admin.register(Quantity)
-class QuantityAdmin(admin.TabularInline):
-    list_display = ["name", "value"]
+class QuantityAdmin(admin.ModelAdmin):
+    list_display = ["unit", "value"]
 
-    list_filter = ["name", "value"]
+    list_filter = ["unit", "value"]
 
 
 @admin.register(Country)

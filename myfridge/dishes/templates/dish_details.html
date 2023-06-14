@@ -22,14 +22,14 @@
       <h3>Main Ingredients:</h3>
       <ul>
         {% for ingredient in object.main_ingredient.all %}
-        <li>{{ ingredient }}</li>
+        <li>{{ ingredient }} {{ ingredient.quantity }}</li>
         {% endfor %}
       </ul>
 
       <h3>Other Ingredients:</h3>
       <ul>
-        {% for ingredient in object.other_ingredient.all %}
-        <li>{{ ingredient }}</li>
+        {% for ingredient in object.other_ingredients.all %}
+        <li>{{ ingredient }} {{ ingredient.quantity }}</li>
         {% endfor %}
       </ul>
 
