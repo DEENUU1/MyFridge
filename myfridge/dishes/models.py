@@ -29,7 +29,7 @@ class Country(models.Model):
 
 class Quantity(models.Model):
     value = models.IntegerField()
-    unit = models.CharField()
+    unit = models.CharField(max_length=50)
 
     class Meta:
         ordering = ("value",)
