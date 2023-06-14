@@ -1,7 +1,7 @@
 from django import forms
 
 
-class CaloriesNeedsForm(forms.Form):
+class CaloricNeedsForm(forms.Form):
     weight = forms.FloatField(label="Weight", required=True)
     height = forms.IntegerField(label="Height", required=True)
     age = forms.IntegerField(label="Age", required=True)
@@ -15,7 +15,7 @@ class CaloriesNeedsForm(forms.Form):
     )
     activity = forms.ChoiceField(label="Activity", choices=ACTIVITY_CHOICES, required=True)
 
-    def return_caloric_needs(self) -> int:
+    def calculate_caloric_needs(self) -> float | int:
         cleaned_data = super().clean()
         weight = cleaned_data.get("weight")
         height = cleaned_data.get("height")
@@ -24,9 +24,13 @@ class CaloriesNeedsForm(forms.Form):
         activity = float(cleaned_data.get("activity"))
 
         if gender == "M":
-            return round(66 + (13.7 * weight) + (5 * height) - (6.8 * age) * activity)
+            return (66 + (13.7 * weight) + (5 * height) - (6.8 * age)) * activity
         else:
-            return round(655 + (9.6 * weight) + (1.8 * height) - (4.7 * age))
+            return (655 + (9.6 * weight) + (1.8 * height) - (4.7 * age)) * activity
+
+    def return_caloric_needs(self) -> str | int:
+        caloric_needs = self.calculate_caloric_needs()
+        return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
 
 
 class BMIForm(forms.Form):
