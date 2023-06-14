@@ -3,9 +3,12 @@ from django.urls import reverse
 from django.test import RequestFactory
 from users.models import CustomUser
 from dishes.models import Dish
-from dishes.views import HomeView, DishCreateView, UpdateDishView, DeleteDishView, DishDetailView
+from dishes.views import HomeView, DishCreateView, UpdateDishView, DeleteDishView, DishDetailView, SendIngredientsView
 from test_data.models_fixtures import dish_data
 from test_data.models_fixtures import user, factory
+from dishes.models import OtherIngredient, MainIngredient, Dish
+from dishes.forms import SendIngredientForm
+from django.test import TestCase
 
 
 pytestmark = pytest.mark.django_db
