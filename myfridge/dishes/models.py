@@ -51,6 +51,8 @@ class MainIngredient(models.Model):
         verbose_name_plural = "MainIngredients"
 
     def __str__(self):
+        if self.quantity:
+            return f"{self.name} ({self.quantity})"
         return self.name
 
 
@@ -65,6 +67,8 @@ class OtherIngredient(models.Model):
         verbose_name_plural = "OtherIngredients"
 
     def __str__(self):
+        if self.quantity:
+            return f"{self.name} ({self.quantity})"
         return self.name
 
 
