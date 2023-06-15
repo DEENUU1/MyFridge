@@ -6,11 +6,11 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 
-from .forms import BMIForm, CaloricNeedsForm
+from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
 from .models import ShoppingList
 
 
-def bmiView(request):
+def bmiView(request):  # Remove camel case
     if request.method == "POST":
         form = BMIForm(request.POST)
         if form.is_valid():
@@ -31,7 +31,31 @@ def bmiView(request):
     )
 
 
-def caloricNeedsView(request):
+def perfect_weight_view(request):
+    if request.method == "POST":
+        form = PerfectWeightForm(request.POST)
+        if form.is_valid():
+            perfect_weight_result = form.return_perfect_weight()
+            return render(
+                request,
+                "perfect_weight_result.html",
+                {
+                    "perfect_weight_result": perfect_weight_result
+                },
+            )
+    else:
+        form = CaloricNeedsForm()
+
+    return render(
+        request,
+        "perfect_weight_form.html",
+        {
+            "form": form
+        }
+    )
+
+
+def caloricNeedsView(request):  # Remove camel case
     if request.method == "POST":
         form = CaloricNeedsForm(request.POST)
         if form.is_valid():
