@@ -138,6 +138,19 @@ class DishDetailView(DetailView):
         return context
 
 
+class RandomDishView(DetailView):
+    model = Dish
+    template_name = "dish_details.html"
+
+    def get_object(self, queryset=None):
+        return Dish.objects.order_by("?").first()
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["rates"] = Rate.objects.filter(dish=self.object)
+        return context
+
+
 class SendIngredientsView(FormView):
     template_name = "send_ingredients.html"
     form_class = SendIngredientForm
