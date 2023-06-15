@@ -36,6 +36,17 @@ class CaloricNeedsForm(forms.Form):
 class PerfectWeightForm(forms.Form):
     height = forms.IntegerField(label="Height", required=True)
 
+    def calculate_perfect_weight(self) -> float | int:
+        cleaned_data = super().clean()
+        height = cleaned_data.get("height")
+        MIN_BMI = 18.5
+        MAX_BMI = 24.9
+
+        min_perfect_weight = MIN_BMI * (height * height)
+        max_perfect_weight = MAX_BMI * (height * height)
+
+        return min_perfect_weight, max_perfect_weight
+
 
 class BMIForm(forms.Form):
     weight = forms.FloatField(label="Weight", required=True)
