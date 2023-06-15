@@ -1,4 +1,5 @@
 from django import forms
+from typing import Tuple
 
 
 class CaloricNeedsForm(forms.Form):
@@ -36,16 +37,16 @@ class CaloricNeedsForm(forms.Form):
 class PerfectWeightForm(forms.Form):
     height = forms.IntegerField(label="Height", required=True)
 
-    def calculate_perfect_weight(self) -> float | int:
+    def calculate_perfect_weight(self) -> Tuple[float, float]:
         cleaned_data = super().clean()
-        height = cleaned_data.get("height")
+        height = cleaned_data.get("height") / 100
         MIN_BMI = 18.5
         MAX_BMI = 24.9
 
         min_perfect_weight = MIN_BMI * (height * height)
         max_perfect_weight = MAX_BMI * (height * height)
 
-        return min_perfect_weight, max_perfect_weight
+        return round(min_perfect_weight, 2), round(max_perfect_weight, 2)
 
     def return_perfect_weight(self) -> str | int:
         min_perfect_weight, max_perfect_weight = self.calculate_perfect_weight()
