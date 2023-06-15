@@ -23,4 +23,5 @@ urlpatterns = [
         name="shopping_list_delete",
     ),
     path("caloric-needs/", views.caloricNeedsView, name="caloric-needs"),
+    path("perfect-weight/", views.perfect_weight_view, name="perfect-weight"),
 ]

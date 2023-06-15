@@ -44,7 +44,7 @@ def perfect_weight_view(request):
                 },
             )
     else:
-        form = CaloricNeedsForm()
+        form = PerfectWeightForm()
 
     return render(
         request,
