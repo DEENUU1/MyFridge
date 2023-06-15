@@ -33,28 +33,30 @@ class CaloricNeedsForm(forms.Form):
         return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
 
 
+class PerfectWeightForm(forms.Form):
+    height = forms.IntegerField(label="Height", required=True)
+
+
 class BMIForm(forms.Form):
-    weight = forms.FloatField(label="Weight")
-    height = forms.IntegerField(label="Height")
+    weight = forms.FloatField(label="Weight", required=True)
+    height = forms.IntegerField(label="Height", required=True)
 
     def calculate_bmi(self) -> float | None:
         cleaned_data = super().clean()
         weight = cleaned_data.get("weight")
         height = cleaned_data.get("height") / 100
-        if weight is not None and height is not None:
-            bmi = weight / (height * height)
-            return round(bmi, 2)
-        return None
+
+        bmi = weight / (height * height)
+        return round(bmi, 2)
 
     def return_bmi_result(self) -> str | None:
         bmi = self.calculate_bmi()
-        if bmi is not None:
-            if bmi < 18.5:
-                return "Underweight"
-            elif 18.5 <= bmi <= 24.9:
-                return "Normal"
-            elif 25 <= bmi <= 29.9:
-                return "Overweight"
-            else:
-                return "Obese"
-        return None
+
+        if bmi < 18.5:
+            return "Underweight"
+        elif 18.5 <= bmi <= 24.9:
+            return "Normal"
+        elif 25 <= bmi <= 29.9:
+            return "Overweight"
+        else:
+            return "Obese"
