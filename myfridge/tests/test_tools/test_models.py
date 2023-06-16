@@ -23,12 +23,12 @@ def test_model_shopping_list_successfully_created(user):
 
 @pytest.fixture
 def user():
-    return CustomUser.objects.create(username='testuser123', password='testpass123')
+    return CustomUser.objects.create(username="testuser123", password="testpass123")
 
 
 @pytest.fixture
 def meal(user, dish_data):
-    return Meal.objects.create(name='testmeal', user=user, dish=dish_data)
+    return Meal.objects.create(name="testmeal", user=user, dish=dish_data)
 
 
 @pytest.mark.django_db
@@ -42,7 +42,7 @@ def test_meal_daily_plan(user, meal):
         second_breakfast=meal,
         lunch=meal,
         tea=meal,
-        dinner=meal
+        dinner=meal,
     )
 
     retrieved_plan = MealDailyPlan.objects.get(id=meal_daily_plan.id)

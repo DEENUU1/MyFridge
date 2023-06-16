@@ -7,9 +7,9 @@ from dishes.models import (
     DishCategory,
     TimeToMake,
     Dish,
-    Quantity
+    Quantity,
 )
-from test_data.models_fixtures import dish_data 
+from test_data.models_fixtures import dish_data
 
 import pytest
 

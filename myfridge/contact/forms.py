@@ -8,7 +8,11 @@ class ContactForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['accept_statute'].help_text = f'<a href="{reverse("contact:contact-statute")}">Read the statute</a>'
+        self.fields[
+            "accept_statute"
+        ].help_text = (
+            f'<a href="{reverse("contact:contact-statute")}">Read the statute</a>'
+        )
 
     class Meta:
         model = Contact

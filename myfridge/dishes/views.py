@@ -11,7 +11,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     DeleteView,
-    FormView
+    FormView,
 )
 from social.models import Rate
 from .forms import (
@@ -27,7 +27,7 @@ from .forms import (
     CaloriesSortingForm,
     SearchForm,
     MainIngredientForm,
-    SendIngredientForm
+    SendIngredientForm,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -48,7 +48,10 @@ class HomeView(ListView):
         search_query = self.request.GET.get("search_query")
         if search_query:
             ingredients = [ingredient.strip() for ingredient in search_query.split(",")]
-            conditions = [Q(main_ingredient__name__icontains=ingredient) for ingredient in ingredients]
+            conditions = [
+                Q(main_ingredient__name__icontains=ingredient)
+                for ingredient in ingredients
+            ]
             combined_conditions = conditions[0]
             for condition in conditions[1:]:
                 combined_conditions |= condition
@@ -160,8 +163,12 @@ class SendIngredientsView(FormView):
         dish = Dish.objects.get(pk=self.kwargs["pk"])
         main_ingredients = dish.main_ingredient.all()
         other_ingredients = dish.other_ingredients.all()
-        main_ingredients_names = ", ".join([str(ingredients) for ingredients in main_ingredients])
-        other_ingredients_names = ", ".join([str(ingredients) for ingredients in other_ingredients])
+        main_ingredients_names = ", ".join(
+            [str(ingredients) for ingredients in main_ingredients]
+        )
+        other_ingredients_names = ", ".join(
+            [str(ingredients) for ingredients in other_ingredients]
+        )
 
         form.send_email(
             f"{main_ingredients_names} and {other_ingredients_names} are the ingredients of {dish.name}."
@@ -252,4 +259,3 @@ class DeleteDishView(LoginRequiredMixin, DeleteView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Dish.")
         return queryset
-

@@ -9,7 +9,7 @@ from .models import (
     DishCategory,
     TimeToMake,
     Dish,
-    Quantity
+    Quantity,
 )
 
 

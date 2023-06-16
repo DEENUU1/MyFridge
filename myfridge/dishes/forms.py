@@ -127,11 +127,15 @@ class SendIngredientForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['accept_statute'].help_text = f'<a href="{reverse("contact:contact-statute")}">Read the statute</a>'
+        self.fields[
+            "accept_statute"
+        ].help_text = (
+            f'<a href="{reverse("contact:contact-statute")}">Read the statute</a>'
+        )
 
     def send_email(self, message):
         send_email_task.delay(
             self.cleaned_data.get("email"),
             subject="List of ingredients",
-            message=message
+            message=message,
         )

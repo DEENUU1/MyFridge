@@ -2,8 +2,7 @@ from fak.models import Fak, Medicine
 import datetime
 import pytest
 from django.contrib.auth import get_user_model
-from test_data.models_fixtures import user, fak, medicine 
-
+from test_data.models_fixtures import user, fak, medicine
 
 
 @pytest.mark.django_db

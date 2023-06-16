@@ -26,6 +26,7 @@ def test_fak_list_view(factory, user, fak):
     assert len(response.context_data["object_list"]) == 1
     assert response.context_data["object_list"][0] == fak
 
+
 @pytest.mark.django_db
 def test_fak_create_view(factory, user):
     url = reverse("fak:fak_create")
@@ -34,6 +35,7 @@ def test_fak_create_view(factory, user):
     response = FakCreateView.as_view()(request)
     assert response.status_code == 200
     assert response.template_name == ["fak_create.html"]
+
 
 @pytest.mark.django_db
 def test_fak_update_view(factory, user, fak):
@@ -44,6 +46,7 @@ def test_fak_update_view(factory, user, fak):
     assert response.status_code == 200
     assert response.template_name == ["fak_update.html"]
 
+
 @pytest.mark.django_db
 def test_fak_delete_view(factory, user, fak):
     url = reverse("fak:fak_delete", kwargs={"pk": fak.pk})
@@ -52,6 +55,7 @@ def test_fak_delete_view(factory, user, fak):
     response = FakDeleteView.as_view()(request, pk=fak.pk)
     assert response.status_code == 200
 
+
 @pytest.mark.django_db
 def test_medicine_create_view(factory, user, fak):
     url = reverse("fak:medicine_create")
@@ -59,6 +63,7 @@ def test_medicine_create_view(factory, user, fak):
     request.user = user
     response = MedicineCreateView.as_view()(request)
     assert response.status_code == 200
+
 
 @pytest.mark.django_db
 def test_medicine_update_view(factory, user, medicine):
@@ -69,6 +74,7 @@ def test_medicine_update_view(factory, user, medicine):
     assert response.status_code == 200
     assert response.template_name == ["medicine_update.html"]
 
+
 @pytest.mark.django_db
 def test_medicine_delete_view(factory, user, medicine):
     url = reverse("fak:medicine_delete", kwargs={"pk": medicine.pk})
@@ -76,6 +82,7 @@ def test_medicine_delete_view(factory, user, medicine):
     request.user = user
     response = MedicineDeleteView.as_view()(request, pk=medicine.pk)
     assert response.status_code == 200
+
 
 @pytest.mark.django_db
 def test_fak_details_view(factory, user, fak):

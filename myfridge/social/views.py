@@ -117,7 +117,9 @@ class AddToFavouritesView(LoginRequiredMixin, View):
 
 class DeleteFromFavouriteView(LoginRequiredMixin, View):
     def post(self, request, favourite_id):
-        favourite_dish = get_object_or_404(FavouriteDish, id=favourite_id, user=request.user)
+        favourite_dish = get_object_or_404(
+            FavouriteDish, id=favourite_id, user=request.user
+        )
 
         if not favourite_dish:
             return redirect("dishes:home")

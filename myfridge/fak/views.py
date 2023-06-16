@@ -11,7 +11,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     DetailView,
-    FormView
+    FormView,
 )
 from django.forms.widgets import DateInput
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -87,7 +87,7 @@ class MedicineCreateView(LoginRequiredMixin, CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['expiration_date'].widget = DateInput(attrs={'type': 'date'})
+        form.fields["expiration_date"].widget = DateInput(attrs={"type": "date"})
         return form
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:

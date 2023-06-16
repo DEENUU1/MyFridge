@@ -1,5 +1,5 @@
 import datetime
-import pytest 
+import pytest
 from users.models import CustomUser
 from django.test import RequestFactory
 from dishes.models import (
@@ -10,26 +10,32 @@ from dishes.models import (
     Type,
     MainIngredient,
     OtherIngredient,
-    Dish
+    Dish,
 )
 from fak.models import Fak, Medicine
 from django.test import Client
 from tools.models import ShoppingList, Meal, MealDailyPlan
 
+
 @pytest.fixture
 def user():
     return CustomUser.objects.create_user(username="testuser", password="testpass")
 
+
 @pytest.fixture
 def user_inactive():
-    user = CustomUser.objects.create_user(username='testuser_inactive', password='12345')
+    user = CustomUser.objects.create_user(
+        username="testuser_inactive", password="12345"
+    )
     user.is_active = False
     user.save()
     return user
 
+
 @pytest.fixture
 def factory():
     return RequestFactory()
+
 
 @pytest.fixture
 def dish_data():
@@ -62,13 +68,16 @@ def dish_data():
 
     return dish
 
+
 @pytest.fixture
 def client():
     return Client()
 
+
 @pytest.fixture
 def fak(user):
     return Fak.objects.create(name="Test Fak", author=user)
+
 
 @pytest.fixture
 def medicine(fak, user):
@@ -80,36 +89,45 @@ def medicine(fak, user):
         author=user,
     )
 
+
 @pytest.fixture
 def authenticated_user(db):
-    user = CustomUser.objects.create_user(username='testuser', password='12345')
+    user = CustomUser.objects.create_user(username="testuser", password="12345")
     return user
+
 
 @pytest.fixture
 def client_with_authenticated_user(db, authenticated_user):
     client = Client()
-    client.login(username=authenticated_user.username, password='12345')
+    client.login(username=authenticated_user.username, password="12345")
     return client
+
 
 @pytest.fixture
 def shopping_list(db, authenticated_user):
-    return ShoppingList.objects.create(name='test', author=authenticated_user, quantity=5)
+    return ShoppingList.objects.create(
+        name="test", author=authenticated_user, quantity=5
+    )
+
 
 @pytest.fixture
 def bmi_form_data():
-    return {'weight': 70, 'height': 170}
+    return {"weight": 70, "height": 170}
+
 
 @pytest.fixture
 def meal(user):
-    return Meal.objects.create(name='Test Meal', content='Test Content', url='http://example.com', user=user)
+    return Meal.objects.create(
+        name="Test Meal", content="Test Content", url="http://example.com", user=user
+    )
 
 
 @pytest.fixture
 def meal_daily_plan(user, meal):
     return MealDailyPlan.objects.create(
-        date='2023-01-01',
-        month='January',
-        year='2023',
+        date="2023-01-01",
+        month="January",
+        year="2023",
         user=user,
         breakfast=meal,
         second_breakfast=meal,

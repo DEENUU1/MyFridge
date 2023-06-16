@@ -6,15 +6,25 @@ class CaloricNeedsForm(forms.Form):
     weight = forms.FloatField(label="Weight", required=True)
     height = forms.IntegerField(label="Height", required=True)
     age = forms.IntegerField(label="Age", required=True)
-    gender = forms.ChoiceField(label="Gender", choices=(("M", "Male"), ("F", "Female")), required=True)
+    gender = forms.ChoiceField(
+        label="Gender", choices=(("M", "Male"), ("F", "Female")), required=True
+    )
     ACTIVITY_CHOICES = (
         (1.2, "Brak aktywności zawodowej, chory, leżący"),
-        (1.4, "Pracownik biurowy, którego aktywność związana jest wyłącznie z obowiązkami domowymi"),
+        (
+            1.4,
+            "Pracownik biurowy, którego aktywność związana jest wyłącznie z obowiązkami domowymi",
+        ),
         (1.6, "Pracownik biurowy, trenujący 2-3 razy w tygodniu przez minimum godzinę"),
         (1.8, "Pracownik biurowy, trenujący 3-4 razy w tygodniu przez minimum godzinę"),
-        (2.0, "Zawodowy sportowiec, trenujący minimum 6 godzin tygodniowo lub osoba ciężko pracująca fizycznie")
+        (
+            2.0,
+            "Zawodowy sportowiec, trenujący minimum 6 godzin tygodniowo lub osoba ciężko pracująca fizycznie",
+        ),
     )
-    activity = forms.ChoiceField(label="Activity", choices=ACTIVITY_CHOICES, required=True)
+    activity = forms.ChoiceField(
+        label="Activity", choices=ACTIVITY_CHOICES, required=True
+    )
 
     def calculate_caloric_needs(self) -> float | int:
         cleaned_data = super().clean()

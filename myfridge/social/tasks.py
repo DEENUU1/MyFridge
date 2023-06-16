@@ -27,4 +27,3 @@ def send_random_dish_to_newsletter_users():
 
     for user in users:
         send_email_task.delay(user.email, SUBJECT, MESSAGE)
-

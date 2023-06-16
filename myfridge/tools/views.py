@@ -4,7 +4,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    UpdateView,
+    ListView,
+    DetailView,
+)
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
 from .models import ShoppingList, Meal, MealDailyPlan
@@ -23,13 +29,7 @@ def bmiView(request):  # Remove camel case
     else:
         form = BMIForm()
 
-    return render(
-        request,
-        "bmi_form.html",
-        {
-            "form": form
-        }
-    )
+    return render(request, "bmi_form.html", {"form": form})
 
 
 def perfect_weight_view(request):
@@ -40,20 +40,12 @@ def perfect_weight_view(request):
             return render(
                 request,
                 "perfect_weight_result.html",
-                {
-                    "perfect_weight_result": perfect_weight_result
-                },
+                {"perfect_weight_result": perfect_weight_result},
             )
     else:
         form = PerfectWeightForm()
 
-    return render(
-        request,
-        "perfect_weight_form.html",
-        {
-            "form": form
-        }
-    )
+    return render(request, "perfect_weight_form.html", {"form": form})
 
 
 def caloricNeedsView(request):  # Remove camel case
@@ -64,20 +56,12 @@ def caloricNeedsView(request):  # Remove camel case
             return render(
                 request,
                 "caloric_needs_result.html",
-                {
-                    "caloric_needs_result": caloric_needs_result
-                },
+                {"caloric_needs_result": caloric_needs_result},
             )
     else:
         form = CaloricNeedsForm()
 
-    return render(
-        request,
-        "caloric_needs_form.html",
-        {
-            "form": form
-        }
-    )
+    return render(request, "caloric_needs_form.html", {"form": form})
 
 
 class ShoppingListCreateView(LoginRequiredMixin, CreateView):
@@ -190,12 +174,21 @@ class MealDetailView(LoginRequiredMixin, DetailView):
 class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
     model = MealDailyPlan
     template_name = "meal_daily_plan_create.html"
-    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    fields = (
+        "date",
+        "month",
+        "year",
+        "breakfast",
+        "second_breakfast",
+        "lunch",
+        "tea",
+        "dinner",
+    )
     success_url = reverse_lazy("tools:meal_plan_list")
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['date'].widget = DateInput(attrs={'type': 'date'})
+        form.fields["date"].widget = DateInput(attrs={"type": "date"})
         return form
 
     def form_valid(self, form):
@@ -211,19 +204,30 @@ class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
 class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
     model = MealDailyPlan
     template_name = "meal_daily_plan_update.html"
-    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    fields = (
+        "date",
+        "month",
+        "year",
+        "breakfast",
+        "second_breakfast",
+        "lunch",
+        "tea",
+        "dinner",
+    )
     success_url = reverse_lazy("tools:meal_plan_list")
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['date'].widget = DateInput(attrs={'type': 'date'})
+        form.fields["date"].widget = DateInput(attrs={"type": "date"})
         return form
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Meal Daily Plan.")
+            raise PermissionDenied(
+                "You are not authorized to edit this Meal Daily Plan."
+            )
         return queryset
 
 
@@ -235,7 +239,9 @@ class MealDailyPlanDeleteView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to delete this Meal Daily Plan.")
+            raise PermissionDenied(
+                "You are not authorized to delete this Meal Daily Plan."
+            )
         return queryset
 
 

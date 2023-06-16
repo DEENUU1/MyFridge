@@ -36,7 +36,7 @@ class CustomUserRegistration(forms.ModelForm):
         send_email_task.delay(
             self.cleaned_data.get("email"),
             subject="Activate your account",
-            message=message
+            message=message,
         )
 
 
@@ -59,7 +59,7 @@ class ChangePasswordForm(forms.Form):
         send_email_task.delay(
             self.cleaned_data.get("email"),
             subject="Activate your account",
-            message=message
+            message=message,
         )
 
 

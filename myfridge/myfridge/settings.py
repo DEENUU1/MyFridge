@@ -87,8 +87,8 @@ ROOT_URLCONF = "myfridge.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        'DIRS': [
-            os.path.join(BASE_DIR, 'myfridge', 'templates'),
+        "DIRS": [
+            os.path.join(BASE_DIR, "myfridge", "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -118,13 +118,13 @@ if USE_SQLITE:
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'myfridge',
-            'USER': 'myfridge',
-            'PASSWORD': 'myfridge123',
-            'HOST': 'db',
-            'PORT': '5432',
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "myfridge",
+            "USER": "myfridge",
+            "PASSWORD": "myfridge123",
+            "HOST": "db",
+            "PORT": "5432",
         }
     }
 
