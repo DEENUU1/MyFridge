@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
-from .models import ShoppingList
+from .models import ShoppingList, Meal, MealDailyPlan
 
 
 def bmiView(request):  # Remove camel case
@@ -136,4 +136,20 @@ class ShoppingListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        return context
+
+
+class MealCreateView(LoginRequiredMixin, CreateView):
+    model = Meal
+    template_name = "meal_create.html"
+    fields = ("name", "content", "url", "dish")
+    success_url = reverse_lazy("tools:meal")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
         return context
