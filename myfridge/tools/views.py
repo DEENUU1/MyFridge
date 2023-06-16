@@ -242,3 +242,8 @@ class MealDailyPlanListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         return context
+
+
+class MealDailyPlanDetailView(LoginRequiredMixin, DetailView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_detail.html"
