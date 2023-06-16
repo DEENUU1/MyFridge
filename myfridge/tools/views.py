@@ -202,3 +202,15 @@ class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
         return context
 
 
+class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_update.html"
+    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    success_url = reverse_lazy("tools:meal_daily_plan")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Meal Daily Plan.")
+        return queryset
