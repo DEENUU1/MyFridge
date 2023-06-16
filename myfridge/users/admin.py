@@ -7,8 +7,8 @@ class UserModelAdmin(admin.ModelAdmin):
     list_display = [
         "username",
         "email",
-        "points",
         "is_active",
+        "points"
     ]
 
-    list_filter = ["is_active", "points"]
+    list_filter = ["is_active"]

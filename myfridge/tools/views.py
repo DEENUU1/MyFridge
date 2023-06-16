@@ -4,10 +4,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView, ListView
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
-from .models import ShoppingList
+from .models import ShoppingList, Meal, MealDailyPlan
+from django.forms.widgets import DateInput
 
 
 def bmiView(request):  # Remove camel case
@@ -137,3 +138,123 @@ class ShoppingListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         return context
+
+
+class MealCreateView(LoginRequiredMixin, CreateView):
+    model = Meal
+    template_name = "meal_create.html"
+    fields = ("name", "content", "url", "dish")
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
+class MealUpdateView(LoginRequiredMixin, UpdateView):
+    model = Meal
+    template_name = "meal_update.html"
+    fields = ("name", "content", "url", "dish")
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Meal.")
+        return queryset
+
+
+class MealDeleteView(LoginRequiredMixin, DeleteView):
+    model = Meal
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to delete this Meal.")
+        return queryset
+
+
+class MealDetailView(LoginRequiredMixin, DetailView):
+    model = Meal
+    template_name = "meal_detail.html"
+
+
+class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_create.html"
+    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date'].widget = DateInput(attrs={'type': 'date'})
+        return form
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
+class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_update.html"
+    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['date'].widget = DateInput(attrs={'type': 'date'})
+        return form
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Meal Daily Plan.")
+        return queryset
+
+
+class MealDailyPlanDeleteView(LoginRequiredMixin, DeleteView):
+    model = MealDailyPlan
+    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to delete this Meal Daily Plan.")
+        return queryset
+
+
+class MealDailyPlanListView(LoginRequiredMixin, ListView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan.html"
+    paginate_by = 7
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class MealDailyPlanDetailView(LoginRequiredMixin, DetailView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_detail.html"
