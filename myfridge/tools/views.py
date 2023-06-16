@@ -184,3 +184,21 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
 class MealDetailView(LoginRequiredMixin, DetailView):
     model = Meal
     template_name = "meal_detail.html"
+
+
+class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan_create.html"
+    fields = ("date", "month", "year", "breakfast", "second_breakfast", "lunch", "tea", "dinner")
+    success_url = reverse_lazy("tools:meal_daily_plan")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+
+        return context
+
+
