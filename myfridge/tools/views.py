@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DeleteView, UpdateView, ListView
+from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
 from .models import ShoppingList, Meal, MealDailyPlan
@@ -179,3 +179,8 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to delete this Meal.")
         return queryset
+
+
+class MealDetailView(LoginRequiredMixin, DetailView):
+    model = Meal
+    template_name = "meal_detail.html"
