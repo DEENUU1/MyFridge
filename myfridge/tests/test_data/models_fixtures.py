@@ -14,7 +14,7 @@ from dishes.models import (
 )
 from fak.models import Fak, Medicine
 from django.test import Client
-from tools.models import ShoppingList
+from tools.models import ShoppingList, Meal, MealDailyPlan
 
 @pytest.fixture
 def user():
@@ -98,3 +98,22 @@ def shopping_list(db, authenticated_user):
 @pytest.fixture
 def bmi_form_data():
     return {'weight': 70, 'height': 170}
+
+@pytest.fixture
+def meal(user):
+    return Meal.objects.create(name='Test Meal', content='Test Content', url='http://example.com', user=user)
+
+
+@pytest.fixture
+def meal_daily_plan(user, meal):
+    return MealDailyPlan.objects.create(
+        date='2023-01-01',
+        month='January',
+        year='2023',
+        user=user,
+        breakfast=meal,
+        second_breakfast=meal,
+        lunch=meal,
+        tea=meal,
+        dinner=meal,
+    )
