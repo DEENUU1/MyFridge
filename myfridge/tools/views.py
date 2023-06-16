@@ -153,3 +153,17 @@ class MealCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
 
         return context
+
+
+class MealUpdateView(LoginRequiredMixin, UpdateView):
+    model = Meal
+    template_name = "meal_update.html"
+    fields = ("name", "content", "url", "dish")
+    success_url = reverse_lazy("tools:meal")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Meal.")
+        return queryset
