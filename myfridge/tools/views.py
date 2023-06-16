@@ -167,3 +167,15 @@ class MealUpdateView(LoginRequiredMixin, UpdateView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Meal.")
         return queryset
+
+
+class MealDeleteView(LoginRequiredMixin, DeleteView):
+    model = Meal
+    success_url = reverse_lazy("tools:meal")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to delete this Meal.")
+        return queryset
