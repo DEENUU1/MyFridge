@@ -1,5 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+myfridge/pgdata
 *.py[cod]
 *$py.class
 myfridge/contact/migrations/0001_initial.py

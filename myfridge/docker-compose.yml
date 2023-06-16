@@ -2,7 +2,11 @@ version: "3.9"
 
 services:
     db:
-        image: postgres
+        hostname: db
+        image: postgres:15
+        container_name: myfridge-db
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=myfridge
             - POSTGRES_USER=myfridge
@@ -10,7 +14,11 @@ services:
         ports:
             - "5432:5432"
     web:
-        build: .
+        hostname: web
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        container_name: myfridge-web
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
             - .:/app/
@@ -20,12 +28,16 @@ services:
             - db
             - redis
             - celery
+        env_file:
+            - .env
     redis:
-        image: redis
+        image: redis:latest
+        container_name: myfridge-redis
         ports:
             - "6379:6379"
     celery:
         build: .
+        container_name: myfridge-celery
         command: celery -A myfridge.celery worker -l info
         volumes:
             - .:/app/
