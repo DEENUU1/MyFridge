@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | MealPlan List {% endblock %}
+
+
+{% block content %}
+
+
+{% for data in object_list %}
+    {{data.date}}
+    {{data.month}}
+    {{data.year}}
+    {{data.breakfast}}
+    {{data.second_breakfast}}
+    {{data.lunch}}
+    {{data.tea}}
+    {{data.dinner}}
+{% endfor %}
+
+{% endblock %}
