@@ -226,3 +226,19 @@ class MealDailyPlanDeleteView(LoginRequiredMixin, DeleteView):
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to delete this Meal Daily Plan.")
         return queryset
+
+
+class MealDailyPlanListView(LoginRequiredMixin, ListView):
+    model = MealDailyPlan
+    template_name = "meal_daily_plan.html"
+    paginate_by = 7
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+
+        return queryset
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
