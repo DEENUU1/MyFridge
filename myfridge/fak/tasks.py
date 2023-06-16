@@ -1,6 +1,5 @@
 from celery import shared_task
-from users.models import CustomUser
-from .models import Medicine, Fak
+from .models import Medicine
 import datetime
 from users.task import send_email_task
 

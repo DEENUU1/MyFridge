@@ -8,3 +8,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myfridge.settings')
 app = Celery('myfridge')
 app.config_from_object(settings, namespace='CELERY')
 app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    "check-medicine-expiration-every-day": {
+        "task": "medicine.tasks.send_medicine_expired_notification",
+        "schedule": 86400,
+    },
+}
