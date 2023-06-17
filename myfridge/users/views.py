@@ -13,10 +13,16 @@ from django.utils.decorators import method_decorator
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import UpdateView, TemplateView, CreateView
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    UpdateView,
+    ListView,
+    DetailView,
+)
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
-from .models import CustomUser
+from .models import CustomUser, Post, FavouritePost, Comment
 from dishes.models import Dish
 from social.models import Rate
 from .forms import (
@@ -29,6 +35,8 @@ from .forms import (
 from .tokens import account_activation_token
 from social.models import Feedback
 from social.models import FavouriteDish
+
+from typing import Dict, Any
 
 load_dotenv()
 
@@ -209,3 +217,18 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         queryset = super().get_queryset()
         queryset = queryset.filter(id=self.request.user.id)
         return queryset
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    fields = ("title", "text", "image")
+    template_name = "post_create.html"
+    success_url = reverse_lazy("users:profile")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        return context
