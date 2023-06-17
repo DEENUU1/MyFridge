@@ -31,6 +31,7 @@ from .forms import (
     ChangePasswordForm,
     DeleteAccountForm,
 )
+from django.core.exceptions import PermissionDenied
 
 from .tokens import account_activation_token
 from social.models import Feedback
@@ -232,3 +233,17 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         return context
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    fields = ("title", "text", "image")
+    template_name = "post_update.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+        return queryset
