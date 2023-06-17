@@ -259,3 +259,8 @@ class PostListView(ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         return queryset
+
+
+class PostDetailView(DetailView):
+    model = Post
+    template_name = "post_detail.html"
