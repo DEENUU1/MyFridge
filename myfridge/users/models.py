@@ -22,6 +22,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    text = models.TextField()
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
