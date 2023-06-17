@@ -52,27 +52,21 @@ def test_shopping_list_view_success_response_get_method(
 @pytest.mark.django_db
 def test_meal_create_view(client, user):
     client.login(username="testuser", password="testpassword")
-    response = client.get(
-        reverse("tools:meal_create")
-    )
+    response = client.get(reverse("tools:meal_create"))
     assert response.status_code == 302
 
 
 @pytest.mark.django_db
 def test_meal_update_view(client, user, meal):
     client.login(username="testuser", password="testpassword")
-    response = client.get(
-        reverse("tools:meal_update", args=[meal.id])
-    )
+    response = client.get(reverse("tools:meal_update", args=[meal.id]))
     assert response.status_code == 302
 
 
 @pytest.mark.django_db
 def test_meal_delete_view(client, user, meal):
     client.login(username="testuser", password="testpassword")
-    response = client.get(
-        reverse("tools:meal_delete", args=[meal.id])
-    )
+    response = client.get(reverse("tools:meal_delete", args=[meal.id]))
     assert response.status_code == 302
 
 

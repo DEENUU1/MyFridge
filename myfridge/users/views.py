@@ -19,11 +19,11 @@ from django.views.generic import (
     UpdateView,
     ListView,
     DetailView,
-    TemplateView
+    TemplateView,
 )
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
-from .models import CustomUser, Post, FavouritePost, Comment
+from .models import CustomUser, Post, Comment
 from dishes.models import Dish
 from social.models import Rate
 from .forms import (

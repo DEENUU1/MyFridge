@@ -1,7 +1,7 @@
 import pytest
 from users.models import CustomUser
 from test_data.models_fixtures import user
-from users.models import Post, Comment, FavouritePost
+from users.models import Post, Comment
 
 
 @pytest.mark.django_db
@@ -47,19 +47,3 @@ def test_model_comment_successfully_created(user):
     assert comment.author == user
     assert comment.post == post
     assert comment.__str__() == f"{user} {post}"
-
-
-@pytest.mark.django_db
-def test_model_favourite_post_successfully_created(user):
-    post = Post.objects.create(
-        title="Test post",
-        text="Test post text",
-        author=user,
-    )
-    favourite_post = FavouritePost.objects.create(
-        user=user,
-        post=post,
-    )
-    assert favourite_post.user == user
-    assert favourite_post.post == post
-    assert favourite_post.__str__() == f"{user} {post}"
