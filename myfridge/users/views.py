@@ -290,3 +290,15 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    model = Comment
+    fields = ("text",)
+    template_name = "comment_update.html"
+    success_url = reverse_lazy("users:profile")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+        return queryset
