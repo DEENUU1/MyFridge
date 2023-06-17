@@ -250,6 +250,18 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
         return queryset
 
 
+class PostDeleteView(DeleteView):
+    model = Post
+    success_url = reverse_lazy("users:profile")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(author=self.request.user)
+        if not queryset.exists():
+            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+        return queryset
+
+
 class PostListView(ListView):
     model = Post
     template_name = "post_list.html"
@@ -276,3 +288,5 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         form.instance.post = self.kwargs["pk"]
         return super().form_valid(form)
+
+
