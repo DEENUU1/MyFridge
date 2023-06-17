@@ -264,3 +264,15 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     template_name = "post_detail.html"
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    fields = ("text",)
+    template_name = "comment_create.html"
+    success_url = reverse_lazy("users:profile")
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = self.kwargs["pk"]
+        return super().form_valid(form)
