@@ -7,3 +7,13 @@ class CustomUser(AbstractUser):
     image = models.ImageField(upload_to="images", default=None, blank=True, null=True)
     newsletter = models.BooleanField(default=False)
     points = models.IntegerField(default=0)
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    text = models.TextField()
+    image = models.ImageField(upload_to="images", default=None, blank=True, null=True)
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
