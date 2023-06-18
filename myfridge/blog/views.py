@@ -12,6 +12,7 @@ from .models import Post, Comment
 from django.core.exceptions import PermissionDenied
 from typing import Any, Dict
 
+
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ("title", "text", "image")
