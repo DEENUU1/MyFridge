@@ -11,6 +11,13 @@
             <div class="card my-4">
                 <div class="card-body">
                     <h2 class="card-title">{{object.title}}</h2>
+                        {% if object.author == user %}
+                        <a href="{% url 'blog:update_post' object.id %}">Edit</a>
+                        <form action="{% url 'blog:delete_post' object.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary mt-2">Delete</button>
+                        </form>
+                        {% endif %}
                     <p class="card-text">{{object.author}} | {{object.created_date}}</p>
                     {% if object.image %}
                     <img class="card-img-top img-fluid mx-auto d-block" src="{{object.image.url}}">
@@ -20,6 +27,30 @@
                     <p class="card-text mt-3">{{object.text|safe}}</p>
                 </div>
             </div>
+
+            <a href="{% url 'blog:create_comment' object.id %}" class="btn btn-primary">Add comment</a>
+            {% if comments %}
+            <div class="mt-4">
+            {% for comment in comments %}
+                <div class="card my-2">
+                    <div class="card-body">
+                        <h5 class="card-title">{{comment.author}}</h5>
+                        <p class="card-text">{{comment.text}}</p>
+                        {% if comment.author == user %}
+                        <form action="{% url 'blog:delete_comment' comment.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary mt-2">Delete</button>
+                        </form>
+
+                        <a href="{% url 'blog:update_comment' comment.id %}">Edit</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            {% else %}
+            <p class="my-4">There are no comments yet</p>
+            {% endif %}
         </div>
     </div>
 </div>
