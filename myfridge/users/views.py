@@ -13,6 +13,7 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     TemplateView,
+    DetailView
 )
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
@@ -212,3 +213,8 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         queryset = super().get_queryset()
         queryset = queryset.filter(id=self.request.user.id)
         return queryset
+
+
+class ProfileDetailView(DetailView):
+    model = CustomUser
+    template_name = "profile_detail.html"
