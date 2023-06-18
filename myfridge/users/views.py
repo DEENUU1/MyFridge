@@ -26,6 +26,8 @@ from .forms import (
     ChangePasswordForm,
     DeleteAccountForm,
 )
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from .tokens import account_activation_token
@@ -215,26 +217,26 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         return queryset
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "profile_detail.html"
 
 
-class FollowUserView(View):
+class FollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
         UserFollowing.objects.get_or_create(user_id=request.user, following_user_id=following_user)
         return redirect("users:profile")
 
 
-class UnfollowUserView(View):
+class UnfollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
         UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
         return redirect("users:profile")
 
 
-class UserFollowingListView(ListView):
+class UserFollowingListView(LoginRequiredMixin, ListView):
     model = UserFollowing
     template_name = "following_list.html"
 
@@ -243,7 +245,7 @@ class UserFollowingListView(ListView):
         return user.follows.all()
 
 
-class UserFollowersListView(ListView):
+class UserFollowersListView(LoginRequiredMixin, ListView):
     model = UserFollowing
     template_name = "followers_list.html"
 
