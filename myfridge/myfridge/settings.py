@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "contact",  # project
     "tools",  # project
     "fak",  # project
+    "blog"  # project
 ]
 
 MIDDLEWARE = [
