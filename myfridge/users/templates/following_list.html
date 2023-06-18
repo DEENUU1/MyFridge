@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Following list {% endblock %}
+
+
+{% block content %}
+
+{{object.username}} is following:
+{% for user in object_list %}
+    <li>{{user.username}}</li>
+{% endfor %}
+
+
+
+{% endblock %}

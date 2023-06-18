@@ -232,3 +232,21 @@ class UnfollowUserView(View):
         following_user = CustomUser.objects.get(id=pk)
         UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
         return redirect("users:profile")
+
+
+class UserFollowingListView(ListView):
+    model = UserFollowing
+    template_name = "following_list.html"
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        return user.follows.all()
+
+
+class UserFollowersListView(ListView):
+    model = UserFollowing
+    template_name = "followers_list.html"
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        return user.followers.all()
