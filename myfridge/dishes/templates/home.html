@@ -5,68 +5,65 @@
 
 {% block content %}
 <div class="container">
-    <div class="mb-4">
-        <a href="{% url 'dishes:dish-create' %}" class="btn btn-primary">Create new dish</a>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar">
+                <form method="GET" action="">
+                    {% csrf_token %}
+                    <div>{{ search_form|crispy }}</div>
+                    <div>{{ gluten_form|crispy }}</div>
+                    <div>{{ lactose_form|crispy }}</div>
+                    <div>{{ meat_form|crispy }}</div>
+                    <div>{{ vegan_form|crispy }}</div>
+                    <div>{{ vegetarian_form|crispy }}</div>
+                    <div>{{ date_sorting_form|crispy }}</div>
+                    <div>{{ calories_sorting_form|crispy }}</div>
+                    <div>{{ country_form|crispy }}</div>
+                    <div>{{ difficulty_level_form|crispy }}</div>
+                    <div>{{ category_form|crispy }}</div>
+                    <button type="submit" class="btn btn-success mt-3">Filter</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {% for data in object_list %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a style="text-decoration: none; color: black;" href="{% url 'dishes:dish-detail' data.id %}" class="h4">{{ data.name }}</a>
+                            {% if data.image %}
+                                <img class="card-img-top" src="{{data.image.url}}" alt="{{ data.name }}">
+                            {% else %}
+                                <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="No Image">
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <p><strong>Level:</strong> {{data.level}}</p>
+                            <p><strong>Kcal:</strong> {{data.kcal}}</p>
+                            <p><strong>Category:</strong> {{data.category}}</p>
+                            <p><strong>Time to make:</strong> {{ data.time_to_make }}</p>
+                            {% for ingredient in data.main_ingredient.all %}
+                                <span style="font-weight: bold;" class="
+                                    {% if ingredient in main_ingredient_form.cleaned_data.ingredients or ingredient.name in search_query  %}
+                                        text-success
+                                    {% else %}
+                                        text-black
+                                    {% endif %}
+                                ">{{ ingredient }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <form action="{% url 'social:favourite-add' data.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Add to favourite</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-      More filters 
-    </button>
-    
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Filters</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <form method="GET" action="" class="mb-4">
-          <div class="col-md-3">{{ gluten_form|crispy }}</div>
-          <div class="col-md-3">{{ lactose_form|crispy }}</div>
-          <div class="col-md-3">{{ meat_form|crispy }}</div>
-          <div class="col-md-3">{{ vegan_form|crispy }}</div>
-          <div class="col-md-3">{{ vegetarian_form|crispy }}</div>
-          <div class="col-md-3">{{ date_sorting_form|crispy }}</div>
-          <div class="col-md-3">{{ calories_sorting_form|crispy }}</div>
-          <div class="col-md-3">{{ country_form|crispy }}</div>
-          <div class="col-md-3">{{ difficulty_level_form|crispy }}</div>
-          <div class="col-md-3">{{ category_form|crispy }}</div>
-          <button type="submit" class="btn btn-success">Filter</button>
-        </form>
-      </div>
-    </div>
-
-    <form method="GET" action="">
-        {% csrf_token %}
-        <div>{{ search_form|crispy }}</div>
-        <button type="submit" class="btn btn-success">Filter</button>
-    </form>
-    {% for data in object_list %}
-    <div class="mb-4">
-        <a href="{% url 'dishes:dish-detail' data.id %}" class="h4">{{ data.name }}</a>
-        <img src="{{ data.image }}" class="img-fluid"> 
-        <p>Author: {{ data.author }}</p>
-        <p>Time to make: {{ data.time_to_make }}</p>
-        <p>Date Created: {{ data.date_created }}</p>
-
-{% for ingredient in data.main_ingredient.all %}
-    <span class="
-    {% if ingredient in main_ingredient_form.cleaned_data.ingredients or ingredient.name in search_query  %}
-    text-success
-    {% else %}
-    text-black
-    {% endif %}">{{ ingredient }}</span>
-{% endfor %}
-
-
-        <br>
-        <form action="{% url 'social:favourite-add' data.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-secondary mt-2">Add to favourite</button>
-        </form>
-    </div>
-    {% endfor %}
-
-
-
 </div>
 {% endblock %}
