@@ -27,23 +27,10 @@ class Country(models.Model):
         return self.name
 
 
-class Quantity(models.Model):
-    value = models.IntegerField()
-    unit = models.CharField(max_length=50)
-
-    class Meta:
-        ordering = ("value",)
-        verbose_name = "Quantity"
-        verbose_name_plural = "Quantities"
-
-    def __str__(self):
-        return f"{self.value} {self.unit}"
-
-
 class MainIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE, null=True)
+    quantity_info = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ("name",)
@@ -51,15 +38,13 @@ class MainIngredient(models.Model):
         verbose_name_plural = "MainIngredients"
 
     def __str__(self):
-        if self.quantity:
-            return f"{self.name} ({self.quantity})"
         return self.name
 
 
 class OtherIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity = models.ForeignKey(Quantity, on_delete=models.CASCADE, null=True)
+    quantity_info = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ("name",)
@@ -67,8 +52,6 @@ class OtherIngredient(models.Model):
         verbose_name_plural = "OtherIngredients"
 
     def __str__(self):
-        if self.quantity:
-            return f"{self.name} ({self.quantity})"
         return self.name
 
 
