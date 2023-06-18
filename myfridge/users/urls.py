@@ -35,4 +35,5 @@ urlpatterns = [
         views.UpdateProfileView.as_view(),
         name="edit_profile",
     ),
+    path("profile/<int:pk>/detail", views.ProfileDetailView.as_view(), name="profile_detail"),
 ]
