@@ -13,11 +13,11 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     TemplateView,
-    DetailView
+    DetailView, ListView
 )
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
-from .models import CustomUser
+from .models import CustomUser, UserFollowing
 from dishes.models import Dish
 from social.models import Rate
 from .forms import (
@@ -218,3 +218,17 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 class ProfileDetailView(DetailView):
     model = CustomUser
     template_name = "profile_detail.html"
+
+
+class FollowUserView(View):
+    def post(self, request, pk):
+        following_user = CustomUser.objects.get(id=pk)
+        UserFollowing.objects.get_or_create(user_id=request.user, following_user_id=following_user)
+        return redirect("users:profile")
+
+
+class UnfollowUserView(View):
+    def post(self, request, pk):
+        following_user = CustomUser.objects.get(id=pk)
+        UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
+        return redirect("users:profile")
