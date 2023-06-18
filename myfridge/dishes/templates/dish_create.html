@@ -8,6 +8,7 @@
 <div class="container my-5">
     <form method="POST" class="needs-validation" novalidate>
         {% csrf_token %}
+        {{form.media}}
         {{form|crispy}}
         <button class="btn btn-primary" type="submit">Create new dish</button>
     </form>
