@@ -76,8 +76,8 @@ def test_post_detail_view(user, post, factory):
 
 
 @pytest.mark.django_db
-def test_comment_create_view(user, factory):
-    request = factory.get(reverse("blog:create_comment"))
+def test_comment_create_view(user, factory, post):
+    request = factory.get(reverse("blog:create_comment", kwargs={"post_id": post.pk}))
     request.user = user
 
     response = CommentCreateView.as_view()(request)
