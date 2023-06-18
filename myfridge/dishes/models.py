@@ -30,7 +30,6 @@ class Country(models.Model):
 class MainIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity_info = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ("name",)
@@ -44,7 +43,6 @@ class MainIngredient(models.Model):
 class OtherIngredient(models.Model):
     name = models.CharField(max_length=50)
     type = models.ForeignKey(Type, on_delete=models.CASCADE)
-    quantity_info = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ("name",)

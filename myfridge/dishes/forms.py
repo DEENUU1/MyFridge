@@ -3,18 +3,9 @@ from .models import (
     Country,
     DifficultyLevel,
     DishCategory,
-    MainIngredient,
 )
 from django.urls import reverse
 from users.task import send_email_task
-
-
-class MainIngredientForm(forms.Form):
-    ingredients = forms.ModelMultipleChoiceField(
-        queryset=MainIngredient.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-        required=False,
-    )
 
 
 class DateSortingForm(forms.Form):

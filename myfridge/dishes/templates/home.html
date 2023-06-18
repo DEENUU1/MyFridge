@@ -37,7 +37,6 @@
 
     <form method="GET" action="">
         {% csrf_token %}
-        <div>{{ main_ingredient_form|crispy }}</div>
         <div>{{ search_form|crispy }}</div>
         <button type="submit" class="btn btn-success">Filter</button>
     </form>

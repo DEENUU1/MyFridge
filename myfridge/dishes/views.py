@@ -26,7 +26,6 @@ from .forms import (
     CategoryFilterForm,
     CaloriesSortingForm,
     SearchForm,
-    MainIngredientForm,
     SendIngredientForm,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -40,10 +39,6 @@ class HomeView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
-        main_ingredients = self.request.GET.get("ingredients")
-        if main_ingredients:
-            queryset = queryset.filter(main_ingredient__in=main_ingredients)
 
         search_query = self.request.GET.get("search_query")
         if search_query:
@@ -125,7 +120,6 @@ class HomeView(ListView):
         context["category_form"] = CategoryFilterForm(self.request.GET)
         context["calories_sorting_form"] = CaloriesSortingForm(self.request.GET)
         context["search_form"] = SearchForm(self.request.GET)
-        context["main_ingredient_form"] = MainIngredientForm(self.request.GET)
         search_query = self.request.GET.get("search_query")
         context["search_query"] = search_query if search_query else None
         return context
