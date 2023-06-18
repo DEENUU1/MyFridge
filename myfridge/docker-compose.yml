@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 
 services:
     db:
@@ -17,7 +17,7 @@ services:
             context: .
             dockerfile: ./Dockerfile
         container_name: myfridge-web
-        command: python manage.py runserver 0.0.0.0:8000
+        command: gunicorn myfridge.wsgi:application --bind 0.0.0.0:8000
         volumes:
             - .:/app/
         ports:
