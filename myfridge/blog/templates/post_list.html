@@ -10,7 +10,7 @@
     <div class="col-md-6 mx-auto">
 
     {% for data in object_list %}
-      <h2>{{data.title}}</h2>
+      <h2><a href="{% url 'blog:post_detail' data.id %} ">{{data.title}}</a></h2>
       <p>{{data.author}} | {{data.created_date}}</p>
       {% if data.image %}
       <img style="width: 500px; height: 300px; object-fit: cover; " class="img-fluid mx-auto d-block " src="{{data.image.url}}">
