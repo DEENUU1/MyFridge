@@ -57,11 +57,10 @@ class PostDeleteView(DeleteView):
 class PostListView(ListView):
     model = Post
     template_name = "post_list.html"
-    context_object_name = "posts"
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(author=self.request.user)
         return queryset
 
 
