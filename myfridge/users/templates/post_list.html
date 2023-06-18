@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Posts {% endblock %}
+
+
+{% block content %}
+
+{% for data in objects_list %}
+  {{data}}
+
+{% endfor %}
+
+
+{% endblock %}
