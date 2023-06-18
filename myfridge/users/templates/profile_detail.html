@@ -1,1 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | {{object.username}} {% endblock %}
+
+
+{% block content %}
+
 {{object.username}}
+
+
+{% if request.user in object.followed_by.all %}
+<form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
+  {% csrf_token %}
+  <input type="submit" value="Unfollow">
+</form>
+{% else %}
+<form method="POST" action="{% url 'users:follow' pk=object.id %}">
+  {% csrf_token %}
+  <input type="submit" value="Follow">
+</form>
+{% endif %}
+
+{% endblock %}

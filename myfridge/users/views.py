@@ -13,11 +13,11 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     TemplateView,
-    DetailView
+    DetailView, ListView
 )
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
-from .models import CustomUser
+from .models import CustomUser, UserFollowing
 from dishes.models import Dish
 from social.models import Rate
 from .forms import (
@@ -26,6 +26,8 @@ from .forms import (
     ChangePasswordForm,
     DeleteAccountForm,
 )
+from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 from .tokens import account_activation_token
@@ -215,6 +217,38 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
         return queryset
 
 
-class ProfileDetailView(DetailView):
+class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "profile_detail.html"
+
+
+class FollowUserView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        following_user = CustomUser.objects.get(id=pk)
+        UserFollowing.objects.get_or_create(user_id=request.user, following_user_id=following_user)
+        return redirect("users:profile")
+
+
+class UnfollowUserView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        following_user = CustomUser.objects.get(id=pk)
+        UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
+        return redirect("users:profile")
+
+
+class UserFollowingListView(LoginRequiredMixin, ListView):
+    model = UserFollowing
+    template_name = "following_list.html"
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        return user.follows.all()
+
+
+class UserFollowersListView(LoginRequiredMixin, ListView):
+    model = UserFollowing
+    template_name = "followers_list.html"
+
+    def get_queryset(self):
+        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        return user.followers.all()
