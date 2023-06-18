@@ -28,6 +28,16 @@ services:
             - celery
         env_file:
             - .env
+
+    nginx:
+        image: nginx:latest
+        volumes:
+            - ./config/nginx:/etc/nginx/conf.d
+        ports:
+            - 80:80
+        depends_on:
+            - web
+
     redis:
         image: redis:latest
         container_name: myfridge-redis

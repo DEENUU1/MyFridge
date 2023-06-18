@@ -21,8 +21,6 @@
                     <p class="card-text">{{object.author}} | {{object.created_date}}</p>
                     {% if object.image %}
                     <img class="card-img-top img-fluid mx-auto d-block" src="{{object.image.url}}">
-                    {% else %}
-                    <img class="card-img-top img-fluid mx-auto d-block" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg">
                     {% endif %}
                     <p class="card-text mt-3">{{object.text|safe}}</p>
                 </div>
