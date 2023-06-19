@@ -8,6 +8,8 @@
     <div class="row">
         <div class="col-md-3">
             <div class="sidebar">
+                <a href="{% url 'dishes:dish-create' %}">Add dish</a>
+                <a href="{% url 'dishes:random-dish' %}">Random dish</a>
                 <form method="GET" action="">
                     {% csrf_token %}
                     <div>{{ search_form|crispy }}</div>
@@ -44,7 +46,7 @@
                             <p><strong>Category:</strong> {{data.category}}</p>
                             <p><strong>Time to make:</strong> {{ data.time_to_make }}</p>
                             {% for ingredient in data.main_ingredient.all %}
-                                <span style="font-weight: bold; background-color:  #cfcfcf ; border-radius:25px; padding: 0 15px;" class="
+                                <span style="font-weight: bold; background-color: #cfcfcf; border-radius:25px; padding: 0 15px;" class="
                                     {% if ingredient.name in search_query  %}
                                         text-success
                                     {% else %}

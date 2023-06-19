@@ -3,15 +3,14 @@
 
 {% block meta_title%} MyFridge | Send Ingredient {% endblock %}
 
-
 {% block content %}
-
-
-<div class="container my-5">
+<div class="container-fluid vh-100 d-flex align-items-center justify-content-center">
+  <div class="container">
     <form method="POST" class="needs-validation" novalidate>
-        {% csrf_token %}
-        {{form|crispy}}
-        <button class="btn btn-primary" type="submit">Send</button>
+      {% csrf_token %}
+      {{form|crispy}}
+      <button class="btn btn-primary" type="submit">Send</button>
     </form>
+  </div>
 </div>
 {% endblock %}
