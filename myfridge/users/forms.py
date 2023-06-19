@@ -67,3 +67,7 @@ class DeleteAccountForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput)
     password = forms.CharField(widget=forms.PasswordInput)
     password_repeat = forms.CharField(widget=forms.PasswordInput)
+
+
+class SearchUsers(forms.Form):
+    query = forms.CharField(max_length=100)
