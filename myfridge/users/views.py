@@ -236,14 +236,14 @@ class FollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
         UserFollowing.objects.get_or_create(user_id=request.user, following_user_id=following_user)
-        return redirect("users:profile")
+        return redirect("users:profile_detail", pk=following_user.pk)
 
 
 class UnfollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
         UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
-        return redirect("users:profile")
+        return redirect("users:profile_detail", pk=following_user.pk)
 
 
 class UserFollowingListView(LoginRequiredMixin, ListView):
