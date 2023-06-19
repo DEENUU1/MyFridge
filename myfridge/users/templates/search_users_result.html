@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Search {{query}} {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    {% if users %}
+    <div class="row">
+        {% for user in users %}
+        <div class="col-md-4 my-2">
+            <div class="card">
+                <div class="card-body text-center">
+                    {% if user.image %}
+                    <img class="card-img-top" src="{{user.image.url}}">
+                    {% else %}
+                    <img class="card-img-top" src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg">
+                    {% endif %}
+                    <h5 class="card-title">{{user.username}}</h5>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+        I am sorry there is no any <strong>{{query}}</strong>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

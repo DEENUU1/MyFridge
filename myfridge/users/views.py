@@ -25,6 +25,7 @@ from .forms import (
     CustomUserLogin,
     ChangePasswordForm,
     DeleteAccountForm,
+    SearchUsers,
 )
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -37,6 +38,8 @@ from blog.models import Post
 from dishes.models import Dish
 
 from typing import Dict, Any
+
+from django.db.models import Q
 
 load_dotenv()
 
@@ -262,3 +265,14 @@ class UserFollowersListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         user = CustomUser.objects.get(id=self.kwargs['pk'])
         return user.followers.all()
+
+
+def search_users(request):
+    query = request.GET.get('q')
+    if query:
+        users = CustomUser.objects.filter(
+            Q(username__icontains=query) | Q(description__icontains=query)
+        )
+    else:
+        users = CustomUser.objects.none()
+    return render(request, "search_users_result.html", {"users": users, "query": query})
