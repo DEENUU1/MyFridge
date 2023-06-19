@@ -5,8 +5,33 @@
 
 {% block content %}
 
-{% for data in object_list %}
-  {{data.username}} {{data.points }} <br>
-{% endfor %}
+
+  <div class="container mt-5 mb-5">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h3>User Ranking</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">User</th>
+              <th scope="col">Points</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for data in object_list %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td><a class="text-decoration-none text-dark" href="{% url 'users:profile_detail' data.id %}">{{ data.username }}</a></td>
+                <td>{{ data.points }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}

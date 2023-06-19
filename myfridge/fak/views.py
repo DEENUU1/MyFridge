@@ -17,7 +17,7 @@ from django.forms.widgets import DateInput
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class FakListView(ListView):
+class FakListView(LoginRequiredMixin, ListView):
     model = Fak
     template_name = "fak_list.html"
     paginate_by = 10
@@ -25,7 +25,6 @@ class FakListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
-
         return queryset
 
     def get_context_data(self, **kwargs):
