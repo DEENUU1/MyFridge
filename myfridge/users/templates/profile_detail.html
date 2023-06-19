@@ -3,22 +3,40 @@
 
 {% block meta_title%} MyFridge | {{object.username}} {% endblock %}
 
-
 {% block content %}
 
-{{object.username}}
-
-
-{% if request.user in object.followed_by.all %}
-<form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
-  {% csrf_token %}
-  <input type="submit" value="Unfollow">
-</form>
-{% else %}
-<form method="POST" action="{% url 'users:follow' pk=object.id %}">
-  {% csrf_token %}
-  <input type="submit" value="Follow">
-</form>
-{% endif %}
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{object.username}}</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          {% if object.image %}
+          <img class="img-fluid rounded" style="width: 100%;" src="{{object.image.url}}">
+          {% else %}
+          <img class="img-fluid rounded" style="width: 100%;" src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg">
+          {% endif %}
+        </div>
+        <div class="col-md-8">
+          <p><strong>Points:</strong> {{object.points}}</p>
+          <p><strong>Description:</strong> {{object.description}}</p>
+        </div>
+      </div>
+      {% if request.user in object.followed_by.all %}
+        <form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-secondary mt-3" value="Unfollow">
+        </form>
+      {% else %}
+        <form method="POST" action="{% url 'users:follow' pk=object.id %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-primary mt-3" value="Follow">
+        </form>
+      {% endif %}
+    </div>
+  </div>
+</div>
 
 {% endblock %}
