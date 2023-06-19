@@ -3,22 +3,68 @@
 
 {% block meta_title%} MyFridge | {{object.username}} {% endblock %}
 
-
 {% block content %}
 
-{{object.username}}
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header bg-primary text-white">
+      <h2>{{object.username}}</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          {% if object.image %}
+          <img class="img-fluid rounded" style="width: 100%;" src="{{object.image.url}}">
+          {% else %}
+          <img class="img-fluid rounded" style="width: 100%;" src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg">
+          {% endif %}
+        </div>
+        <div class="col-md-8">
+          <p><strong>Points:</strong> {{object.points}}</p>
+          <p><strong>Description:</strong> {{object.description}}</p>
+          <p><strong>Following:</strong> <a href="{% url 'users:following' object.id %}">{{ following_count }}</a></p>
+          <p><strong>Followers:</strong> <a href="{% url 'users:followers' object.id %}">{{ followers_count }}</a></p>
+                {% if request.user in object.followed_by.all %}
+        <form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-secondary mt-3" value="Unfollow">
+        </form>
+      {% else %}
+        <form method="POST" action="{% url 'users:follow' pk=object.id %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-primary mt-3" value="Follow">
+        </form>
+      {% endif %}
+        </div>
+      </div>
+
+      <h3>User Dishes</h3>
+      {% for dish in user_dishes %}
+        <div>
+          <h4>{{ dish.name }}</h4>
+          {% if dish.image %}
+              <img class="card-img-top" style="width: 300px;" src="{{dish.image.url}}" alt="{{ post.name }}">
+          {% else %}
+              <img class="card-img-top" style="width: 300px;" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="No Image">
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <h3>User Posts</h3>
+      {% for post in user_posts %}
+        <div>
+          <h4>{{ post.title }}</h4>
+          {% if post.image %}
+              <img class="card-img-top" style="width: 300px;" src="{{post.image.url}}" alt="{{ post.name }}">
+          {% else %}
+              <img class="card-img-top" style="width: 300px;" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="No Image">
+          {% endif %}
+        </div>
+      {% endfor %}
 
 
-{% if request.user in object.followed_by.all %}
-<form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
-  {% csrf_token %}
-  <input type="submit" value="Unfollow">
-</form>
-{% else %}
-<form method="POST" action="{% url 'users:follow' pk=object.id %}">
-  {% csrf_token %}
-  <input type="submit" value="Follow">
-</form>
-{% endif %}
+    </div>
+  </div>
+</div>
 
 {% endblock %}
