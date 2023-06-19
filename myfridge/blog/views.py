@@ -24,6 +24,11 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+
+        user = self.request.user
+        user.points += 10
+        user.save()
+
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -86,6 +91,11 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.post = get_object_or_404(Post, pk=self.kwargs["post_id"])
+
+        user = self.request.user
+        user.points += 1
+        user.save()
+
         return super().form_valid(form)
 
     def get_success_url(self):
