@@ -44,8 +44,8 @@
                             <p><strong>Category:</strong> {{data.category}}</p>
                             <p><strong>Time to make:</strong> {{ data.time_to_make }}</p>
                             {% for ingredient in data.main_ingredient.all %}
-                                <span style="font-weight: bold;" class="
-                                    {% if ingredient in main_ingredient_form.cleaned_data.ingredients or ingredient.name in search_query  %}
+                                <span style="font-weight: bold; background-color:  #cfcfcf ; border-radius:25px; padding: 0 15px;" class="
+                                    {% if ingredient.name in search_query  %}
                                         text-success
                                     {% else %}
                                         text-black

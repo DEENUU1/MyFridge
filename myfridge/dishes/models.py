@@ -116,7 +116,7 @@ class Dish(models.Model):
     category = models.ForeignKey(DishCategory, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ("name",)
+        ordering = ("-date_created",)
         verbose_name = "Dish"
         verbose_name_plural = "Dishes"
 
