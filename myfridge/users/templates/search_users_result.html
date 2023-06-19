@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Search {{query}} {% endblock %}
+
+
+{% block content %}
+
+{% if users %}
+
+{% for user in users %}
+
+{{user.username}}
+{% if user.image %}
+<img src="{{user.image.url}}">
+
+{% else %}
+<img src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg">
+
+{% endif %}
+
+{% endfor %}
+
+{% else %}
+
+I am sorry there is no any <strong>{{query}}</strong>
+
+{% endif %}
+
+{% endblock %}

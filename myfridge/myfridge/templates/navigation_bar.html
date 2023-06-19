@@ -52,6 +52,11 @@
             </ul>
         </div>
 
+        <form method="get" action="{% url 'users:search_users' %}">
+            <i class="uil uil-search search-icon"></i>
+            <input name="q" type="text" placeholder="Search users" />
+        </form>
+
         <div class="d-flex align-items-center">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             

@@ -40,4 +40,5 @@ urlpatterns = [
     path("unfollow/<int:pk>/", views.UnfollowUserView.as_view(), name="unfollow"),
     path("profile/<int:pk>/following", views.UserFollowingListView.as_view(), name="following"),
     path("profile/<int:pk>/followers", views.UserFollowersListView.as_view(), name="followers"),
+    path("search/", views.search_users, name="search_users"),
 ]
