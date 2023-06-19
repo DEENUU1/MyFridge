@@ -22,9 +22,9 @@
         <div class="col-md-8">
           <p><strong>Points:</strong> {{object.points}}</p>
           <p><strong>Description:</strong> {{object.description}}</p>
-        </div>
-      </div>
-      {% if request.user in object.followed_by.all %}
+          <p><strong>Following:</strong> <a href="{% url 'users:following' object.id %}">{{ following_count }}</a></p>
+          <p><strong>Followers:</strong> <a href="{% url 'users:followers' object.id %}">{{ followers_count }}</a></p>
+                {% if request.user in object.followed_by.all %}
         <form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
           {% csrf_token %}
           <input type="submit" class="btn btn-secondary mt-3" value="Unfollow">
@@ -35,6 +35,34 @@
           <input type="submit" class="btn btn-primary mt-3" value="Follow">
         </form>
       {% endif %}
+        </div>
+      </div>
+
+      <h3>User Dishes</h3>
+      {% for dish in user_dishes %}
+        <div>
+          <h4>{{ dish.name }}</h4>
+          {% if dish.image %}
+              <img class="card-img-top" style="width: 300px;" src="{{dish.image.url}}" alt="{{ post.name }}">
+          {% else %}
+              <img class="card-img-top" style="width: 300px;" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="No Image">
+          {% endif %}
+        </div>
+      {% endfor %}
+
+      <h3>User Posts</h3>
+      {% for post in user_posts %}
+        <div>
+          <h4>{{ post.title }}</h4>
+          {% if post.image %}
+              <img class="card-img-top" style="width: 300px;" src="{{post.image.url}}" alt="{{ post.name }}">
+          {% else %}
+              <img class="card-img-top" style="width: 300px;" src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg" alt="No Image">
+          {% endif %}
+        </div>
+      {% endfor %}
+
+
     </div>
   </div>
 </div>

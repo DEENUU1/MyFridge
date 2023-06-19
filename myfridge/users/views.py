@@ -33,6 +33,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .tokens import account_activation_token
 from social.models import Feedback
 from social.models import FavouriteDish
+from blog.models import Post
+from dishes.models import Dish
 
 from typing import Dict, Any
 
@@ -220,6 +222,14 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
 class ProfileDetailView(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = "profile_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user_dishes"] = Dish.objects.filter(author=self.object)
+        context["user_posts"] = Post.objects.filter(author=self.object)
+        context["following_count"] = UserFollowing.objects.filter(following_user_id=self.object.id).count()
+        context["followers_count"] = UserFollowing.objects.filter(user_id=self.object.id).count()
+        return context
 
 
 class FollowUserView(LoginRequiredMixin, View):
