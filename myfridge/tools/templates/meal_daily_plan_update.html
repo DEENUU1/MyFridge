@@ -10,6 +10,7 @@
 <div class="container mt-5 mb-5">
     <form method="post">
         {% csrf_token %}
+        {{form.media}}
         {{form|crispy}}
         <button class="btn btn-success" type="submit">Update meal plan</button>
     </form>
