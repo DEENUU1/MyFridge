@@ -18,7 +18,7 @@
                             <button type="submit" class="btn btn-secondary mt-2">Delete</button>
                         </form>
                         {% endif %}
-                    <p class="card-text">{{object.author}} | {{object.created_date}}</p>
+                    <p class="card-text"><a href="{% url 'users:profile_detail' object.author.id %}">{{object.author}}</a> | {{object.created_date}}</p>
                     {% if object.image %}
                     <img class="card-img-top img-fluid mx-auto d-block" src="{{object.image.url}}">
                     {% endif %}
@@ -32,7 +32,7 @@
             {% for comment in comments %}
                 <div class="card my-2">
                     <div class="card-body">
-                        <h5 class="card-title">{{comment.author}}</h5>
+                        <h5 class="card-title"><a href="{% url 'users:profile_detail' comment.author.id %}">{{comment.author}}</a></h5>
                         <p class="card-text">{{comment.text}}</p>
                         {% if comment.author == user %}
                         <form action="{% url 'blog:delete_comment' comment.id %}" method="POST">
