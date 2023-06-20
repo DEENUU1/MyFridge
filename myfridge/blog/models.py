@@ -42,3 +42,4 @@ def notification_post_add_comment(sender, instance, created, **kwargs):
             verb=f"{instance.author.username} commented on your post {instance.post.title}",
             target=instance.post
             )
+post_save.connect(notification_post_add_comment, sender=Comment)

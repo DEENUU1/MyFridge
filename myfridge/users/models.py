@@ -24,8 +24,9 @@ class UserFollowing(models.Model):
 def notification_new_follower(sender, instance, created, **kwargs):
     if created:
         notify.send(
-            instance.following_user_id,
+            instance.user_id,
             recipient=instance.following_user_id,
             verb=f"{instance.user_id} is now following you!",
-            target=instance.UserFollowing
+            target=instance
             )
+post_save.connect(notification_new_follower, sender=UserFollowing)

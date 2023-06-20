@@ -68,3 +68,4 @@ def notification_dish_add_rate(sender, instance, created, **kwargs):
             verb=f"{instance.author.username} added rate {instance.choose_rate} to {instance.dish.name}",
             target=instance.dish
             )
+post_save.connect(notification_dish_add_rate, sender=Rate)
