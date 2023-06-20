@@ -2,7 +2,7 @@ from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
@@ -286,3 +286,13 @@ def notifications_list_view(request):
     """
     unread_notifications = Notification.objects.unread().filter(recipient=request.user)
     return render(request, "notifications.html", {"unread_notifications": unread_notifications})
+
+
+def notifications_mark_as_read(request):
+    if request.method == "POST":
+        unread_notifications = Notification.objects.unread().filter(recipient=request.user)
+        for notification in unread_notifications:
+            notification.mark_as_read()
+        return JsonResponse({"status": "success"})
+    else:
+        return JsonResponse({"status": "fail"})
