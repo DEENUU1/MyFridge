@@ -70,6 +70,13 @@ class MealDailyPlan(models.Model):
     dinner = models.ForeignKey(
         Meal, on_delete=models.CASCADE, related_name="dinner", null=True, blank=True
     )
+    is_public = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.date} {self.month} {self.year}"
+
+    @property
+    def meal_plan_status(self):
+        if not self.is_public:
+            return "Private"
+        return "Public"
