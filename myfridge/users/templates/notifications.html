@@ -3,37 +3,31 @@
 
 {% block meta_title%} MyFridge | Notifications {% endblock %}
 
-
 {% block content %}
 
-
-{% for notification in unread_notifications %}
-    <li>
-    {{ notification.verb }}
-    </li>
-{% empty %}
-    <li>No unread notifications.</li>
-{% endfor %}
-
-
+<div class="container mt-5">
+    <ul class="list-group">
+        {% for notification in unread_notifications %}
+            <li class="list-group-item">
+                {{ notification.verb }}
+            </li>
+        {% empty %}
+            <div class="alert alert-info" role="alert">
+                <li>No unread notifications.</li>
+            </div>
+        {% endfor %}
+    </ul>
+</div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function() {
-    // After the notifications are displayed, send a POST request to mark them as read
     $.ajax({
         url: '{% url "users:mark_notification_as_read" %}',
         method: 'POST',
         data: {
             csrfmiddlewaretoken: '{{ csrf_token }}'
         },
-        success: function(data) {
-            if (data.status == 'success') {
-                console.log('Notifications marked as read');
-            } else {
-                console.log('Failed to mark notifications as read');
-            }
-        }
     });
 });
 </script>
