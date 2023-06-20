@@ -58,3 +58,13 @@ def notification_dish_add_to_favourite(sender, instance, created, **kwargs):
             target=instance.dish
             )
 post_save.connect(notification_dish_add_to_favourite, sender=FavouriteDish)
+
+
+def notification_dish_add_rate(sender, instance, created, **kwargs):
+    if created:
+        notify.send(
+            instance.author,
+            recipient=instance.dish.author,
+            verb=f"{instance.author.username} added rate {instance.choose_rate} to {instance.dish.name}",
+            target=instance.dish
+            )
