@@ -16,7 +16,7 @@
                     {% else %}
                     <img class="card-img-top" src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg">
                     {% endif %}
-                    <h5 class="card-title">{{user.username}}</h5>
+                    <h5 class="card-title"><a href="{% url 'users:profile_detail' user.id %}">{{user.username}}</a></h5>
                 </div>
             </div>
         </div>
