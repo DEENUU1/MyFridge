@@ -41,4 +41,5 @@ urlpatterns = [
     path("profile/<int:pk>/following", views.UserFollowingListView.as_view(), name="following"),
     path("profile/<int:pk>/followers", views.UserFollowersListView.as_view(), name="followers"),
     path("search/", views.search_users, name="search_users"),
+    path("notifications/", views.notifications_list_view, name="notifications"),
 ]

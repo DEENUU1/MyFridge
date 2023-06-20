@@ -42,23 +42,29 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Django build in 
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    
+    # Third party
     "crispy_forms",
     "crispy_bootstrap5",
     "django_celery_beat",
     "ckeditor",
-    "dishes",  # project
-    "users",  # project
-    "social",  # project
-    "contact",  # project
-    "tools",  # project
-    "fak",  # project
-    "blog"  # project
+    "notifications",
+
+    # Created 
+    "dishes", 
+    "users",
+    "social",
+    "contact",
+    "tools", 
+    "fak",
+    "blog"
 ]
 
 MIDDLEWARE = [

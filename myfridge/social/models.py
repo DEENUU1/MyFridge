@@ -1,6 +1,8 @@
 from django.db import models
 from dishes.models import Dish
 from users.models import CustomUser
+from django.db.models.signals import post_save
+from notifications.signals import notify
 
 
 class Rate(models.Model):
@@ -45,3 +47,14 @@ class FavouriteDish(models.Model):
 
     def __str__(self):
         return f"{self.user} {self.dish.name}"
+
+
+def notification_dish_add_to_favourite(sender, instance, created, **kwargs):
+    if created:
+        notify.send(
+            instance.user,
+            recipient=instance.dish.author,
+            verb=f"{instance.user.username} added {instance.dish.name} to favourite",
+            target=instance.dish
+            )
+post_save.connect(notification_dish_add_to_favourite, sender=FavouriteDish)

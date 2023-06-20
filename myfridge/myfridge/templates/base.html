@@ -1,3 +1,6 @@
+{% load notifications_tags %}
+{% notifications_unread as unread_count %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,6 +17,11 @@
 <body>
     {% include "navigation_bar.html" %}
 
+    {% if unread_count %}
+        <a href="{% url 'users:notifications' %}">You have <strong> {{unread_count}}</strong> unread notifications.</a>
+    {% endif %}
+
+        
     {% block content %}
 
     {% endblock %}

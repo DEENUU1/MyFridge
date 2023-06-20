@@ -40,6 +40,8 @@ from dishes.models import Dish
 from typing import Dict, Any
 
 from django.db.models import Q
+from notifications.models import Notification
+from django.shortcuts import render
 
 load_dotenv()
 
@@ -276,3 +278,11 @@ def search_users(request):
     else:
         users = CustomUser.objects.none()
     return render(request, "search_users_result.html", {"users": users, "query": query})
+
+
+def notifications_list_view(request):
+    """
+    Display a list of unreaded notifications 
+    """
+    unread_notifications = Notification.objects.unread().filter(recipient=request.user)
+    return render(request, "notifications.html", {"unread_notifications": unread_notifications})
