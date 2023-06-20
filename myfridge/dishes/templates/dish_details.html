@@ -18,7 +18,7 @@
                             <button type="submit" class="btn btn-secondary mt-2">Delete</button>
                         </form>
                         {% endif %}
-                    <p class="card-text">{{object.author}} | {{object.date_created}}</p>
+                    <p class="card-text"><a href="{% url 'users:profile_detail' object.author.id %}">{{object.author}}</a> | {{object.date_created}}</p>
                     {% if object.image %}
                     <img class="card-img-top img-fluid mx-auto d-block" src="{{object.image.url}}">
                     {% else %}
@@ -69,7 +69,7 @@
             {% for rate in rates %}
                 <div class="card my-2">
                     <div class="card-body">
-                        <h5 class="card-title">{{rate.author}} {{rate.choose_rate}}</h5>
+                        <h5 class="card-title"><a href="{% url 'users:profile_detail' rate.author.id %}">{{rate.author}}</a> {{rate.choose_rate}}</h5>
                         <p class="card-text">{{rate.comment}}</p>
                         {% if rate.author == user %}
                           <form method="POST" action="{% url 'social:rate-delete' object.id %}" class="d-inline">
