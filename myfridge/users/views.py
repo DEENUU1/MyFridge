@@ -29,6 +29,7 @@ from .forms import (
 )
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
+from tools.models import MealDailyPlan
 
 
 from .tokens import account_activation_token
@@ -234,6 +235,7 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         context["user_posts"] = Post.objects.filter(author=self.object)
         context["following_count"] = UserFollowing.objects.filter(following_user_id=self.object.id).count()
         context["followers_count"] = UserFollowing.objects.filter(user_id=self.object.id).count()
+        context["daily_meal_plan"] = MealDailyPlan.objects.filter(is_public=True)
         return context
 
 

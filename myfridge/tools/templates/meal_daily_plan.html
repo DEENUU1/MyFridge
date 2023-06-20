@@ -6,8 +6,16 @@
 
 {% block content %}
 
-
+<a href="{% url 'tools:meal_plan_create' %}">Crete daily meal plan</a> <br>
+<a href="{% url 'tools:meal_create' %}">Create meal</a> <br>
+<br> <br> <br>
 {% for data in object_list %}
+    <a href="{% url 'tools:meal_plan_details' data.id %}">Details</a> <br>
+    <a href="{% url 'tools:meal_plan_update' data.id %}">Update</a> <br>
+    <form action="{% url 'tools:meal_plan_delete' data.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-secondary mt-2">Delete</button>
+    </form> <br>
     {{data.date}}
     {{data.month}}
     {{data.year}}

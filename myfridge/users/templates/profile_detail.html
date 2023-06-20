@@ -50,6 +50,18 @@
         </div>
       {% endfor %}
 
+      <h3>User Daily Meal Plan</h3>
+      {% for plan in daily_meal_plan %}
+        <div>
+          <h4>{{plan.date}}</h4>
+          {{plan.breakfast}}
+          {{plan.second_breakfast}}
+          {{plan.lunch}}
+          {{plan.tea}}
+          {{plan.dinner}}
+        </div>
+      {% endfor %}
+
       <h3>User Posts</h3>
       {% for post in user_posts %}
         <div>
