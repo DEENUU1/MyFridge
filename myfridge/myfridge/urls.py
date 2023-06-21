@@ -29,5 +29,7 @@ urlpatterns = [
     path("tools/", include("tools.urls")),
     path("fak/", include("fak.urls")),
     path("blog/", include("blog.urls")),
-    path("^inbox/notifications/", include(notifications.urls, namespace="notifications")),
+    path(
+        "^inbox/notifications/", include(notifications.urls, namespace="notifications")
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

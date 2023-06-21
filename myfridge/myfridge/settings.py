@@ -42,29 +42,27 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # Django build in 
+    # Django build in
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     # Third party
     "crispy_forms",
     "crispy_bootstrap5",
     "django_celery_beat",
     "ckeditor",
     "notifications",
-
-    # Created 
-    "dishes", 
+    # Created
+    "dishes",
     "users",
     "social",
     "contact",
-    "tools", 
+    "tools",
     "fak",
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -84,7 +82,7 @@ sentry_sdk.init(
         DjangoIntegration(),
     ],
     traces_sample_rate=1.0,
-    send_default_pii=True
+    send_default_pii=True,
 )
 
 
@@ -118,7 +116,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django.template.context_processors.media"
+                "django.template.context_processors.media",
             ],
         },
     },

@@ -183,7 +183,7 @@ class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
         "lunch",
         "tea",
         "dinner",
-        "is_public"
+        "is_public",
     )
     success_url = reverse_lazy("tools:meal_plan_list")
 
@@ -214,7 +214,7 @@ class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
         "lunch",
         "tea",
         "dinner",
-        "is_public"
+        "is_public",
     )
     success_url = reverse_lazy("tools:meal_plan_list")
 

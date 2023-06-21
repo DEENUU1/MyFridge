@@ -14,7 +14,7 @@ class Post(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_date']
+        ordering = ["-created_date"]
 
     def __str__(self):
         return self.title
@@ -28,7 +28,7 @@ class Comment(models.Model):
     date_updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-date_created']
+        ordering = ["-date_created"]
 
     def __str__(self):
         return f"{self.author} {self.post}"
@@ -40,6 +40,8 @@ def notification_post_add_comment(sender, instance, created, **kwargs):
             instance.author,
             recipient=instance.post.author,
             verb=f"{instance.author.username} commented on your post {instance.post.title}",
-            target=instance.post
-            )
+            target=instance.post,
+        )
+
+
 post_save.connect(notification_post_add_comment, sender=Comment)

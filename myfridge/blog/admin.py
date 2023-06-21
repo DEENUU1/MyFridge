@@ -12,4 +12,3 @@ class PostModelAdmin(admin.ModelAdmin):
 class CommentModelAdmin(admin.ModelAdmin):
     list_display = ["author", "post", "date_created", "date_updated"]
     list_filter = ["author", "date_created", "date_updated"]
-

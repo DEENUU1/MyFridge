@@ -13,7 +13,8 @@ from django.views.generic import (
     CreateView,
     UpdateView,
     TemplateView,
-    DetailView, ListView
+    DetailView,
+    ListView,
 )
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
@@ -233,8 +234,12 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         context["user_dishes"] = Dish.objects.filter(author=self.object)
         context["user_posts"] = Post.objects.filter(author=self.object)
-        context["following_count"] = UserFollowing.objects.filter(following_user_id=self.object.id).count()
-        context["followers_count"] = UserFollowing.objects.filter(user_id=self.object.id).count()
+        context["following_count"] = UserFollowing.objects.filter(
+            following_user_id=self.object.id
+        ).count()
+        context["followers_count"] = UserFollowing.objects.filter(
+            user_id=self.object.id
+        ).count()
         context["daily_meal_plan"] = MealDailyPlan.objects.filter(is_public=True)
         return context
 
@@ -242,14 +247,18 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 class FollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
-        UserFollowing.objects.get_or_create(user_id=request.user, following_user_id=following_user)
+        UserFollowing.objects.get_or_create(
+            user_id=request.user, following_user_id=following_user
+        )
         return redirect("users:profile_detail", pk=following_user.pk)
 
 
 class UnfollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
         following_user = CustomUser.objects.get(id=pk)
-        UserFollowing.objects.filter(user_id=request.user, following_user_id=following_user).delete()
+        UserFollowing.objects.filter(
+            user_id=request.user, following_user_id=following_user
+        ).delete()
         return redirect("users:profile_detail", pk=following_user.pk)
 
 
@@ -258,7 +267,7 @@ class UserFollowingListView(LoginRequiredMixin, ListView):
     template_name = "following_list.html"
 
     def get_queryset(self):
-        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        user = CustomUser.objects.get(id=self.kwargs["pk"])
         return user.follows.all()
 
 
@@ -267,12 +276,12 @@ class UserFollowersListView(LoginRequiredMixin, ListView):
     template_name = "followers_list.html"
 
     def get_queryset(self):
-        user = CustomUser.objects.get(id=self.kwargs['pk'])
+        user = CustomUser.objects.get(id=self.kwargs["pk"])
         return user.followers.all()
 
 
 def search_users(request):
-    query = request.GET.get('q')
+    query = request.GET.get("q")
     if query:
         users = CustomUser.objects.filter(
             Q(username__icontains=query) | Q(description__icontains=query)
@@ -284,15 +293,19 @@ def search_users(request):
 
 def notifications_list_view(request):
     """
-    Display a list of unreaded notifications 
+    Display a list of unreaded notifications
     """
     unread_notifications = Notification.objects.unread().filter(recipient=request.user)
-    return render(request, "notifications.html", {"unread_notifications": unread_notifications})
+    return render(
+        request, "notifications.html", {"unread_notifications": unread_notifications}
+    )
 
 
 def notifications_mark_as_read(request):
     if request.method == "POST":
-        unread_notifications = Notification.objects.unread().filter(recipient=request.user)
+        unread_notifications = Notification.objects.unread().filter(
+            recipient=request.user
+        )
         for notification in unread_notifications:
             notification.mark_as_read()
         return JsonResponse({"status": "success"})

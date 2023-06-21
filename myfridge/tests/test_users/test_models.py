@@ -32,8 +32,7 @@ def test_model_user_following_successfully_created():
         description="Simple test description",
     )
     user_following = UserFollowing.objects.create(
-        user_id=user_1,
-        following_user_id=user_2
+        user_id=user_1, following_user_id=user_2
     )
     assert user_following.user_id == user_1
     assert user_following.following_user_id == user_2
