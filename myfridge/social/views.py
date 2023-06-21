@@ -17,6 +17,7 @@ from users.models import CustomUser
 from typing import Dict, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
+from django.contrib import messages
 
 
 class CreateRateView(LoginRequiredMixin, CreateView):
@@ -26,8 +27,13 @@ class CreateRateView(LoginRequiredMixin, CreateView):
     template_name = "rate_create.html"
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
         dish = get_object_or_404(Dish, pk=self.kwargs["pk"])
+
+        if self.request.user == dish.author:
+            messages.error(self.request, "You can not rate your own dish.")
+            return super().form_invalid(form)
+
+        form.instance.author = self.request.user
         form.instance.dish = dish
 
         user = self.request.user
