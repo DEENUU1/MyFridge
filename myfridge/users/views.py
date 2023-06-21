@@ -1,9 +1,8 @@
 from django.contrib.auth import login, logout
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse, HttpRequest, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str
@@ -19,16 +18,13 @@ from django.views.generic import (
 from django.views.generic.edit import FormView
 from dotenv import load_dotenv
 from .models import CustomUser, UserFollowing
-from dishes.models import Dish
 from social.models import Rate
 from .forms import (
     CustomUserRegistration,
     CustomUserLogin,
     ChangePasswordForm,
     DeleteAccountForm,
-    SearchUsers,
 )
-from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tools.models import MealDailyPlan
 
@@ -39,11 +35,10 @@ from social.models import FavouriteDish
 from blog.models import Post
 from dishes.models import Dish
 
-from typing import Dict, Any
-
 from django.db.models import Q
 from notifications.models import Notification
 from django.shortcuts import render
+from django.contrib import messages
 
 load_dotenv()
 
@@ -93,13 +88,11 @@ def send_activation_url(request: HttpRequest, uidb64: str, token: str) -> HttpRe
         user.is_active = True
         user.save()
         login(request, user)
-        return HttpResponse(
-            "Thank you for your email confirmation. Now you can login your account."
-        )
-    # TODO redirect to home page and display a message about success
+        messages.success(request, "Your account has been activated!")
+        return redirect("dishes:home")
     else:
-        return HttpResponse("Activation link is invalid!")
-    # TODO redirect to home page and display a message about failure
+        messages.error(request, "Invalid activation link")
+        return redirect("dishes:home")
 
 
 class SuccessRegisterView(TemplateView):
@@ -139,8 +132,7 @@ class ChangePasswordView(FormView):
         try:
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
-            form.add_error(None, "User with this email does not exist")
-            # TODO display error as a message
+            messages.error(self.request, "User with this email does not exist")
             return super().form_invalid(form)
 
         if not user.check_password(form.cleaned_data["old_password"]):
@@ -178,16 +170,14 @@ class DeleteAccountView(FormView):
         try:
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
-            form.add_error(None, "User with this email does not exist")
-            # TODO dispaly error as a message
+            messages.error(self.request, "User with this email does not exist")
             return super().form_invalid(form)
 
         if not user.check_password(form.cleaned_data["password"]):
-            form.add_error("password", "Password is incorrect")
+            messages.error(self.request, "Password is incorrect")
             return super().form_invalid(form)
 
         user.delete()
-
         return super().form_valid(form)
 
 
@@ -214,16 +204,16 @@ class UserProfileView(LoginRequiredMixin, View):
 
         return render(request, "profile.html", context)
 
-    def post(self, request):
-        pass
-
 
 class UpdateProfileView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     fields = ("image", "description", "newsletter")
     template_name = "update_profile.html"
     success_url = reverse_lazy("users:profile")
-    # TODO display a message after success update
+
+    def form_valid(self, form):
+        messages.success(self.request, "Your profile has been updated!")
+        return super().form_valid(form)
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -255,7 +245,6 @@ class FollowUserView(LoginRequiredMixin, View):
         UserFollowing.objects.get_or_create(
             user_id=request.user, following_user_id=following_user
         )
-        # TODO Display a message after success follow
         return redirect("users:profile_detail", pk=following_user.pk)
 
 
@@ -265,7 +254,6 @@ class UnfollowUserView(LoginRequiredMixin, View):
         UserFollowing.objects.filter(
             user_id=request.user, following_user_id=following_user
         ).delete()
-        # TODO display a message after success unfollow
         return redirect("users:profile_detail", pk=following_user.pk)
 
 
