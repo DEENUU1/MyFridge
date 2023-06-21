@@ -3,7 +3,6 @@ from typing import Any, Dict
 from django.urls import reverse_lazy
 
 from .models import Fak, Medicine
-from django.core.exceptions import PermissionDenied
 from django.views.generic import (
     ListView,
     CreateView,

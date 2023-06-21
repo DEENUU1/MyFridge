@@ -15,6 +15,7 @@ from django.views.generic import (
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
 from .models import ShoppingList, Meal, MealDailyPlan
 from django.forms.widgets import DateInput
+from django.contrib import messages
 
 
 def bmiView(request):  # Remove camel case
@@ -71,6 +72,9 @@ class ShoppingListCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("tools:shopping_list")
     # TODO success url to created shopping list
 
+    def get_success_url(self):
+        return reverse_lazy("tools:shopping_list")
+
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
@@ -87,15 +91,15 @@ class ShoppingListUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "shopping_list_update.html"
     fields = ("name", "quantity", "is_bought")
     success_url = reverse_lazy("tools:shopping_list")
-    # TODO success url to updated shopping list
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Shopping List.")
-        # TODO display as a message
-        # TODO display message after success update
+            messages.error(
+                self.request, "You are not authorized to update this Shopping List."
+            )
+        messages.success(self.request, "Shopping List updated successfully.")
         return queryset
 
 
@@ -107,11 +111,10 @@ class ShoppingListDeleteView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied(
-                "You are not authorized to delete this Shopping List."
+            messages.error(
+                self.request, "You are not authorized to delete this Shopping List."
             )
-        # TODO display as a message
-        # TODO display a message after success delete
+        messages.success(self.request, "Shopping List deleted successfully.")
         return queryset
 
 
@@ -135,16 +138,17 @@ class MealCreateView(LoginRequiredMixin, CreateView):
     model = Meal
     template_name = "meal_create.html"
     fields = ("name", "content", "url", "dish")
-    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_success_url(self):
+        return reverse_lazy("tools:meal_details", kwargs={"pk": self.kwargs["pk"]})
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "Meal created successfully.")
         return super().form_valid(form)
-        # TODO display a message after success creation
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -152,15 +156,16 @@ class MealUpdateView(LoginRequiredMixin, UpdateView):
     model = Meal
     template_name = "meal_update.html"
     fields = ("name", "content", "url", "dish")
-    success_url = reverse_lazy("tools:meal_plan_list")
+
+    def get_success_url(self):
+        return reverse_lazy("tools:meal_details", kwargs={"pk": self.kwargs["pk"]})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Meal.")
-        # TODO display as a message
-        # TODO display message after success update
+            messages.error(self.request, "You are not authorized to update this Meal.")
+        messages.success(self.request, "Meal updated successfully.")
         return queryset
 
 
@@ -172,9 +177,8 @@ class MealDeleteView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to delete this Meal.")
-        # TODO display as a message
-        # TODO display a message after success delete
+            messages.error(self.request, "You are not authorized to delete this Meal.")
+        messages.success(self.request, "Meal deleted successfully.")
         return queryset
 
 
@@ -206,12 +210,11 @@ class MealDailyPlanCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, "Meal Daily Plan created successfully.")
         return super().form_valid(form)
-        # TODO display a message after success creation
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -229,8 +232,9 @@ class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
         "dinner",
         "is_public",
     )
-    success_url = reverse_lazy("tools:meal_plan_list")
-    # TODO success url to updated meal daily plan
+
+    def get_success_url(self):
+        return reverse_lazy("tools:meal_plan_details", kwargs={"pk": self.kwargs["pk"]})
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -241,11 +245,10 @@ class MealDailyPlanUpdateView(LoginRequiredMixin, UpdateView):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied(
-                "You are not authorized to edit this Meal Daily Plan."
+            messages.error(
+                self.request, "You are not authorized to update this Meal Daily Plan."
             )
-        # TODO display as a message
-        # TODO display message after success update
+        messages.success(self.request, "Meal Daily Plan updated successfully.")
         return queryset
 
 
@@ -257,11 +260,10 @@ class MealDailyPlanDeleteView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied(
-                "You are not authorized to delete this Meal Daily Plan."
+            messages.error(
+                self.request, "You are not authorized to delete this Daily Meal Plan."
             )
-        # TODO display as a message
-        # TODO display a message after success delete
+        messages.success(self.request, "Meal Daily Plan deleted successfully.")
         return queryset
 
 
@@ -273,7 +275,6 @@ class MealDailyPlanListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(user=self.request.user)
-
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
