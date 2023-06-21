@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 
 from .models import Dish

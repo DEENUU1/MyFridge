@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from .models import Fak, Medicine
@@ -11,10 +10,10 @@ from django.views.generic import (
     UpdateView,
     DeleteView,
     DetailView,
-    FormView,
 )
 from django.forms.widgets import DateInput
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 
 class FakListView(LoginRequiredMixin, ListView):
@@ -36,13 +35,14 @@ class FakCreateView(LoginRequiredMixin, CreateView):
     model = Fak
     template_name = "fak_create.html"
     fields = ("name",)
-    success_url = reverse_lazy("fak:fak_home")
-    # Todo success url to the created Fak object
+
+    def get_success_url(self):
+        return reverse_lazy("fak:fak_detail", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Fak created successfully")
         return super().form_valid(form)
-        # TODO display message after success create
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -53,16 +53,16 @@ class FakUpdateView(LoginRequiredMixin, UpdateView):
     model = Fak
     template_name = "fak_update.html"
     fields = ("name",)
-    success_url = reverse_lazy("fak:fak_home")
-    # TODO success url to the updated Fak object
+
+    def get_success_url(self):
+        return reverse_lazy("fak:fak_detail", kwargs={"pk": self.object.pk})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Fak.")
-            # TODO display as a message
-        # TODO display a message after success update
+            messages.error(self.request, "You are not authorized to edit this Fak.")
+        messages.success(self.request, "Fak updated successfully")
         return queryset
 
 
@@ -74,9 +74,8 @@ class FakDeleteView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Fak.")
-            # TODO Display as a message
-        # TODO display message after success delete
+            messages.error(self.request, "You are not authorized to delete this Fak.")
+        messages.success(self.request, "Fak deleted successfully")
         return queryset
 
 
@@ -84,13 +83,14 @@ class MedicineCreateView(LoginRequiredMixin, CreateView):
     model = Medicine
     template_name = "medicine_create.html"
     fields = ("name", "expiration_date", "quantity", "fak")
-    success_url = reverse_lazy("fak:fak_home")
-    # TODO success url to the fak where medicine was create
+
+    def get_success_url(self):
+        return reverse_lazy("fak:fak_detail", kwargs={"pk": self.object.fak.pk})
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Medicine created successfully")
         return super().form_valid(form)
-        # TODO Display message after success create
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -106,30 +106,35 @@ class MedicineUpdateView(LoginRequiredMixin, UpdateView):
     model = Medicine
     template_name = "medicine_update.html"
     fields = ("name", "expiration_date", "quantity", "fak")
-    success_url = reverse_lazy("fak:fak_home")
-    # TODO success url to the updated medicine
+
+    def get_success_url(self):
+        return reverse_lazy("fak:fak_detail", kwargs={"pk": self.object.fak.pk})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Medicine.")
-        # TODO display as a message
-        # TODO display a message after success update
+            messages.error(
+                self.request, "You are not authorized to edit this Medicine."
+            )
+        messages.success(self.request, "Medicine updated successfully")
         return queryset
 
 
 class MedicineDeleteView(LoginRequiredMixin, DeleteView):
     model = Medicine
-    success_url = reverse_lazy("fak:fak_home")
+
+    def get_success_url(self):
+        return reverse_lazy("fak:fak_detail", kwargs={"pk": self.object.fak.pk})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to delete this Medicine.")
-        # TODO display as a message
-        # TODO display a message after success delete
+            messages.error(
+                self.request, "You are not authorized to delete this Medicine."
+            )
+        messages.success(self.request, "Medicine deleted successfully")
         return queryset
 
 
@@ -141,7 +146,6 @@ class FakDetailsView(LoginRequiredMixin, DetailView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
-
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
