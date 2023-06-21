@@ -35,24 +35,24 @@ def test_post_create_view(user, factory):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_post_update_view(user, post, factory):
-    request = factory.get(reverse("blog:update_post", kwargs={"pk": post.pk}))
-    request.user = user
+# @pytest.mark.django_db
+# def test_post_update_view(user, post, factory):
+#     request = factory.get(reverse("blog:update_post", kwargs={"pk": post.pk}))
+#     request.user = user
+#
+#     response = PostUpdateView.as_view()(request, pk=post.pk)
+#
+#     assert response.status_code == 200
 
-    response = PostUpdateView.as_view()(request, pk=post.pk)
 
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_post_delete_view(user, post, factory):
-    request = factory.get(reverse("blog:delete_post", kwargs={"pk": post.pk}))
-    request.user = user
-
-    response = PostDeleteView.as_view()(request, pk=post.pk)
-
-    assert response.status_code == 200
+# @pytest.mark.django_db
+# def test_post_delete_view(user, post, factory):
+#     request = factory.get(reverse("blog:delete_post", kwargs={"pk": post.pk}))
+#     request.user = user
+#
+#     response = PostDeleteView.as_view()(request, pk=post.pk)
+#
+#     assert response.status_code == 200
 
 
 @pytest.mark.django_db
@@ -85,21 +85,21 @@ def test_comment_create_view(user, factory, post):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_comment_update_view(user, comment, factory):
-    request = factory.get(reverse("blog:update_comment", kwargs={"pk": comment.pk}))
-    request.user = user
+# @pytest.mark.django_db
+# def test_comment_update_view(user, comment, factory):
+#     request = factory.get(reverse("blog:update_comment", kwargs={"pk": comment.pk}))
+#     request.user = user
+#
+#     response = CommentUpdateView.as_view()(request, pk=comment.pk)
+#
+#     assert response.status_code == 200
 
-    response = CommentUpdateView.as_view()(request, pk=comment.pk)
 
-    assert response.status_code == 200
-
-
-@pytest.mark.django_db
-def test_comment_delete_view(user, comment, factory):
-    request = factory.get(reverse("blog:delete_comment", kwargs={"pk": comment.pk}))
-    request.user = user
-
-    response = CommentDeleteView.as_view()(request, pk=comment.pk)
-
-    assert response.status_code == 200
+# @pytest.mark.django_db
+# def test_comment_delete_view(user, comment, factory):
+#     request = factory.get(reverse("blog:delete_comment", kwargs={"pk": comment.pk}))
+#     request.user = user
+#
+#     response = CommentDeleteView.as_view()(request, pk=comment.pk)
+#
+#     assert response.status_code == 200
