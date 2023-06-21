@@ -39,7 +39,7 @@ class CreateRateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         user.points += 1
         user.save()
-
+        # TODO display a message about points
         if form.instance.choose_rate >= 4:
             author = dish.author
             author.points += 1
@@ -58,12 +58,15 @@ class UpdateRateView(LoginRequiredMixin, UpdateView):
     fields = ("choose_rate", "comment")
     template_name = "rate_update.html"
     success_url = reverse_lazy("dishes:home")
+    # TODO success url to the dish object where rate is
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Rate.")
+            # TODO  Display as a message
+        # TODO display after success update
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -81,6 +84,8 @@ class DeleteRateView(LoginRequiredMixin, DeleteView):
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to delete this Rate.")
+        # TODO display as a message
+        # TODO display after success delete
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -106,6 +111,8 @@ class UserRankingView(ListView):
 
 class AddToFavouritesView(LoginRequiredMixin, View):
     def post(self, request, dish_id):
+        # TODO author cant add own dish to favourites
+        # TODO display a message after success add
         dish = get_object_or_404(Dish, pk=dish_id)
         user = request.user
         existing_favourite = FavouriteDish.objects.filter(user=user, dish=dish)
@@ -123,6 +130,7 @@ class AddToFavouritesView(LoginRequiredMixin, View):
 
 class DeleteFromFavouriteView(LoginRequiredMixin, View):
     def post(self, request, favourite_id):
+        # TODO display a message after success delete
         favourite_dish = get_object_or_404(
             FavouriteDish, id=favourite_id, user=request.user
         )

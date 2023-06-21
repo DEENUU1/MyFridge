@@ -152,6 +152,7 @@ class SendIngredientsView(FormView):
     template_name = "send_ingredients.html"
     form_class = SendIngredientForm
     success_url = reverse_lazy("dishes:home")
+    # TODO display a message after sending ingredients
 
     def form_valid(self, form):
         dish = Dish.objects.get(pk=self.kwargs["pk"])
@@ -191,6 +192,7 @@ class DishCreateView(LoginRequiredMixin, CreateView):
         "other_ingredients",
         "category",
     )
+    # TODO success url to the created dish
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -198,7 +200,8 @@ class DishCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         user.points += 10
         user.save()
-
+        # TODO display a message about points
+        # TODO display a message about success created dish
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -211,6 +214,7 @@ class UpdateDishView(LoginRequiredMixin, UpdateView):
     model = Dish
     template_name = "dish_update.html"
     success_url = reverse_lazy("dishes:home")
+    # TODO success url to the updated dish
     fields = (
         "name",
         "time_to_make",
@@ -234,6 +238,8 @@ class UpdateDishView(LoginRequiredMixin, UpdateView):
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Dish.")
+            # TODO display that as a message
+        # TODO display a message about success updated dish
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -252,4 +258,6 @@ class DeleteDishView(LoginRequiredMixin, DeleteView):
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Dish.")
+            # TODO display that as a message
+        # TODO display a message about success deleted dish
         return queryset

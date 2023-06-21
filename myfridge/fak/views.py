@@ -37,14 +37,15 @@ class FakCreateView(LoginRequiredMixin, CreateView):
     template_name = "fak_create.html"
     fields = ("name",)
     success_url = reverse_lazy("fak:fak_home")
+    # Todo success url to the created Fak object
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+        # TODO display message after success create
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -53,12 +54,15 @@ class FakUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "fak_update.html"
     fields = ("name",)
     success_url = reverse_lazy("fak:fak_home")
+    # TODO success url to the updated Fak object
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Fak.")
+            # TODO display as a message
+        # TODO display a message after success update
         return queryset
 
 
@@ -71,6 +75,8 @@ class FakDeleteView(LoginRequiredMixin, DeleteView):
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Fak.")
+            # TODO Display as a message
+        # TODO display message after success delete
         return queryset
 
 
@@ -79,10 +85,12 @@ class MedicineCreateView(LoginRequiredMixin, CreateView):
     template_name = "medicine_create.html"
     fields = ("name", "expiration_date", "quantity", "fak")
     success_url = reverse_lazy("fak:fak_home")
+    # TODO success url to the fak where medicine was create
 
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
+        # TODO Display message after success create
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
@@ -91,7 +99,6 @@ class MedicineCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -100,12 +107,15 @@ class MedicineUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "medicine_update.html"
     fields = ("name", "expiration_date", "quantity", "fak")
     success_url = reverse_lazy("fak:fak_home")
+    # TODO success url to the updated medicine
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to edit this Medicine.")
+        # TODO display as a message
+        # TODO display a message after success update
         return queryset
 
 
@@ -118,6 +128,8 @@ class MedicineDeleteView(LoginRequiredMixin, DeleteView):
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
             raise PermissionDenied("You are not authorized to delete this Medicine.")
+        # TODO display as a message
+        # TODO display a message after success delete
         return queryset
 
 

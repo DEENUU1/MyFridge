@@ -96,8 +96,10 @@ def send_activation_url(request: HttpRequest, uidb64: str, token: str) -> HttpRe
         return HttpResponse(
             "Thank you for your email confirmation. Now you can login your account."
         )
+    # TODO redirect to home page and display a message about success
     else:
         return HttpResponse("Activation link is invalid!")
+    # TODO redirect to home page and display a message about failure
 
 
 class SuccessRegisterView(TemplateView):
@@ -138,6 +140,7 @@ class ChangePasswordView(FormView):
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
             form.add_error(None, "User with this email does not exist")
+            # TODO display error as a message
             return super().form_invalid(form)
 
         if not user.check_password(form.cleaned_data["old_password"]):
@@ -176,6 +179,7 @@ class DeleteAccountView(FormView):
             user = CustomUser.objects.get(email=form.cleaned_data["email"])
         except CustomUser.DoesNotExist:
             form.add_error(None, "User with this email does not exist")
+            # TODO dispaly error as a message
             return super().form_invalid(form)
 
         if not user.check_password(form.cleaned_data["password"]):
@@ -219,6 +223,7 @@ class UpdateProfileView(LoginRequiredMixin, UpdateView):
     fields = ("image", "description", "newsletter")
     template_name = "update_profile.html"
     success_url = reverse_lazy("users:profile")
+    # TODO display a message after success update
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -250,6 +255,7 @@ class FollowUserView(LoginRequiredMixin, View):
         UserFollowing.objects.get_or_create(
             user_id=request.user, following_user_id=following_user
         )
+        # TODO Display a message after success follow
         return redirect("users:profile_detail", pk=following_user.pk)
 
 
@@ -259,6 +265,7 @@ class UnfollowUserView(LoginRequiredMixin, View):
         UserFollowing.objects.filter(
             user_id=request.user, following_user_id=following_user
         ).delete()
+        # TODO display a message after success unfollow
         return redirect("users:profile_detail", pk=following_user.pk)
 
 

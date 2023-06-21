@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import redirect_to_login
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import (
     CreateView,
@@ -11,16 +10,15 @@ from django.views.generic import (
 )
 
 from .models import Post, Comment
-from django.core.exceptions import PermissionDenied
 from typing import Any, Dict
 from django.shortcuts import reverse
+from django.contrib import messages
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     fields = ("title", "text", "image")
     template_name = "post_create.html"
-    success_url = reverse_lazy("blog:post_list")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -28,8 +26,12 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         user.points += 10
         user.save()
-
+        messages.success(self.request, "Your post has been created! You got 10 points!")
         return super().form_valid(form)
+
+    def get_success_url(self):
+        post = get_object_or_404(Post, pk=self.object.pk)
+        return reverse("blog:post_detail", kwargs={"pk": post.pk})
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -42,11 +44,18 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "post_update.html"
     success_url = reverse_lazy("blog:post_list")
 
+    def get_success_url(self):
+        post = get_object_or_404(Post, pk=self.object.pk)
+        return reverse("blog:post_detail", kwargs={"pk": post.pk})
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+            messages.error(
+                self.request, "You are not authorized to edit this Shopping List."
+            )
+        messages.success(self.request, "Your post has been updated!")
         return queryset
 
 
@@ -58,7 +67,10 @@ class PostDeleteView(DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+            messages.error(
+                self.request, "You are not authorized to delete this Shopping List."
+            )
+        messages.success(self.request, "Your post has been deleted!")
         return queryset
 
 
@@ -76,7 +88,6 @@ class PostDetailView(DetailView):
     model = Post
     template_name = "post_detail.html"
 
-    # display a list of comments for a specified post
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["comments"] = Comment.objects.filter(post=self.object)
@@ -95,7 +106,9 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         user.points += 1
         user.save()
-
+        messages.success(
+            self.request, "Your comment has been created! You got 1 point!"
+        )
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -108,11 +121,18 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "comment_update.html"
     success_url = reverse_lazy("blog:post_list")
 
+    def get_success_url(self):
+        comment = get_object_or_404(Comment, pk=self.object.pk)
+        return reverse("blog:post_detail", kwargs={"pk": comment.post.pk})
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+            messages.error(
+                self.request, "You are not authorized to edit this Shopping List."
+            )
+        messages.success(self.request, "Your comment has been updated!")
         return queryset
 
 
@@ -124,5 +144,8 @@ class CommentDeleteView(DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Shopping List.")
+            messages.error(
+                self.request, "You are not authorized to delete this Shopping List."
+            )
+        messages.success(self.request, "Your comment has been deleted!")
         return queryset
