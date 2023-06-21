@@ -15,10 +15,19 @@
 </head>
 <body>
     {% include "navigation_bar.html" %}
-      
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} mt-2" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% block content %}
 
     {% endblock %}
+
 
     {% include "footer.html" %}
 </body>

@@ -17,23 +17,31 @@ from users.models import CustomUser
 from typing import Dict, Any
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import F
+from django.contrib import messages
 
 
 class CreateRateView(LoginRequiredMixin, CreateView):
     model = Rate
     fields = ("choose_rate", "comment")
-    success_url = reverse_lazy("dishes:home")
     template_name = "rate_create.html"
 
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.kwargs["pk"]})
+
     def form_valid(self, form):
-        form.instance.author = self.request.user
         dish = get_object_or_404(Dish, pk=self.kwargs["pk"])
+
+        if self.request.user == dish.author:
+            messages.error(self.request, "You can not rate your own dish.")
+            return super().form_invalid(form)
+
+        form.instance.author = self.request.user
         form.instance.dish = dish
 
         user = self.request.user
         user.points += 1
         user.save()
-
+        messages.success(self.request, "Your rate has been added. You got 1 point!")
         if form.instance.choose_rate >= 4:
             author = dish.author
             author.points += 1
@@ -51,13 +59,16 @@ class UpdateRateView(LoginRequiredMixin, UpdateView):
     model = Rate
     fields = ("choose_rate", "comment")
     template_name = "rate_update.html"
-    success_url = reverse_lazy("dishes:home")
+
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.kwargs["pk"]})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Rate.")
+            messages.error(self.request, "You are not authorized to update this Rate.")
+        messages.success(self.request, "Your rate has been updated.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -74,7 +85,8 @@ class DeleteRateView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to delete this Rate.")
+            messages.error(self.request, "You are not authorized to delete this Rate.")
+        messages.success(self.request, "Your rate has been deleted.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -102,12 +114,21 @@ class AddToFavouritesView(LoginRequiredMixin, View):
     def post(self, request, dish_id):
         dish = get_object_or_404(Dish, pk=dish_id)
         user = request.user
+
+        if user == dish.author:
+            messages.error(self.request, "You can not add your own dish to favourites.")
+            return redirect("dishes:home")
+
         existing_favourite = FavouriteDish.objects.filter(user=user, dish=dish)
+
         if existing_favourite:
+            messages.error(self.request, "You already added this dish to favourites.")
             return redirect("dishes:home")
 
         favourite_dish = FavouriteDish(user=user, dish=dish)
         favourite_dish.save()
+
+        messages.success(self.request, "Your dish has been added to favourites.")
 
         dish.author.points = F("points") + 3
         dish.author.save()
@@ -125,5 +146,5 @@ class DeleteFromFavouriteView(LoginRequiredMixin, View):
             return redirect("dishes:home")
 
         favourite_dish.delete()
-
+        messages.success(self.request, "Your dish has been deleted from favourites.")
         return redirect("users:profile")

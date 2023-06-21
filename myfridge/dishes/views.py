@@ -1,6 +1,5 @@
 from typing import Any, Dict
 
-from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 
 from .models import Dish
@@ -30,6 +29,7 @@ from .forms import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.contrib import messages
 
 
 class HomeView(ListView):
@@ -167,13 +167,13 @@ class SendIngredientsView(FormView):
         form.send_email(
             f"{main_ingredients_names} and {other_ingredients_names} are the ingredients of {dish.name}."
         )
+        messages.success(self.request, "Message was sent!")
         return redirect(self.get_success_url())
 
 
 class DishCreateView(LoginRequiredMixin, CreateView):
     model = Dish
     template_name = "dish_create.html"
-    success_url = reverse_lazy("dishes:home")
     fields = (
         "name",
         "time_to_make",
@@ -192,13 +192,16 @@ class DishCreateView(LoginRequiredMixin, CreateView):
         "category",
     )
 
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.object.pk})
+
     def form_valid(self, form):
         form.instance.author = self.request.user
 
         user = self.request.user
         user.points += 10
         user.save()
-
+        messages.success(self.request, "Dish was created! You got 10 points!")
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -210,7 +213,6 @@ class DishCreateView(LoginRequiredMixin, CreateView):
 class UpdateDishView(LoginRequiredMixin, UpdateView):
     model = Dish
     template_name = "dish_update.html"
-    success_url = reverse_lazy("dishes:home")
     fields = (
         "name",
         "time_to_make",
@@ -229,27 +231,30 @@ class UpdateDishView(LoginRequiredMixin, UpdateView):
         "category",
     )
 
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.object.pk})
+
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Dish.")
+            messages.error(self.request, "You are not authorized to edit this Dish.")
+        messages.success(self.request, "Dish was updated!")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
 class DeleteDishView(LoginRequiredMixin, DeleteView):
     model = Dish
-
     success_url = reverse_lazy("dishes:home")
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Dish.")
+            messages.error(self.request, "You are not authorized to edit this Dish.")
+        messages.success(self.request, "Dish was deleted!")
         return queryset
