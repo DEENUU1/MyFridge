@@ -23,8 +23,10 @@ from django.contrib import messages
 class CreateRateView(LoginRequiredMixin, CreateView):
     model = Rate
     fields = ("choose_rate", "comment")
-    success_url = reverse_lazy("dishes:home")
     template_name = "rate_create.html"
+
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.kwargs["pk"]})
 
     def form_valid(self, form):
         dish = get_object_or_404(Dish, pk=self.kwargs["pk"])
@@ -39,7 +41,7 @@ class CreateRateView(LoginRequiredMixin, CreateView):
         user = self.request.user
         user.points += 1
         user.save()
-        # TODO display a message about points
+        messages.success(self.request, "Your rate has been added. You got 1 point!")
         if form.instance.choose_rate >= 4:
             author = dish.author
             author.points += 1
@@ -57,16 +59,16 @@ class UpdateRateView(LoginRequiredMixin, UpdateView):
     model = Rate
     fields = ("choose_rate", "comment")
     template_name = "rate_update.html"
-    success_url = reverse_lazy("dishes:home")
-    # TODO success url to the dish object where rate is
+
+    def get_success_url(self):
+        return reverse_lazy("dishes:dish-detail", kwargs={"pk": self.kwargs["pk"]})
 
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to edit this Rate.")
-            # TODO  Display as a message
-        # TODO display after success update
+            messages.error(self.request, "You are not authorized to update this Rate.")
+        messages.success(self.request, "Your rate has been updated.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -83,9 +85,8 @@ class DeleteRateView(LoginRequiredMixin, DeleteView):
         queryset = super().get_queryset()
         queryset = queryset.filter(author=self.request.user)
         if not queryset.exists():
-            raise PermissionDenied("You are not authorized to delete this Rate.")
-        # TODO display as a message
-        # TODO display after success delete
+            messages.error(self.request, "You are not authorized to delete this Rate.")
+        messages.success(self.request, "Your rate has been deleted.")
         return queryset
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -111,16 +112,23 @@ class UserRankingView(ListView):
 
 class AddToFavouritesView(LoginRequiredMixin, View):
     def post(self, request, dish_id):
-        # TODO author cant add own dish to favourites
-        # TODO display a message after success add
         dish = get_object_or_404(Dish, pk=dish_id)
         user = request.user
+
+        if user == dish.author:
+            messages.error(self.request, "You can not add your own dish to favourites.")
+            return redirect("dishes:home")
+
         existing_favourite = FavouriteDish.objects.filter(user=user, dish=dish)
+
         if existing_favourite:
+            messages.error(self.request, "You already added this dish to favourites.")
             return redirect("dishes:home")
 
         favourite_dish = FavouriteDish(user=user, dish=dish)
         favourite_dish.save()
+
+        messages.success(self.request, "Your dish has been added to favourites.")
 
         dish.author.points = F("points") + 3
         dish.author.save()
@@ -130,7 +138,6 @@ class AddToFavouritesView(LoginRequiredMixin, View):
 
 class DeleteFromFavouriteView(LoginRequiredMixin, View):
     def post(self, request, favourite_id):
-        # TODO display a message after success delete
         favourite_dish = get_object_or_404(
             FavouriteDish, id=favourite_id, user=request.user
         )
@@ -139,5 +146,5 @@ class DeleteFromFavouriteView(LoginRequiredMixin, View):
             return redirect("dishes:home")
 
         favourite_dish.delete()
-
+        messages.success(self.request, "Your dish has been deleted from favourites.")
         return redirect("users:profile")
