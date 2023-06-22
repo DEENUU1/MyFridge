@@ -80,3 +80,14 @@ class MealDailyPlan(models.Model):
         if not self.is_public:
             return "Private"
         return "Public"
+
+
+class CaloricNeedsStatistics(models.Model):
+    weight = models.FloatField()
+    height = models.FloatField()
+    age = models.IntegerField()
+    gender = models.CharField(max_length=20)
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.weight}{self.height} {self.age} {self.gender}"
