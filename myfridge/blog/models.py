@@ -1,8 +1,6 @@
 from django.db import models
 from users.models import CustomUser
 from ckeditor.fields import RichTextField
-from django.db.models.signals import post_save
-from notifications.signals import notify
 
 
 class Post(models.Model):
@@ -32,16 +30,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author} {self.post}"
-
-
-def notification_post_add_comment(sender, instance, created, **kwargs):
-    if created:
-        notify.send(
-            instance.author,
-            recipient=instance.post.author,
-            verb=f"{instance.author.username} commented on your post {instance.post.title}",
-            target=instance.post,
-        )
-
-
-post_save.connect(notification_post_add_comment, sender=Comment)
