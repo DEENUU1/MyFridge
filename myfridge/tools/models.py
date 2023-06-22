@@ -102,3 +102,13 @@ class PerfectWeightStatistics(models.Model):
 
     def __str__(self):
         return f"{self.height} {self.min_perfect_weight} {self.max_perfect_weight}"
+
+
+class BmiStatistics(models.Model):
+    height = models.IntegerField()
+    weight = models.IntegerField()
+    bmi = models.FloatField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.height} {self.weight} {self.bmi}"
