@@ -1,5 +1,6 @@
 from django import forms
 from typing import Tuple
+from .models import CaloricNeedsStatistics, PerfectWeightStatistics, BmiStatistics
 
 
 class CaloricNeedsForm(forms.Form):
@@ -43,6 +44,15 @@ class CaloricNeedsForm(forms.Form):
         caloric_needs = self.calculate_caloric_needs()
         return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
 
+    def save_to_database(self):
+        CaloricNeedsStatistics.objects.create(
+            weight=self.cleaned_data.get("weight"),
+            height=self.cleaned_data.get("height"),
+            age=self.cleaned_data.get("age"),
+            gender=self.cleaned_data.get("gender"),
+            caloric_needs=self.calculate_caloric_needs(),
+        )
+
 
 class PerfectWeightForm(forms.Form):
     height = forms.IntegerField(label="Height", required=True)
@@ -61,6 +71,13 @@ class PerfectWeightForm(forms.Form):
     def return_perfect_weight(self) -> str | int:
         min_perfect_weight, max_perfect_weight = self.calculate_perfect_weight()
         return f"Perfect weight should be between {min_perfect_weight} and {max_perfect_weight} kg."
+
+    def save_to_database(self):
+        PerfectWeightStatistics.objects.create(
+            height=self.cleaned_data.get("height"),
+            min_perfect_weight=self.calculate_perfect_weight()[0],
+            max_perfect_weight=self.calculate_perfect_weight()[1],
+        )
 
 
 class BMIForm(forms.Form):
@@ -86,3 +103,10 @@ class BMIForm(forms.Form):
             return "Overweight"
         else:
             return "Obese"
+
+    def save_to_database(self):
+        BmiStatistics.objects.create(
+            weight=self.cleaned_data.get("weight"),
+            height=self.cleaned_data.get("height"),
+            bmi=self.calculate_bmi(),
+        )

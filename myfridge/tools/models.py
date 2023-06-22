@@ -83,6 +83,7 @@ class MealDailyPlan(models.Model):
 
 
 class CaloricNeedsStatistics(models.Model):
+    # TODO pytest
     weight = models.FloatField()
     height = models.FloatField()
     age = models.IntegerField()
@@ -95,6 +96,7 @@ class CaloricNeedsStatistics(models.Model):
 
 
 class PerfectWeightStatistics(models.Model):
+    # TODO pytest
     height = models.IntegerField()
     min_perfect_weight = models.FloatField()
     max_perfect_weight = models.FloatField()
@@ -105,6 +107,7 @@ class PerfectWeightStatistics(models.Model):
 
 
 class BmiStatistics(models.Model):
+    # TODO pytest
     height = models.IntegerField()
     weight = models.IntegerField()
     bmi = models.FloatField()
