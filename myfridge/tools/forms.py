@@ -50,6 +50,7 @@ class CaloricNeedsForm(forms.Form):
             height=self.cleaned_data.get("height"),
             age=self.cleaned_data.get("age"),
             gender=self.cleaned_data.get("gender"),
+            activity_level=self.cleaned_data.get("activity"),
             caloric_needs=self.calculate_caloric_needs(),
         )
 

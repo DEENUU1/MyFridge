@@ -1,7 +1,6 @@
 from typing import Any, Dict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -24,6 +23,7 @@ def bmiView(request):  # Remove camel case
         if form.is_valid():
             bmi = form.calculate_bmi()
             bmi_result = form.return_bmi_result()
+            form.save_to_database()
             return render(
                 request, "bmi_result.html", {"bmi": bmi, "bmi_result": bmi_result}
             )
@@ -38,6 +38,7 @@ def perfect_weight_view(request):
         form = PerfectWeightForm(request.POST)
         if form.is_valid():
             perfect_weight_result = form.return_perfect_weight()
+            form.save_to_database()
             return render(
                 request,
                 "perfect_weight_result.html",
@@ -54,6 +55,7 @@ def caloricNeedsView(request):  # Remove camel case
         form = CaloricNeedsForm(request.POST)
         if form.is_valid():
             caloric_needs_result = form.return_caloric_needs()
+            form.save_to_database()
             return render(
                 request,
                 "caloric_needs_result.html",

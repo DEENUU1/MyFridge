@@ -89,6 +89,7 @@ class CaloricNeedsStatistics(models.Model):
     age = models.IntegerField()
     gender = models.CharField(max_length=20)
     caloric_needs = models.IntegerField()
+    activity_level = models.CharField(max_length=100)
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
