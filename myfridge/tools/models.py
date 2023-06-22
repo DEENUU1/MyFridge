@@ -87,7 +87,18 @@ class CaloricNeedsStatistics(models.Model):
     height = models.FloatField()
     age = models.IntegerField()
     gender = models.CharField(max_length=20)
+    caloric_needs = models.IntegerField()
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.weight}{self.height} {self.age} {self.gender}"
+
+
+class PerfectWeightStatistics(models.Model):
+    height = models.IntegerField()
+    min_perfect_weight = models.FloatField()
+    max_perfect_weight = models.FloatField()
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.height} {self.min_perfect_weight} {self.max_perfect_weight}"
