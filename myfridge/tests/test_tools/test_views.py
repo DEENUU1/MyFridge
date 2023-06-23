@@ -18,6 +18,7 @@ from test_data.models_fixtures import (
 )
 
 
+@pytest.mark.django_db
 def test_bmiView(client, bmi_form_data):
     response = client.post(reverse("tools:bmi"), bmi_form_data)
     assert response.status_code == 200
