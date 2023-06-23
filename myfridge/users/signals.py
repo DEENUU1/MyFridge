@@ -8,7 +8,7 @@ from .models import CustomUser
 
 @receiver(post_save, sender=CustomUser)
 def handle_new_post(sender, instance, **kwargs):
-    counter_text, new_text_text = hate_speech_result(instance.text, "Post")
+    counter_text, new_text_text = hate_speech_result(instance.description, "Post")
     if counter_text == 0:
         return
 
