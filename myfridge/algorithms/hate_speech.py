@@ -2,11 +2,11 @@ import json
 from typing import List, Dict, Any, Tuple
 
 
-def get_data(filename: str) -> Any:
+def get_data() -> Any:
     """
     Returns data from file
     """
-    with open("hatewords_english.json", "r") as file:
+    with open("/app/algorithms/badwords.json", "r") as file:
         return json.load(file)
 
 
@@ -17,7 +17,12 @@ def text_to_list(text: str):
     return text.lower().split()
 
 
-def hate_speech_result(data: Any, text: List[str], model) -> None:
+def hate_speech_result(context: str, model: str) -> Tuple[int, str]:
+    """
+    Count the number of bad words and censored them.
+    """
+    data = get_data()
+    text = text_to_list(context)
     counter = 0
     new_text = []
     for word in text:
@@ -25,11 +30,8 @@ def hate_speech_result(data: Any, text: List[str], model) -> None:
             counter += 1
             censored_word = "*" * len(word)
             new_text.append(censored_word)
-        new_text.append(word)
+        else:
+            new_text.append(word)
 
-    if 0 < counter < 2:
-        censored_text = "".join(new_text)
-        models.objects.update_or_create(
-            text=censored_text,
-        )
-    model.objects.delete()
+    new_text = " ".join(new_text)
+    return counter, new_text
