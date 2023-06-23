@@ -26,6 +26,7 @@ def hate_speech_result(context: str, model: str) -> Tuple[int, str]:
     text = text_to_list(context)
     counter = 0
     new_text = []
+
     if text is not None:
         for word in text:
             if word in data["censoredWords"]:
