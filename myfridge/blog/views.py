@@ -14,6 +14,8 @@ from typing import Any, Dict
 from django.shortcuts import reverse
 from django.contrib import messages
 
+from django.db.models import Q
+
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
@@ -81,7 +83,20 @@ class PostListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+
+        search_query = self.request.GET.get("search_query")
+        if search_query:
+            queryset = Post.objects.filter(
+                Q(title__icontains=search_query) | Q(text__icontains=search_query)
+            )
+
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        search_query = self.request.GET.get("search_query")
+        context["search_query"] = search_query if search_query else None
+        return context
 
 
 class PostDetailView(DetailView):

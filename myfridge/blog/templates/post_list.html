@@ -4,11 +4,17 @@
 {% block meta_title%} MyFridge | Posts {% endblock %}
 
 {% block content %}
+      <form method="GET">
+        {{search_query|crispy}}
+        <button type="submit" class="btn btn-success mt-3">Search</button>
+      </form>
 
 <div class="container">
   <a href="{% url 'blog:create_post' %}" class="btn btn-success">Add Post</a>
   <div class="row">
     <div class="col-md-6 mx-auto">
+
+
 
     {% for data in object_list %}
       <h2><a style="color: black; text-decoration: none;" href="{% url 'blog:post_detail' data.id %} ">{{data.title}}</a></h2>
