@@ -3,14 +3,22 @@
 
 {% block meta_title%} MyFridge | Followers list {% endblock %}
 
-
 {% block content %}
-
-{{object.username}} is followed by:
-{% for user in object_list %}
-    <li>{{user.username}}</li>
-{% endfor %}
-
-
-
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center">{{user}}'s Followers</h2>
+            <p class="text-center"><a class="btn btn-primary" href="{% url 'users:profile_detail' user.id %}">Back to Profile</a></p>
+            {% for user in followed %}
+                <div class="col-md-6 offset-md-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{% url 'users:profile_detail' user.user_id.id %}">{{user.user_id}}</a></h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

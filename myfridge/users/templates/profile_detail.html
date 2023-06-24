@@ -24,16 +24,18 @@
           <p><strong>Description:</strong> {{object.description}}</p>
           <p><strong>Following:</strong> <a href="{% url 'users:following' object.id %}">{{ following_count }}</a></p>
           <p><strong>Followers:</strong> <a href="{% url 'users:followers' object.id %}">{{ followers_count }}</a></p>
-                {% if request.user in object.followed_by.all %}
+      {% if request.user in object.followed_by.all %}
         <form method="POST" action="{% url 'users:unfollow' pk=object.id %}">
           {% csrf_token %}
           <input type="submit" class="btn btn-secondary mt-3" value="Unfollow">
         </form>
       {% else %}
-        <form method="POST" action="{% url 'users:follow' pk=object.id %}">
-          {% csrf_token %}
-          <input type="submit" class="btn btn-primary mt-3" value="Follow">
-        </form>
+          {% if request.user.id is not object.id %}
+            <form method="POST" action="{% url 'users:follow' pk=object.id %}">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-primary mt-3" value="Follow">
+            </form>
+          {% endif %}
       {% endif %}
         </div>
       </div>
