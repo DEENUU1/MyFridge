@@ -33,7 +33,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <a style="text-decoration: none; color: black;" href="{% url 'dishes:dish-detail' data.id %}" class="h4">{{ data.name }}</a>
+                            <a style="text-decoration: none; color: black;" href="{% url 'dishes:dish-detail' data.id %}" class="h4">{{ data.name }} {% if data.get_newest_label %} <strong>Newest</strong> {% endif %}</a>
                             {% if data.image %}
                                 <img class="card-img-top" src="{{data.image.url}}" alt="{{ data.name }}">
                             {% else %}

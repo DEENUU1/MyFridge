@@ -1,6 +1,8 @@
 from django.db import models
 from dishes.models import Dish
 from users.models import CustomUser
+from django.utils import timezone
+from datetime import timedelta
 
 
 class Rate(models.Model):
@@ -19,6 +21,16 @@ class Rate(models.Model):
 
     def __str__(self):
         return f"{self.dish.name} {self.choose_rate}"
+
+    @property
+    def get_newest_label(self) -> bool:
+        """
+        Check if the rate is newer than 12 hours.
+        :return: bool
+        """
+        if self.date_created > timezone.now() - timedelta(hours=12):
+            return True
+        return False
 
 
 class Feedback(models.Model):

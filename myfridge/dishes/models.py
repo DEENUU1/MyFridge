@@ -1,6 +1,8 @@
 from django.db import models
 from users.models import CustomUser
 from ckeditor.fields import RichTextField
+from django.utils import timezone
+from datetime import timedelta
 
 
 class Type(models.Model):
@@ -122,3 +124,13 @@ class Dish(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def get_newest_label(self) -> bool:
+        """
+        Check if the dish is newer than 2 days.
+        :return: bool
+        """
+        if self.date_created > timezone.now() - timedelta(days=2):
+            return True
+        return False

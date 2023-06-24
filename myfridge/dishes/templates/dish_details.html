@@ -10,7 +10,7 @@
         <div class="col-md-8">
             <div class="card my-4">
                 <div class="card-body">
-                    <h2 class="card-title">{{object.name}}</h2>
+                    <h2 class="card-title">{{object.name}} {% if object.get_newest_label %} <strong>Newest</strong> {% endif %}</strong></h2>
                         {% if object.author == user %}
                         <a href="{% url 'blog:update_post' object.id %}">Edit</a>
                         <form action="{% url 'blog:delete_post' object.id %}" method="POST">
@@ -69,7 +69,7 @@
             {% for rate in rates %}
                 <div class="card my-2">
                     <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'users:profile_detail' rate.author.id %}">{{rate.author}}</a> {{rate.choose_rate}}</h5>
+                        <h5 class="card-title"><a href="{% url 'users:profile_detail' rate.author.id %}">{{rate.author}}</a> {{rate.choose_rate}} {% if rate.get_newest_label %} <strong>Newest</strong> {% endif %}</h5>
                         <p class="card-text">{{rate.comment}}</p>
                         {% if rate.author == user %}
                           <form method="POST" action="{% url 'social:rate-delete' object.id %}" class="d-inline">
