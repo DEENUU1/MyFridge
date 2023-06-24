@@ -6,8 +6,11 @@ def get_data() -> Any:
     """
     Returns data from file
     """
-    with open("/app/algorithms/badwords.json", "r") as file:
-        return json.load(file)
+    try:
+        with open("/app/algorithms/badwords.json", "r") as file:
+            return json.load(file)
+    except Exception as e:
+        return None
 
 
 def text_to_list(text: str):
@@ -27,7 +30,7 @@ def hate_speech_result(context: str, model: str) -> Tuple[int, str]:
     counter = 0
     new_text = []
 
-    if text is not None:
+    if text is not None and data is not None:
         for word in text:
             if word in data["censoredWords"]:
                 counter += 1

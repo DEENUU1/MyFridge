@@ -6,11 +6,23 @@
 {% block content %}
 
 <div class="container">
+    <form method="GET" class="form-inline my-2 my-lg-0">
+    {{order_by|crispy}}
+    <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search..." aria-label="Search">
+    <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+  </form>
   <a href="{% url 'blog:create_post' %}" class="btn btn-success">Add Post</a>
+
+
   <div class="row">
     <div class="col-md-6 mx-auto">
 
+
+
     {% for data in object_list %}
+      {% if data.get_newest_label %}
+        <strong>Newest</strong>
+      {% endif %}
       <h2><a style="color: black; text-decoration: none;" href="{% url 'blog:post_detail' data.id %} ">{{data.title}}</a></h2>
       <p><a href="{% url 'users:profile_detail' data.author.id %}">{{data.author}}</a> | {{data.created_date}}</p>
       {% if data.image %}
