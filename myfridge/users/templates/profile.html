@@ -3,35 +3,100 @@
 
 {% block meta_title%} MyFridge | Profile {% endblock %}
 
-
 {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      {% if user.image %}
+      <img class="img-fluid rounded" src="{{user.image.url}}" alt="User Image">
+      {% else %}
+      <img class="img-fluid rounded" src="https://invisiblechildren.com/wp-content/uploads/2012/07/facebook-profile-picture-no-pic-avatar.jpg" alt="Default User Image">
+      {% endif %}
+    </div>
+    <div class="col-md-6">
+      <a class="btn btn-primary" href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
+      <h2>{{user.username}}</h2>
+      <p>{{user.description}}</p>
+    </div>
+  </div>
 
-<img style="width: 100px" src="http://127.0.0.1:8000/media/{{user.image}}"> <br>
-<a href="{% url 'users:edit_profile' user.id %}">Edit your profile</a> <br>
-<h2>{{user.username}}</h2>
-{{user.description}}
+  <h3>Dishes</h3>
+  {% for data in user_dishes %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{data}}
+    </div>
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'dishes:dish-update' data.id %}">Update</a>
+      <form class="d-inline-block" action="{% url 'social:favourite-remove' data.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
 
-<h3>Dishes</h3>
-{% for data in user_dishes %}
-    {{data}}
-    <a href="{% url 'dishes:dish-update' data.id %}">Update Dish</a>
-    <a href="{% url 'dishes:dish-delete' data.id %}">Delete Dish</a>
-{% endfor %}
+  <h3>Rates</h3>
+  {% for data in user_rates %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{data}}
+    </div>
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'social:rate-update' data.id %}">Update</a>
+      <form class="d-inline-block" action="{% url 'social:rate-delete' data.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
 
-<h3>Rates</h3>
-{% for data in user_rates %}
-    {{data}}
-    <a href="{% url 'social:rate-update' data.id %}">Update Rate</a>
-    <a href="{% url 'social:rate-delete' data.id %}">Delete Rate</a>
-{% endfor %}
+  <h3>Favourite Dishes</h3>
+  {% for data in user_favourite_dish %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{data}}
+    </div>
+    <div class="card-footer">
+      <form class="d-inline-block" action="{% url 'social:favourite-remove' data.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
 
-<h3>Favourite Dishes</h3>
-{% for data in user_favourite_dish %}
-    {{data}}
-    <form action="{% url 'social:favourite-remove' data.id %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Delete dish from favourite</button>
-    </form>
-{% endfor %}
+  <h3>Posts</h3>
+  {% for data in user_blog_post %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{data}}
+    </div>
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'blog:update_post' data.id %}">Update</a>
+      <form class="d-inline-block" action="{% url 'blog:delete_post' data.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
 
+  <h3>Blog Comments</h3>
+  {% for data in user_blog_comments %}
+  <div class="card mb-3">
+    <div class="card-body">
+      {{data}}
+    </div>
+    <div class="card-footer">
+      <a class="btn btn-primary" href="{% url 'blog:update_comment' data.id %}">Update</a>
+      <form class="d-inline-block" action="{% url 'blog:delete_comment' data.id %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Delete</button>
+      </form>
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
