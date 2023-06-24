@@ -49,7 +49,7 @@ services:
     celery:
         build:
             context: ./myfridge
-            dockerfile: config/django/Dockerfile
+            dockerfile: ./config/django/Dockerfile
         container_name: myfridge-celery
         command: celery -A myfridge.celery worker -l info
         volumes:
