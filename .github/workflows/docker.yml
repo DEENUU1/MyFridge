@@ -1,0 +1,25 @@
+name: Automate Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker registry
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: |
+          docker-compose -f docker-compose.prod.yml build
+          docker tag myFridge:latest ${{ secrets.DOCKER_USERNAME }}/myFridge:${{ github.sha }}
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/myFridge:${{ github.sha }}
