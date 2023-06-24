@@ -13,7 +13,7 @@ from .models import Post, Comment
 from typing import Any, Dict
 from django.shortcuts import reverse
 from django.contrib import messages
-
+from .forms import DateSortingForm
 from django.db.models import Q
 
 
@@ -83,19 +83,24 @@ class PostListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
-        search_query = self.request.GET.get("search_query")
-        if search_query:
-            queryset = Post.objects.filter(
-                Q(title__icontains=search_query) | Q(text__icontains=search_query)
+        query = self.request.GET.get("q")
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) | Q(text__icontains=query)
             )
+
+        order_by = self.request.GET.get("order_by")
+        if order_by:
+            if order_by == "1":
+                queryset = queryset.order_by("created_date")
+            if order_by == "2":
+                queryset = queryset.order_by("-created_date")
 
         return queryset
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        search_query = self.request.GET.get("search_query")
-        context["search_query"] = search_query if search_query else None
+        context["order_by"] = DateSortingForm(self.request.GET)
         return context
 
 
