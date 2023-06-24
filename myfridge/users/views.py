@@ -27,7 +27,7 @@ from .forms import (
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from tools.models import MealDailyPlan
-
+from blog.models import Post, Comment
 
 from .tokens import account_activation_token
 from social.models import Feedback
@@ -194,12 +194,16 @@ class UserProfileView(LoginRequiredMixin, View):
         user_dishes = Dish.objects.filter(author=user)
         user_rates = Rate.objects.filter(author=user)
         user_favourite_dish = FavouriteDish.objects.filter(user=user)
+        user_blog_post = Post.objects.filter(author=user)
+        user_blog_comments = Comment.objects.filter(author=user)
 
         context = {
             "user": user,
             "user_dishes": user_dishes,
             "user_rates": user_rates,
             "user_favourite_dish": user_favourite_dish,
+            "user_blog_post": user_blog_post,
+            "user_blog_comments": user_blog_comments,
         }
 
         return render(request, "profile.html", context)
