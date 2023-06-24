@@ -4,8 +4,8 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-COPY ./myfridge/requirements.txt /app/
+COPY ./myfridge/myfridge/requirements.txt /app/
 
 RUN pip install -r requirements.txt
 
-COPY ../../myfridge /app/
+COPY ./myfridge/myfridge /app/
