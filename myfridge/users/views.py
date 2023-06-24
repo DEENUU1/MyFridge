@@ -267,8 +267,14 @@ class UserFollowingListView(LoginRequiredMixin, ListView):
     template_name = "following_list.html"
 
     def get_queryset(self):
-        user = CustomUser.objects.get(id=self.kwargs["pk"])
-        return user.follows.all()
+        user_id = self.kwargs.get("user_id")
+        return UserFollowing.objects.filter(user_id=user_id)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = CustomUser.objects.get(id=self.kwargs.get("user_id"))
+        context["follows"] = context["object_list"]
+        return context
 
 
 class UserFollowersListView(LoginRequiredMixin, ListView):
@@ -276,8 +282,14 @@ class UserFollowersListView(LoginRequiredMixin, ListView):
     template_name = "followers_list.html"
 
     def get_queryset(self):
-        user = CustomUser.objects.get(id=self.kwargs["pk"])
-        return user.followers.all()
+        user_id = self.kwargs.get("user_id")
+        return UserFollowing.objects.filter(following_user_id=user_id)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = CustomUser.objects.get(id=self.kwargs.get("user_id"))
+        context["followed"] = context["object_list"]
+        return context
 
 
 def search_users(request):
