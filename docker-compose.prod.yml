@@ -5,6 +5,8 @@ services:
         hostname: db
         image: postgres:15
         container_name: myfridge-db-dev
+        volumes:
+            - ./data/db:/var/lib/postgresql/data
         environment:
             - POSTGRES_DB=myfridge
             - POSTGRES_USER=myfridge
@@ -15,12 +17,12 @@ services:
     web:
         hostname: web
         build:
-            context: ./myfridge
+            context: .
             dockerfile: ./config/django/Dockerfile
         container_name: myfridge-web-dev
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
-            - ./myfridge:/code
+            - ./myfridge:/app
         ports:
             - "8000:8000"
         depends_on:
@@ -31,7 +33,7 @@ services:
             - .env
     nginx:
         build:
-            context: ./myfridge
+            context: .
             dockerfile: ./config/nginx/Dockerfile
         ports:
             - 80:80
@@ -48,7 +50,7 @@ services:
 
     celery:
         build:
-            context: ./myfridge
+            context: .
             dockerfile: ./config/django/Dockerfile
         container_name: myfridge-celery
         command: celery -A myfridge.celery worker -l info
