@@ -10,7 +10,7 @@
         <div class="col-md-8">
             <div class="card my-4">
                 <div class="card-body">
-                    <h2 class="card-title">{{object.name}}</h2>
+                    <h2 class="card-title">{{object.name}} {% if object.get_newest_label %} <strong>Newest</strong> {% endif %}</strong></h2>
                         {% if object.author == user %}
                         <a href="{% url 'blog:update_post' object.id %}">Edit</a>
                         <form action="{% url 'blog:delete_post' object.id %}" method="POST">

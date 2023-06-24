@@ -46,7 +46,7 @@ class Comment(models.Model):
     @property
     def get_newest_label(self) -> bool:
         """
-        Check if the comment is newer than 2 days.
+        Check if the comment is newer than 12 hours.
         :return: bool
         """
         if self.date_created > timezone.now() - timedelta(hours=12):
