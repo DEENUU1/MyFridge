@@ -20,6 +20,9 @@
 
 
     {% for data in object_list %}
+      {% if data.get_newest_label %}
+        <strong>Newest</strong>
+      {% endif %}
       <h2><a style="color: black; text-decoration: none;" href="{% url 'blog:post_detail' data.id %} ">{{data.title}}</a></h2>
       <p><a href="{% url 'users:profile_detail' data.author.id %}">{{data.author}}</a> | {{data.created_date}}</p>
       {% if data.image %}

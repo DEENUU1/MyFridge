@@ -1,6 +1,8 @@
 from django.db import models
 from users.models import CustomUser
 from ckeditor.fields import RichTextField
+from django.utils import timezone
+from datetime import timedelta
 
 
 class Post(models.Model):
@@ -16,6 +18,16 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    @property
+    def get_newest_label(self) -> bool:
+        """
+        Check if the post is newer than 2 days.
+        :return: bool
+        """
+        if self.created_date > timezone.now() - timedelta(days=2):
+            return True
+        return False
 
 
 class Comment(models.Model):
