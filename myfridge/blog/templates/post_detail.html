@@ -35,7 +35,7 @@
             {% for comment in comments %}
                 <div class="card my-2">
                     <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'users:profile_detail' comment.author.id %}">{{comment.author}}</a></h5>
+                        <h5 class="card-title"><a href="{% url 'users:profile_detail' comment.author.id %}">{{comment.author}}</a> {% if comment.get_newest_label %} <strong>Newest</strong> {% endif %}</strong></h5>
                         <p class="card-text">{{comment.text}}</p>
                         {% if comment.author == user %}
                         <form action="{% url 'blog:delete_comment' comment.id %}" method="POST">

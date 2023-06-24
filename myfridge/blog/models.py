@@ -42,3 +42,13 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"{self.author} {self.post}"
+
+    @property
+    def get_newest_label(self) -> bool:
+        """
+        Check if the comment is newer than 2 days.
+        :return: bool
+        """
+        if self.date_created > timezone.now() - timedelta(hours=12):
+            return True
+        return False
