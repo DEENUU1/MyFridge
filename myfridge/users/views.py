@@ -241,9 +241,14 @@ class ProfileDetailView(LoginRequiredMixin, DetailView):
 
 class FollowUserView(LoginRequiredMixin, View):
     def post(self, request, pk):
+        current_user = request.user
         following_user = CustomUser.objects.get(id=pk)
+        if current_user == following_user:
+            messages.error(request, "You can't follow yourself")
+            return redirect("users:profile_detail", pk=following_user.pk)
+
         UserFollowing.objects.get_or_create(
-            user_id=request.user, following_user_id=following_user
+            user_id=current_user, following_user_id=following_user
         )
         return redirect("users:profile_detail", pk=following_user.pk)
 
