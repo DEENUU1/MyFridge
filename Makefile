@@ -1,5 +1,6 @@
 .PHONY:
 
+
 install:
 	docker-compose run --rm web pip install -r requirements.txt
 

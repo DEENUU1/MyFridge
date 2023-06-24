@@ -16,11 +16,11 @@ services:
         hostname: web
         build:
             context: ./myfridge
-            dockerfile: config/django/Dockerfile
+            dockerfile: ./config/django/Dockerfile
         container_name: myfridge-web-dev
         command: python manage.py runserver 0.0.0.0:8000
         volumes:
-            - ./myfridge:/app/
+            - ./myfridge:/code
         ports:
             - "8000:8000"
         depends_on:
@@ -37,7 +37,9 @@ services:
             - "6379:6379"
 
     celery:
-        build: ./myfridge
+        build:
+            context: ./myfridge
+            dockerfile: config/django/Dockerfile
         container_name: myfridge-celery-dev
         command: celery -A myfridge.celery worker -l info
         volumes:
