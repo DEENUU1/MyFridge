@@ -11,7 +11,7 @@ myfridge/blog/migrations/
 myfridge/fak/migrations/
 myfridge/tools/migrations/
 myfridge/users/migrations/
-
+data/
 # C extensions
 *.so
 .idea/

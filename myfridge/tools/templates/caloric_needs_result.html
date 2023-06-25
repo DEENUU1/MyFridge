@@ -3,11 +3,13 @@
 
 {% block meta_title%} MyFridge | Caloric needs result {% endblock %}
 
-
 {% block content %}
-
-
-{{caloric_needs_result}}
-
-
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card">
+        <div class="card-body text-center">
+            <h2 class="card-text">{{caloric_needs_result}} kcal</h2>
+            <h5 class="card-title">This is your caloric needs to stay healthy</h5>
+        </div>
+    </div>
+</div>
 {% endblock %}

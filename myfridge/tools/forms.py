@@ -42,7 +42,7 @@ class CaloricNeedsForm(forms.Form):
 
     def return_caloric_needs(self) -> str | int:
         caloric_needs = self.calculate_caloric_needs()
-        return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
+        return f"{int(caloric_needs)}"
 
     def save_to_database(self):
         CaloricNeedsStatistics.objects.create(
