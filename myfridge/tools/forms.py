@@ -69,9 +69,9 @@ class PerfectWeightForm(forms.Form):
 
         return round(min_perfect_weight, 2), round(max_perfect_weight, 2)
 
-    def return_perfect_weight(self) -> str | int:
+    def return_perfect_weight(self) -> Tuple:
         min_perfect_weight, max_perfect_weight = self.calculate_perfect_weight()
-        return f"Perfect weight should be between {min_perfect_weight} and {max_perfect_weight} kg."
+        return min_perfect_weight, max_perfect_weight
 
     def save_to_database(self):
         PerfectWeightStatistics.objects.create(

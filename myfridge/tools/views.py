@@ -37,12 +37,12 @@ def perfect_weight_view(request):
     if request.method == "POST":
         form = PerfectWeightForm(request.POST)
         if form.is_valid():
-            perfect_weight_result = form.return_perfect_weight()
+            min_weight, max_weight = form.return_perfect_weight()
             form.save_to_database()
             return render(
                 request,
                 "perfect_weight_result.html",
-                {"perfect_weight_result": perfect_weight_result},
+                {"min_weight": min_weight, "max_weight": max_weight},
             )
     else:
         form = PerfectWeightForm()
