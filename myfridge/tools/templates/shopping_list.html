@@ -3,18 +3,40 @@
 
 {% block meta_title%} MyFridge | Shopping list{% endblock %}
 
-
 {% block content %}
+<div class="container-fluid d-flex align-items-center justify-content-center vh-100 flex-column">
+    <a href="{% url 'tools:shopping_list_create' %}" class="btn btn-success mb-3">Add shopping list</a>
 
-<a href="{% url 'tools:shopping_list_create' %}">Add shopping list</a> <br>
+    {% if object_list %}
 
-{% for data in object_list %}
-  {{data}}
-  <a href="{% url 'tools:shopping_list_update' data.id %}">Edit</a>
-  <form method="POST" action="{% url 'tools:shopping_list_delete' data.id %}">
-    {% csrf_token %}
-    <button type="submit">Delete</button>
-  </form>
-{% endfor %}
+    {% for data in not_bought_items %}
+    <div class="card mb-3 w-50">
+        <div class="card-body">
+          <p class="card-text">{{data.name}} {% if data.quantity > 0 %} <strong>{{data.quantity}}</strong> {%endif %}</p>
+            <a href="{% url 'tools:shopping_list_update' data.id %}" class="btn btn-primary">Edit</a>
+            <form method="POST" action="{% url 'tools:shopping_list_delete' data.id %}" class="d-inline-block">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
 
+    {% for data in bought_items %}
+    <div class="card mb-3 w-50">
+        <div class="card-body">
+            <p class="card-text"><del>{{data.name}} {% if data.quantity > 0 %} <strong>{{data.quantity}}</strong> {%endif %}</del></p>
+            <a href="{% url 'tools:shopping_list_update' data.id %}" class="btn btn-primary">Edit</a>
+            <form method="POST" action="{% url 'tools:shopping_list_delete' data.id %}" class="d-inline-block">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+    <h2 class="text-center">Your shopping list is empty</h2>
+    {% endif %}
+</div>
 {% endblock %}

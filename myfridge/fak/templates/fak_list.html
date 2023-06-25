@@ -2,29 +2,31 @@
 
 {% block meta_title%} MyFridge | Fak list {% endblock %}
 
-
 {% block content %}
+<a href="{% url 'fak:fak_create' %}" class="btn btn-success mb-3">Create fak</a>
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                {% if object_list %}
+                {% for data in object_list %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="{% url 'fak:fak_detail' data.id %}">{{data}}</a></h5>
+                        <a href="{% url 'fak:fak_update' data.id %}" class="btn btn-primary">Update fak</a>
 
-<div class="container">
-    <div class="row mt-5">
-        <div class="col-sm-12">
-            <a href="{% url 'fak:fak_create' %}" class="btn btn-success mb-3">Create fak</a>
-
-            {% for data in object_list %}
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title"><a href="{% url 'fak:fak_detail' data.id %}">{{data}}</a></h5>
-                    <a href="{% url 'fak:fak_update' data.id %}" class="btn btn-primary">Update fak</a>
-
-                    <form method="POST" action="{% url 'fak:fak_delete' data.id %}" class="d-inline-block">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                        <form method="POST" action="{% url 'fak:fak_delete' data.id %}" class="d-inline-block">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
+                {% endfor %}
+                {% else %}
+                <h2>There is no any Fak</h2>
+                {% endif %}
             </div>
-            {% endfor %}
         </div>
     </div>
 </div>
-
 {% endblock %}

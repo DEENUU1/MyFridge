@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker-compose -f docker-compose.prod.yml up
+          docker-compose -f docker-compose.prod.yml build
           docker tag myFridge:latest ${{ secrets.DOCKER_USERNAME }}/myFridge:${{ github.sha }}
 
       - name: Push Docker image

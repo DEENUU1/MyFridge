@@ -37,12 +37,12 @@ def perfect_weight_view(request):
     if request.method == "POST":
         form = PerfectWeightForm(request.POST)
         if form.is_valid():
-            perfect_weight_result = form.return_perfect_weight()
+            min_weight, max_weight = form.return_perfect_weight()
             form.save_to_database()
             return render(
                 request,
                 "perfect_weight_result.html",
-                {"perfect_weight_result": perfect_weight_result},
+                {"min_weight": min_weight, "max_weight": max_weight},
             )
     else:
         form = PerfectWeightForm()
@@ -72,19 +72,17 @@ class ShoppingListCreateView(LoginRequiredMixin, CreateView):
     template_name = "shopping_list_create.html"
     fields = ("name", "quantity")
     success_url = reverse_lazy("tools:shopping_list")
-    # TODO success url to created shopping list
 
     def get_success_url(self):
         return reverse_lazy("tools:shopping_list")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Shopping List created successfully.")
         return super().form_valid(form)
-        # TODO display message after success creation
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -133,6 +131,8 @@ class ShoppingListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        context["bought_items"] = ShoppingList.objects.filter(is_bought=True)
+        context["not_bought_items"] = ShoppingList.objects.filter(is_bought=False)
         return context
 
 

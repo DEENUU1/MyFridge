@@ -42,7 +42,7 @@ class CaloricNeedsForm(forms.Form):
 
     def return_caloric_needs(self) -> str | int:
         caloric_needs = self.calculate_caloric_needs()
-        return f"{int(caloric_needs)} kcal. This is your caloric needs to stay healthy"
+        return f"{int(caloric_needs)}"
 
     def save_to_database(self):
         CaloricNeedsStatistics.objects.create(
@@ -69,9 +69,9 @@ class PerfectWeightForm(forms.Form):
 
         return round(min_perfect_weight, 2), round(max_perfect_weight, 2)
 
-    def return_perfect_weight(self) -> str | int:
+    def return_perfect_weight(self) -> Tuple:
         min_perfect_weight, max_perfect_weight = self.calculate_perfect_weight()
-        return f"Perfect weight should be between {min_perfect_weight} and {max_perfect_weight} kg."
+        return min_perfect_weight, max_perfect_weight
 
     def save_to_database(self):
         PerfectWeightStatistics.objects.create(

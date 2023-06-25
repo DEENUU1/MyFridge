@@ -3,11 +3,13 @@
 
 {% block meta_title%} MyFridge | Perfect weight result {% endblock %}
 
-
 {% block content %}
-
-
-{{perfect_weight_result}}
-
-
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card">
+        <div class="card-body text-center">
+            <h2 class="card-title">Your perfect weight</h2>
+            <p class="card-text">Your perfect weight is between <strong>{{min_weight}} kg</strong> and <strong>{{max_weight}} kg</strong></p>
+        </div>
+    </div>
+</div>
 {% endblock %}

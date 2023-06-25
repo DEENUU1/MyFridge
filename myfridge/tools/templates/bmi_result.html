@@ -3,11 +3,14 @@
 
 {% block meta_title%} MyFridge | BMI result {% endblock %}
 
-
 {% block content %}
-
-
-{{bmi}}
-{{bmi_result}}
-
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="card">
+        <div class="card-body text-center">
+            <h2 class="card-title">Your BMI Result</h2>
+            <p class="card-text">Your BMI is <strong>{{bmi}}</strong></p>
+            <p class="card-text">It's <strong>{{bmi_result}}</strong></p>
+        </div>
+    </div>
+</div>
 {% endblock %}
