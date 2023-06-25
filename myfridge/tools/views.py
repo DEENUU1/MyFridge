@@ -72,19 +72,17 @@ class ShoppingListCreateView(LoginRequiredMixin, CreateView):
     template_name = "shopping_list_create.html"
     fields = ("name", "quantity")
     success_url = reverse_lazy("tools:shopping_list")
-    # TODO success url to created shopping list
 
     def get_success_url(self):
         return reverse_lazy("tools:shopping_list")
 
     def form_valid(self, form):
         form.instance.author = self.request.user
+        messages.success(self.request, "Shopping List created successfully.")
         return super().form_valid(form)
-        # TODO display message after success creation
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
-
         return context
 
 
@@ -133,6 +131,8 @@ class ShoppingListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
+        context["bought_items"] = ShoppingList.objects.filter(is_bought=True)
+        context["not_bought_items"] = ShoppingList.objects.filter(is_bought=False)
         return context
 
 
