@@ -2,16 +2,14 @@
 
 {% block meta_title%} MyFridge | {{object.name}} {% endblock %}
 
-
 {% block content %}
-
-<div class="container">
+<div class="container-fluid min-vh-100">
     <div class="row mt-5">
         <div class="col-sm-12">
             <h2 class="mb-3">{{object}}</h2>
 
             <a href="{% url 'fak:medicine_create' %}" class="btn btn-success mb-3">Add medicine</a>
-
+            {% if medicines %}
             {% for data in medicines %}
             <div class="card mb-3">
                 <div class="card-body">
@@ -25,8 +23,10 @@
                 </div>
             </div>
             {% endfor %}
+            {% else %}
+            <h2>There is no medicines</h2>
+            {% endif %}
         </div>
     </div>
 </div>
-
 {% endblock %}
