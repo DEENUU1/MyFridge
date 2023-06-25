@@ -13,6 +13,9 @@ class ShoppingList(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ["-date_created"]
+
 
 class Meal(models.Model):
     name = models.CharField(max_length=200)

@@ -1,16 +1,16 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block meta_title%} MyFridge | Update shopping list {% endblock %}
-
+{% block meta_title%} MyFridge | Update shopping list{% endblock %}
 
 {% block content %}
-
-
-<form method="POST">
-    {% csrf_token %}
-    {{form|crispy}}
-    <button type="submit">Update Shopping list</button>
-</form>
-
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            {{form|crispy}}
+            <button type="submit" class="btn btn-primary">Update Shopping list</button>
+        </form>
+    </div>
+</div>
 {% endblock %}
