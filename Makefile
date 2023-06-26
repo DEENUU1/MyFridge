@@ -1,20 +1,27 @@
-.PHONY:
+.PHONY build:
 
+build:
+	docker-compose -f docker-compose.dev.yml build
 
-install:
-	docker-compose run --rm web pip install -r requirements.txt
+.PHONY up:
 
-start:
-	docker-compose up -d
+up:
+	docker-compose -f docker-compose.dev.yml up
+
+.PHONY down:
+
+down:
+	docker-compose -f docker-compose.dev.yml down
+
+.PHONY makemigrations:
+	docker-compose -f docker-compose.dev.yml exec web python manage.py makemigrations
+
+.PHONY migrate:
 
 migrate:
-	docker-compose exec web python manage.py migrate
+	docker-compose -f docker-compose.dev.yml exec web python manage.py migrate
 
-runserver:
-    docker-compose exec web gunicorn myfridge.wsgi:application --bind 0.0.0.0:8000
+.PHONY test:
 
 test:
-	docker-compose run --rm web pytest
-
-clean:
-	docker-compose down
+	docker-compose -f docker-compose.dev.yml run --rm web pytest
