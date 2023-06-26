@@ -28,7 +28,7 @@
     </div>
     <div class="card-footer">
       <a class="btn btn-primary" href="{% url 'dishes:dish-update' data.id %}">Update</a>
-      <form class="d-inline-block" action="{% url 'social:favourite-remove' data.id %}" method="post">
+      <form class="d-inline-block" action="{% url 'dishes:dish-delete' data.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete</button>
       </form>
