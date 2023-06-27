@@ -1,6 +1,13 @@
 from faker import factory, Faker
 from users.models import CustomUser, UserFollowing
-from tools.models import ShoppingList, Meal, MealDailyPlan
+from tools.models import (
+    ShoppingList,
+    Meal,
+    MealDailyPlan,
+    CaloricNeedsStatistics,
+    PerfectWeightStatistics,
+    BmiStatistics,
+)
 
 fake = Faker()
 
@@ -63,11 +70,6 @@ def create_fake_meal():
     num_meals = Meal.objects.count()
     new_meals = 50 - num_meals
     meal_list = []
-    num_daily_plan = MealDailyPlan.objects.count()
-    new_daily_plan = 50 - num_daily_plan
-    meal_daily_plan_list = []
-    users = list(CustomUser.objects.all())
-    meals = list(Meal.objects.all())
 
     if new_meals > 0:
         for _ in range(new_meals):
@@ -81,30 +83,57 @@ def create_fake_meal():
 
         Meal.objects.bulk_create(meal_list)
 
-        for _ in range(new_daily_plan):
-            date = fake.date_between(start_date="-1y", end_date="today")
-            month = date.strftime("%B")
-            year = str(date.year)
-            user = fake.random_element(users)
-            breakfast = fake.random_element(meals)
-            second_breakfast = fake.random_element(meals)
-            lunch = fake.random_element(meals)
-            tea = fake.random_element(meals)
-            dinner = fake.random_element(meals)
-            is_public = fake.boolean()
 
-            meal_plan = MealDailyPlan(
-                date=date,
-                month=month,
-                year=year,
-                user=user,
-                breakfast=breakfast,
-                second_breakfast=second_breakfast,
-                lunch=lunch,
-                tea=tea,
-                dinner=dinner,
-                is_public=is_public,
-            )
+def create_fake_daily_meal_plan():
+    num_daily_plan = MealDailyPlan.objects.count()
+    new_daily_plan = 50 - num_daily_plan
+    meal_daily_plan_list = []
+    users = list(CustomUser.objects.all())
+    meals = list(Meal.objects.all())
 
-            meal_daily_plan_list.append(meal_plan)
-        MealDailyPlan.bulk_create(meal_daily_plan_list)
+    for _ in range(new_daily_plan):
+        date = fake.date_between(start_date="-1y", end_date="today")
+        month = date.strftime("%B")
+        year = str(date.year)
+        user = fake.random_element(users)
+        breakfast = fake.random_element(meals)
+        second_breakfast = fake.random_element(meals)
+        lunch = fake.random_element(meals)
+        tea = fake.random_element(meals)
+        dinner = fake.random_element(meals)
+        is_public = fake.boolean()
+
+        meal_plan = MealDailyPlan(
+            date=date,
+            month=month,
+            year=year,
+            user=user,
+            breakfast=breakfast,
+            second_breakfast=second_breakfast,
+            lunch=lunch,
+            tea=tea,
+            dinner=dinner,
+            is_public=is_public,
+        )
+
+        meal_daily_plan_list.append(meal_plan)
+    MealDailyPlan.objects.bulk_create(meal_daily_plan_list)
+
+
+def create_fake_caloric_needs():
+    num_caloric_needs = CaloricNeedsStatistics.objects.count()
+    new_caloric_needs = 50 - num_caloric_needs
+    caloric_needs_list = []
+
+    for _ in range(new_caloric_needs):
+        meal_plan = MealDailyPlan(
+            weight=fake.random_int(min=50, max=100),
+            height=fake.random_int(min=150, max=200),
+            age=fake.random_int(min=18, max=80),
+            gender=fake.random_element(elements=["Male", "Female"]),
+            caloric_needs=fake.random_int(min=1000, max=4000),
+            activity_level=fake.random_element(elements=["Low", "Medium", "High"]),
+        )
+
+        caloric_needs_list.append(meal_plan)
+    MealDailyPlan.objects.bulk_create(caloric_needs_list)
