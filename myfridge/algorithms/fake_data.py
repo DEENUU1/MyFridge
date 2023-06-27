@@ -319,3 +319,32 @@ def create_fake_time_to_make():
         time_to_make = TimeToMake(name=fake.integer(min=10, max=180))
         time_to_make_list.append(time_to_make)
     TimeToMake.objects.bulk_create(time_to_make_list)
+
+
+def create_fake_dish():
+    dish_num = Dish.objects.count()
+    new_dish = 50 - dish_num
+    dish_list = []
+
+    for _ in range(new_dish):
+        dish = Dish(
+            name=fake.words(max_nb_chars=50),
+            author=fake.random_element(elements=CustomUser.objects.all()),
+            time_to_make=fake.random_element(elements=TimeToMake.objects.all()),
+            description=fake.text(max_nb_chars=150),
+            kcal=fake.random_int(min=100, max=1000),
+            gluten=fake.boolean(),
+            lactose=fake.boolean(),
+            meat=fake.boolean(),
+            vegetarian=fake.boolean(),
+            vegan=fake.boolean(),
+            country=fake.random_element(elements=Country.objects.all()),
+            level=fake.random_element(elements=Type.objects.all()),
+            main_ingredient=fake.random_element(elements=MainIngredient.objects.all()),
+            other_ingredients=fake.random_element(
+                elements=OtherIngredient.objects.all()
+            ),
+            category=fake.random_element(elements=DishCategory.objects.all()),
+        )
+        dish_list.append(dish)
+    Dish.objects.bulk_create(dish_list)
