@@ -247,3 +247,16 @@ def create_fake_type():
         )
         type_list.append(type)
     Type.objects.bulk_create(type_list)
+
+
+def create_fake_country():
+    country_num = Type.objects.count()
+    new_country = 50 - country_num
+    country_list = []
+
+    for _ in range(new_country):
+        country = Country(
+            name=fake.words(max_nb_chars=50),
+        )
+        country_list.append(country)
+    Country.objects.bulk_create(country_list)
