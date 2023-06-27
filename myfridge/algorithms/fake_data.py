@@ -207,3 +207,20 @@ def create_fake_fak():
         )
         fak_list.append(fak)
     Fak.objects.bulk_create(fak_list)
+
+
+def create_fake_medicine():
+    medicine_num = Medicine.objects.count()
+    new_medicine = 50 - medicine_num
+    medicine_list = []
+
+    for _ in range(new_medicine):
+        medicine = Medicine(
+            name=fake.words(max_nb_chars=50),
+            expieration_date=fake.date_between(start_date="today", end_date="+1y"),
+            quantity=fake.random_element(elements=["LOW", "MEDIUM", "HIGH"]),
+            fak=fake.random_element(elements=Fak.objects.all()),
+            author=fake.random_element(elements=CustomUser.objects.all()),
+        )
+        medicine_list.append(medicine)
+    Medicine.objects.bulk_create(medicine_list)
