@@ -20,6 +20,7 @@ from dishes.models import (
     TimeToMake,
     Dish,
 )
+from blog.models import Post, Comment
 
 fake = Faker()
 
@@ -360,7 +361,7 @@ def create_fake_rate():
     Rate.objects.bulk_create(rate_list)
 
 
-def favourite_dish():
+def create_fake_favourite_dish():
     fav_num = Rate.objects.count()
     new_fav = 50 - fav_num
     fav_list = []
@@ -374,3 +375,19 @@ def favourite_dish():
         )
         fav_list.append(rate)
     Rate.objects.bulk_create(fav_list)
+
+
+def create_fake_post():
+    post_num = Post.objects.count()
+    new_post = 50 - post_num
+    post_list = []
+    users = list(CustomUser.objects.all())
+
+    for _ in range(new_post):
+        post = Post.objects.create(
+            title=fake.words(max_nb_chars=200),
+            text=fake.text(max_nb_chars=150),
+            author=fake.random_element(elements=users),
+        )
+        post_list.append(post)
+    Post.objects.bulk_create(post_list)
