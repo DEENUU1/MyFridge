@@ -391,3 +391,20 @@ def create_fake_post():
         )
         post_list.append(post)
     Post.objects.bulk_create(post_list)
+
+
+def create_fake_comment():
+    comment_num = Comment.objects.count()
+    new_comment = 50 - comment_num
+    comment_list = []
+    users = list(CustomUser.objects.all())
+    posts = list(Post.objects.all())
+
+    for _ in range(new_comment):
+        comment = Comment.objects.create(
+            text=fake.text(max_nb_chars=150),
+            author=fake.random_element(elements=users),
+            post=fake.random_element(elements=posts),
+        )
+        comment_list.append(comment)
+    Comment.objects.bulk_create(comment_list)
