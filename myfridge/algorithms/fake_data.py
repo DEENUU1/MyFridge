@@ -8,6 +8,7 @@ from tools.models import (
     PerfectWeightStatistics,
     BmiStatistics,
 )
+from social.models import Rate, Feedback, FavouriteDish
 
 fake = Faker()
 
@@ -169,3 +170,20 @@ def create_fake_bmi():
 
         bmi_list.append(meal_plan)
     MealDailyPlan.objects.bulk_create(bmi_list)
+
+
+def create_fake_rate():
+    pass
+
+
+def create_fake_feedback():
+    feedback = Feedback.objects.count()
+    new_feedback = 50 - feedback
+    feedback_list = []
+
+    for _ in range(new_feedback):
+        feedback = Feedback(
+            message=fake.text(max_nb_chars=150),
+        )
+        feedback_list.append(feedback)
+    Feedback.objects.bulk_create(feedback_list)
