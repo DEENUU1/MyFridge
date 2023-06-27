@@ -49,13 +49,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # Third party
+    # style
     "crispy_forms",
     "crispy_bootstrap5",
-    "django_celery_beat",
     "ckeditor",
+    # celery and notify
+    "django_celery_beat",
     "notifications",
-    # Created
+    # faker
+    # "django_faker"
+    # project
     "dishes",
     "users",
     "social",
@@ -63,7 +66,14 @@ INSTALLED_APPS = [
     "tools",
     "fak",
     "blog",
+    # custom app
+    "algorithms",
 ]
+
+# FAKER SETTINGS
+FAKER_LOCALE = None
+FAKER_PROVIDERS = None
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
