@@ -308,3 +308,14 @@ def create_dish_category():
     obj_3.save()
     obj_4.save()
     obj_5.save()
+
+
+def create_fake_time_to_make():
+    time_to_make = TimeToMake.objects.count()
+    new_time_to_make = 50 - time_to_make
+    time_to_make_list = []
+
+    for _ in range(new_time_to_make):
+        time_to_make = TimeToMake(name=fake.integer(min=10, max=180))
+        time_to_make_list.append(time_to_make)
+    TimeToMake.objects.bulk_create(time_to_make_list)
