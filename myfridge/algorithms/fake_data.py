@@ -15,7 +15,7 @@ from dishes.models import (
     Country,
     MainIngredient,
     OtherIngredient,
-    DiffucultyLevel,
+    DifficultyLevel,
     DishCategory,
     TimeToMake,
     Dish,
@@ -286,3 +286,25 @@ def create_fake_other_ingredient():
         )
         other_ingredient_list.append(other_ingredient)
     OtherIngredient.objects.bulk_create(other_ingredient_list)
+
+
+def create_difficulty_leveL():
+    obj_1 = DifficultyLevel.objects.create(name="Easy")
+    obj_2 = DifficultyLevel.objects.create(name="Medium")
+    obj_3 = DifficultyLevel.objects.create(name="Hard")
+    obj_1.save()
+    obj_2.save()
+    obj_3.save()
+
+
+def create_dish_category():
+    obj_1 = DishCategory.objects.create(name="Breakfast")
+    obj_2 = DishCategory.objects.create(name="Lunch")
+    obj_3 = DishCategory.objects.create(name="Dinner")
+    obj_4 = DishCategory.objects.create(name="Tea")
+    obj_5 = DishCategory.objects.create(name="Dessert")
+    obj_1.save()
+    obj_2.save()
+    obj_3.save()
+    obj_4.save()
+    obj_5.save()
