@@ -273,3 +273,16 @@ def create_fake_main_ingredient():
         )
         main_ingredient_list.append(main_ingredient)
     MainIngredient.objects.bulk_create(main_ingredient_list)
+
+
+def create_fake_other_ingredient():
+    other_ingredient = OtherIngredient.objects.count()
+    new_other_ingredient = 50 - other_ingredient
+    other_ingredient_list = []
+
+    for _ in range(new_other_ingredient):
+        other_ingredient = OtherIngredient(
+            name=fake.words(max_nb_chars=50),
+        )
+        other_ingredient_list.append(other_ingredient)
+    OtherIngredient.objects.bulk_create(other_ingredient_list)
