@@ -183,10 +183,6 @@ def create_fake_bmi():
     MealDailyPlan.objects.bulk_create(bmi_list)
 
 
-def create_fake_rate():
-    pass
-
-
 def create_fake_feedback():
     feedback = Feedback.objects.count()
     new_feedback = 50 - feedback
@@ -198,10 +194,6 @@ def create_fake_feedback():
         )
         feedback_list.append(feedback)
     Feedback.objects.bulk_create(feedback_list)
-
-
-def favourite_dish():
-    pass
 
 
 def create_fake_fak():
@@ -348,3 +340,37 @@ def create_fake_dish():
         )
         dish_list.append(dish)
     Dish.objects.bulk_create(dish_list)
+
+
+def create_fake_rate():
+    rate_num = Rate.objects.count()
+    new_rate = 50 - rate_num
+    rate_list = []
+    dishes = list(Dish.objects.all())
+    users = list(CustomUser.objects.all())
+
+    for _ in range(new_rate):
+        rate = Rate.objects.create(
+            choose_rate=fake.random_int(min=1, max=5),
+            dish=fake.random_element(elements=dishes),
+            author=fake.random_element(elements=users),
+            comment=fake.text(max_nb_chars=150),
+        )
+        rate_list.append(rate)
+    Rate.objects.bulk_create(rate_list)
+
+
+def favourite_dish():
+    fav_num = Rate.objects.count()
+    new_fav = 50 - fav_num
+    fav_list = []
+    dishes = list(Dish.objects.all())
+    users = list(CustomUser.objects.all())
+
+    for _ in range(new_fav):
+        rate = FavouriteDish.objects.create(
+            dish=fake.random_element(elements=dishes),
+            user=fake.random_element(elements=users),
+        )
+        fav_list.append(rate)
+    Rate.objects.bulk_create(fav_list)
