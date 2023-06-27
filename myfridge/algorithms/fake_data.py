@@ -139,7 +139,7 @@ def create_fake_caloric_needs():
     caloric_needs_list = []
 
     for _ in range(new_caloric_needs):
-        meal_plan = MealDailyPlan(
+        meal_plan = CaloricNeedsStatistics(
             weight=fake.random_int(min=50, max=100),
             height=fake.random_int(min=150, max=200),
             age=fake.random_int(min=18, max=80),
@@ -158,7 +158,7 @@ def create_fake_perfect_weight():
     perfect_weight_list = []
 
     for _ in range(new_perfect_weight):
-        meal_plan = MealDailyPlan(
+        meal_plan = PerfectWeightStatistics(
             height=fake.random_int(min=150, max=200),
             min_perfect_weight=fake.random_int(min=50, max=100),
             max_perfect_weight=fake.random_int(min=50, max=150),
@@ -174,14 +174,14 @@ def create_fake_bmi():
     bmi_list = []
 
     for _ in range(new_bmi):
-        meal_plan = MealDailyPlan(
+        meal_plan = BmiStatistics(
             height=fake.random_int(min=150, max=200),
             weight=fake.random_int(min=50, max=120),
             bmi=fake.random_int(min=10, max=40),
         )
 
         bmi_list.append(meal_plan)
-    MealDailyPlan.objects.bulk_create(bmi_list)
+    BmiStatistics.objects.bulk_create(bmi_list)
 
 
 def create_fake_feedback():
@@ -219,7 +219,7 @@ def create_fake_medicine():
 
     for _ in range(new_medicine):
         medicine = Medicine(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
             expieration_date=fake.date_between(start_date="today", end_date="+1y"),
             quantity=fake.random_element(elements=["LOW", "MEDIUM", "HIGH"]),
             fak=fake.random_element(elements=Fak.objects.all()),
@@ -236,7 +236,7 @@ def create_fake_type():
 
     for _ in range(new_type):
         type = Type(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
         )
         type_list.append(type)
     Type.objects.bulk_create(type_list)
@@ -249,7 +249,7 @@ def create_fake_country():
 
     for _ in range(new_country):
         country = Country(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
         )
         country_list.append(country)
     Country.objects.bulk_create(country_list)
@@ -262,7 +262,8 @@ def create_fake_main_ingredient():
 
     for _ in range(new_main_ingredient):
         main_ingredient = MainIngredient(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
+            type=fake.random_element(elements=Type.objects.all()),
         )
         main_ingredient_list.append(main_ingredient)
     MainIngredient.objects.bulk_create(main_ingredient_list)
@@ -275,32 +276,37 @@ def create_fake_other_ingredient():
 
     for _ in range(new_other_ingredient):
         other_ingredient = OtherIngredient(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
+            type=fake.random_element(elements=Type.objects.all()),
         )
         other_ingredient_list.append(other_ingredient)
     OtherIngredient.objects.bulk_create(other_ingredient_list)
 
 
 def create_difficulty_leveL():
-    obj_1 = DifficultyLevel.objects.create(name="Easy")
-    obj_2 = DifficultyLevel.objects.create(name="Medium")
-    obj_3 = DifficultyLevel.objects.create(name="Hard")
-    obj_1.save()
-    obj_2.save()
-    obj_3.save()
+    level_num = DifficultyLevel.objects.count()
+    new_level = 10 - level_num
+    level_list = []
+
+    for _ in range(new_level):
+        level = DifficultyLevel(
+            name=fake.text(max_nb_chars=50),
+        )
+        level_list.append(level)
+    DifficultyLevel.objects.bulk_create(level_list)
 
 
 def create_dish_category():
-    obj_1 = DishCategory.objects.create(name="Breakfast")
-    obj_2 = DishCategory.objects.create(name="Lunch")
-    obj_3 = DishCategory.objects.create(name="Dinner")
-    obj_4 = DishCategory.objects.create(name="Tea")
-    obj_5 = DishCategory.objects.create(name="Dessert")
-    obj_1.save()
-    obj_2.save()
-    obj_3.save()
-    obj_4.save()
-    obj_5.save()
+    category_num = DishCategory.objects.count()
+    new_category = 10 - category_num
+    category_list = []
+
+    for _ in range(new_category):
+        category = DishCategory(
+            name=fake.text(max_nb_chars=50),
+        )
+        category_list.append(category)
+    DishCategory.objects.bulk_create(category_list)
 
 
 def create_fake_time_to_make():
@@ -309,7 +315,7 @@ def create_fake_time_to_make():
     time_to_make_list = []
 
     for _ in range(new_time_to_make):
-        time_to_make = TimeToMake(name=fake.integer(min=10, max=180))
+        time_to_make = TimeToMake(value=fake.random_int(min=10, max=180))
         time_to_make_list.append(time_to_make)
     TimeToMake.objects.bulk_create(time_to_make_list)
 
@@ -321,7 +327,7 @@ def create_fake_dish():
 
     for _ in range(new_dish):
         dish = Dish(
-            name=fake.words(max_nb_chars=50),
+            name=fake.text(max_nb_chars=50),
             author=fake.random_element(elements=CustomUser.objects.all()),
             time_to_make=fake.random_element(elements=TimeToMake.objects.all()),
             description=fake.text(max_nb_chars=150),
@@ -332,12 +338,15 @@ def create_fake_dish():
             vegetarian=fake.boolean(),
             vegan=fake.boolean(),
             country=fake.random_element(elements=Country.objects.all()),
-            level=fake.random_element(elements=Type.objects.all()),
-            main_ingredient=fake.random_element(elements=MainIngredient.objects.all()),
-            other_ingredients=fake.random_element(
-                elements=OtherIngredient.objects.all()
-            ),
+            level=fake.random_element(elements=DifficultyLevel.objects.all()),
             category=fake.random_element(elements=DishCategory.objects.all()),
+        )
+        dish.save()
+        dish.main_ingredient.add(
+            fake.random_element(elements=MainIngredient.objects.all())
+        )
+        dish.other_ingredients.add(
+            fake.random_element(elements=OtherIngredient.objects.all())
         )
         dish_list.append(dish)
     Dish.objects.bulk_create(dish_list)
@@ -385,7 +394,7 @@ def create_fake_post():
 
     for _ in range(new_post):
         post = Post.objects.create(
-            title=fake.words(max_nb_chars=200),
+            title=fake.text(max_nb_chars=200),
             text=fake.text(max_nb_chars=150),
             author=fake.random_element(elements=users),
         )
