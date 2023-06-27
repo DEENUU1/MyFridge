@@ -9,6 +9,7 @@ from tools.models import (
     BmiStatistics,
 )
 from social.models import Rate, Feedback, FavouriteDish
+from fak.models import Fak, Medicine
 
 fake = Faker()
 
@@ -187,3 +188,22 @@ def create_fake_feedback():
         )
         feedback_list.append(feedback)
     Feedback.objects.bulk_create(feedback_list)
+
+
+def favourite_dish():
+    pass
+
+
+def create_fake_fak():
+    users = list(CustomUser.objects.all())
+    fak_num = Fak.objects.count()
+    new_fak = 50 - fak_num
+    fak_list = []
+
+    for _ in range(new_fak):
+        fak = Fak(
+            name=fake.words(),
+            author=fake.random_element(elements=users),
+        )
+        fak_list.append(fak)
+    Fak.objects.bulk_create(fak_list)
