@@ -260,3 +260,16 @@ def create_fake_country():
         )
         country_list.append(country)
     Country.objects.bulk_create(country_list)
+
+
+def create_fake_main_ingredient():
+    main_ingredient = MainIngredient.objects.count()
+    new_main_ingredient = 50 - main_ingredient
+    main_ingredient_list = []
+
+    for _ in range(new_main_ingredient):
+        main_ingredient = MainIngredient(
+            name=fake.words(max_nb_chars=50),
+        )
+        main_ingredient_list.append(main_ingredient)
+    MainIngredient.objects.bulk_create(main_ingredient_list)
