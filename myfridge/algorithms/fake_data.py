@@ -10,6 +10,16 @@ from tools.models import (
 )
 from social.models import Rate, Feedback, FavouriteDish
 from fak.models import Fak, Medicine
+from dishes.models import (
+    Type,
+    Country,
+    MainIngredient,
+    OtherIngredient,
+    DiffucultyLevel,
+    DishCategory,
+    TimeToMake,
+    Dish,
+)
 
 fake = Faker()
 
@@ -224,3 +234,16 @@ def create_fake_medicine():
         )
         medicine_list.append(medicine)
     Medicine.objects.bulk_create(medicine_list)
+
+
+def create_fake_type():
+    type_num = Type.objects.count()
+    new_type = 50 - type_num
+    type_list = []
+
+    for _ in range(new_type):
+        type = Type(
+            name=fake.words(max_nb_chars=50),
+        )
+        type_list.append(type)
+    Type.objects.bulk_create(type_list)
