@@ -136,11 +136,11 @@ def create_fake_caloric_needs():
         )
 
         caloric_needs_list.append(meal_plan)
-    MealDailyPlan.objects.bulk_create(caloric_needs_list)
+    CaloricNeedsStatistics.objects.bulk_create(caloric_needs_list)
 
 
 def create_fake_perfect_weight():
-    perfect_weight_num = CaloricNeedsStatistics.objects.count()
+    perfect_weight_num = PerfectWeightStatistics.objects.count()
     new_perfect_weight = 50 - perfect_weight_num
     perfect_weight_list = []
 
@@ -152,4 +152,20 @@ def create_fake_perfect_weight():
         )
 
         perfect_weight_list.append(meal_plan)
-    MealDailyPlan.objects.bulk_create(perfect_weight_list)
+    PerfectWeightStatistics.objects.bulk_create(perfect_weight_list)
+
+
+def create_fake_bmi():
+    bmi_num = CaloricNeedsStatistics.objects.count()
+    new_bmi = 50 - bmi_num
+    bmi_list = []
+
+    for _ in range(new_bmi):
+        meal_plan = MealDailyPlan(
+            height=fake.random_int(min=150, max=200),
+            weight=fake.random_int(min=50, max=120),
+            bmi=fake.random_int(min=10, max=40),
+        )
+
+        bmi_list.append(meal_plan)
+    MealDailyPlan.objects.bulk_create(bmi_list)
