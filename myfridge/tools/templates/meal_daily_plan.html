@@ -5,10 +5,12 @@
 
 
 {% block content %}
+<div class="container-fluid d-flex align-items-center justify-content-center vh-100 flex-column">
 
-<a href="{% url 'tools:meal_plan_create' %}">Crete daily meal plan</a> <br>
-<a href="{% url 'tools:meal_create' %}">Create meal</a> <br>
-<br> <br> <br>
+<a href="{% url 'tools:meal_plan_create' %}">Crete daily meal plan</a>
+<a href="{% url 'tools:meal_create' %}">Create meal</a>
+
+{% if object_list %}
 {% for data in object_list %}
     <a href="{% url 'tools:meal_plan_details' data.id %}">Details</a> <br>
     <a href="{% url 'tools:meal_plan_update' data.id %}">Update</a> <br>
@@ -25,5 +27,10 @@
     {{data.tea}}
     {{data.dinner}}
 {% endfor %}
+{% else %}
+    <h2 class="text-center">Your shopping list is empty</h2>
 
+{% endif %}
+
+</div>
 {% endblock %}
