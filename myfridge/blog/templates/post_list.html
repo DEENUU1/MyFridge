@@ -20,6 +20,7 @@
 
 
     {% for data in object_list %}
+      <div style="margin-top: 20px; margin-bottom: 20px">
       {% if data.get_newest_label %}
         <strong>Newest</strong>
       {% endif %}
@@ -30,6 +31,7 @@
       {% else %}
       <img style="width: 500px; height: 300px; object-fit: cover; " class="img-fluid mx-auto d-block " src="https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg">
       {% endif %}
+      </div>
     {% endfor %}
 
     </div>
