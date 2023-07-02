@@ -13,7 +13,13 @@ from django.views.generic import (
 )
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
-from .models import ShoppingList, Meal, MealDailyPlan
+from .models import (
+    ShoppingList,
+    Meal,
+    MealDailyPlan,
+    UserStatistics,
+    UserDailyStatistics,
+)
 from django.forms.widgets import DateInput
 from django.contrib import messages
 
@@ -293,3 +299,23 @@ class MealDailyPlanDetailView(LoginRequiredMixin, DetailView):
 
 class ToolsHomePageTemplateView(TemplateView):
     template_name = "tools_home.html"
+
+
+class UserStatisticsCreateView(CreateView):
+    pass
+
+
+class UserStatisticsUpdateView(UpdateView):
+    pass
+
+
+class UserDailyStatisticsCreateView(CreateView):
+    pass
+
+
+class UserDailyStatisticsUpdateView(UpdateView):
+    pass
+
+
+class UserDailyStatisticsReportView:
+    pass
