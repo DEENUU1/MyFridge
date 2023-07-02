@@ -1,5 +1,11 @@
 from django.contrib import admin
-from .models import ShoppingList, Meal, MealDailyPlan, UserStatistics
+from .models import (
+    ShoppingList,
+    Meal,
+    MealDailyPlan,
+    UserStatistics,
+    UserDailyStatistics,
+)
 
 
 @admin.register(ShoppingList)
@@ -28,6 +34,17 @@ class UserStatisticsModelAdmin(admin.ModelAdmin):
         "current_weight",
         "dream_weight",
         "current_height",
+        "date_created",
+        "date_updated",
+    ]
+    list_filter = ["user", "date_created", "date_updated"]
+
+
+@admin.register(UserDailyStatistics)
+class UserDailyStatisticsModelAdmin(admin.ModelAdmin):
+    list_display = [
+        "user",
+        "weight",
         "date_created",
         "date_updated",
     ]
