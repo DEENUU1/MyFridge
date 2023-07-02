@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import CustomUser
 from dishes.models import Dish
+from ckeditor.fields import RichTextField
 
 
 class ShoppingList(models.Model):
@@ -19,7 +20,7 @@ class ShoppingList(models.Model):
 
 class Meal(models.Model):
     name = models.CharField(max_length=200)
-    content = models.TextField(null=True, blank=True)
+    content = RichTextField(null=True, blank=True)
     url = models.URLField(null=True, blank=True)
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     dish = models.ForeignKey(Dish, on_delete=models.CASCADE, null=True, blank=True)
