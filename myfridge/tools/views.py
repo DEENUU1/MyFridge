@@ -9,6 +9,7 @@ from django.views.generic import (
     UpdateView,
     ListView,
     DetailView,
+    TemplateView,
 )
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
@@ -288,3 +289,7 @@ class MealDailyPlanListView(LoginRequiredMixin, ListView):
 class MealDailyPlanDetailView(LoginRequiredMixin, DetailView):
     model = MealDailyPlan
     template_name = "meal_daily_plan_detail.html"
+
+
+class ToolsHomePageTemplateView(TemplateView):
+    template_name = "tools_home.html"

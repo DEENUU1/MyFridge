@@ -5,6 +5,7 @@ app_name = "tools"
 
 
 urlpatterns = [
+    path("", views.ToolsHomePageTemplateView.as_view(), name="tools_home"),
     path("bmi/", views.bmiView, name="bmi"),
     path("shopping_list/", views.ShoppingListView.as_view(), name="shopping_list"),
     path(
