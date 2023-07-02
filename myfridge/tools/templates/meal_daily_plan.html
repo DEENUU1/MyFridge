@@ -5,32 +5,44 @@
 
 
 {% block content %}
-<div class="container-fluid d-flex align-items-center justify-content-center vh-100 flex-column">
+<div class="container-fluid py-5">
+    <div class="d-flex justify-content-between mb-4">
+        <a href="{% url 'tools:meal_plan_create' %}" class="btn btn-primary">Create daily meal plan</a>
+        <a href="{% url 'tools:meal_create' %}" class="btn btn-success">Create meal</a>
+    </div>
 
-<a href="{% url 'tools:meal_plan_create' %}">Crete daily meal plan</a>
-<a href="{% url 'tools:meal_create' %}">Create meal</a>
-
-{% if object_list %}
-{% for data in object_list %}
-    <a href="{% url 'tools:meal_plan_details' data.id %}">Details</a> <br>
-    <a href="{% url 'tools:meal_plan_update' data.id %}">Update</a> <br>
-    <form action="{% url 'tools:meal_plan_delete' data.id %}" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-secondary mt-2">Delete</button>
-    </form> <br>
-    {{data.date}}
-    {{data.month}}
-    {{data.year}}
-    {{data.breakfast}}
-    {{data.second_breakfast}}
-    {{data.lunch}}
-    {{data.tea}}
-    {{data.dinner}}
-{% endfor %}
-{% else %}
-    <h2 class="text-center">Your shopping list is empty</h2>
-
-{% endif %}
-
+    {% if object_list %}
+    <div class="list-group">
+        {% for data in object_list %}
+            <div class="list-group-item list-group-item-action">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Meal Plan: {{data.id}}</h5>
+                    <small>Status: {{data.meal_plan_status}}</small>
+                </div>
+                <p class="mb-1">Date: <a href="{% url 'tools:meal_plan_details' data.id %}">{{data.date}}</a></p>
+                <div class="d-flex justify-content-between">
+                    <div>
+                        Breakfast: <a href="{% url 'tools:meal_details' data.breakfast.id %}" class="mr-2">{{data.breakfast}}</a> <br>
+                        Second breakfast: <a href="{% url 'tools:meal_details' data.second_breakfast.id %}" class="mr-2">{{data.second_breakfast}}</a> <br>
+                        Lunch: <a href="{% url 'tools:meal_details' data.lunch.id %}" class="mr-2">{{data.lunch}}</a> <br>
+                        Tea: <a href="{% url 'tools:meal_details' data.tea.id %}" class="mr-2">{{data.tea}}</a> <br>
+                        Dinner: <a href="{% url 'tools:meal_details' data.dinner.id %}">{{data.dinner}}</a>
+                    </div>
+                    <div>
+                        <a href="{% url 'tools:meal_plan_update' data.id %}" class="btn btn-warning btn-sm">Update</a>
+                        <form action="{% url 'tools:meal_plan_delete' data.id %}" method="POST" style="display: inline-block;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="container-fluid d-flex align-items-center justify-content-center vh-100 flex-column">
+        <h2 class="text-center">Your daily plan is empty</h2>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

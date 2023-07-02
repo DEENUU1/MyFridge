@@ -142,10 +142,11 @@ class MealCreateView(LoginRequiredMixin, CreateView):
     fields = ("name", "content", "url", "dish")
 
     def get_success_url(self):
-        return reverse_lazy("tools:meal_details", kwargs={"pk": self.kwargs["pk"]})
+        return reverse_lazy("tools:meal_details", kwargs={"pk": self.object.pk})
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        self.object = form.save()
         messages.success(self.request, "Meal created successfully.")
         return super().form_valid(form)
 
