@@ -29,22 +29,10 @@
                 <a class="nav-link" href="{% url 'dishes:home' %}">Dishes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'tools:shopping_list' %}">Shopping list</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{% url 'fak:fak_home' %}">Fak</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'social:user-ranking' %}">Ranking</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tools:bmi' %}">BMI</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tools:perfect-weight' %}">Perfect weight</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tools:caloric-needs' %}">Caloric needs</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
@@ -53,7 +41,7 @@
               <a class="nav-link" href="{% url 'contact:contact' %}">Contact</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'tools:meal_plan_list' %}">Meal plan</a>
+              <a class="nav-link" href="{% url 'tools:tools_home' %}">Tools</a>
             </li>
             </ul>
         </div>
@@ -64,7 +52,7 @@
             <input class="form-control me-2" type="search" placeholder="Search users" aria-label="Search" name="q">
             <button class="btn btn-outline-success" type="submit"><i class="uil uil-search"></i></button>
           </form>
-          
+
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if user.is_authenticated %}
               <li class="nav-item position-relative">
