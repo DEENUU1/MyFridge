@@ -11,9 +11,6 @@
             <div class="card my-4">
                 <div class="card-body">
                     <h2 class="card-title">{{object.title}}</h2>
-                          {% if object.get_newest_label %}
-                            <strong>Newest</strong>
-                          {% endif %}
                         {% if object.author == user %}
                         <a href="{% url 'blog:update_post' object.id %}" class="btn btn-warning">Edit</a>
                         <form action="{% url 'blog:delete_post' object.id %}" method="POST">
@@ -21,7 +18,7 @@
                             <button type="submit" class="btn btn-secondary mt-2">Delete</button>
                         </form>
                         {% endif %}
-                    <p class="card-text"><a href="{% url 'users:profile_detail' object.author.id %}">{{object.author}}</a> | {{object.created_date}}</p>
+                    <p class="card-text"><a href="{% url 'users:profile_detail' object.author.id %}">{{object.author}}</a> | {{object.created_date}} | {% if object.get_newest_label%} <strong>Newest</strong> {%endif%}</p>
                     {% if object.image %}
                     <img class="card-img-top img-fluid mx-auto d-block" src="{{object.image.url}}">
                     {% endif %}

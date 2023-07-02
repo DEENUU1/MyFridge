@@ -26,11 +26,8 @@
 
     {% for data in object_list %}
       <div style="margin-top: 20px; margin-bottom: 20px">
-      {% if data.get_newest_label %}
-        <strong>Newest</strong>
-      {% endif %}
       <h2><a style="color: black; text-decoration: none;" href="{% url 'blog:post_detail' data.id %} ">{{data.title}}</a></h2>
-      <p><a href="{% url 'users:profile_detail' data.author.id %}">{{data.author}}</a> | {{data.created_date}}</p>
+      <p><a href="{% url 'users:profile_detail' data.author.id %}">{{data.author}}</a> | {{data.created_date}} | {% if data.get_newest_label %} <strong>Newest</strong> {%endif%} </p>
       {% if data.image %}
       <img style="width: 500px; height: 300px; object-fit: cover; " class="img-fluid mx-auto d-block " src="{{data.image.url}}">
       {% else %}
