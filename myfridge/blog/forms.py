@@ -8,3 +8,7 @@ class DateSortingForm(forms.Form):
         choices=CHOICES,
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["order_by"].label = ""

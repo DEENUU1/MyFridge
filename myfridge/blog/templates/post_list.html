@@ -6,13 +6,18 @@
 {% block content %}
 
 <div class="container">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+
+
     <form method="GET" class="form-inline my-2 my-lg-0">
     {{order_by|crispy}}
     <input class="form-control mr-sm-2" type="text" name="q" placeholder="Search..." aria-label="Search">
     <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
   </form>
   <a href="{% url 'blog:create_post' %}" class="btn btn-success">Add Post</a>
-
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-md-6 mx-auto">
