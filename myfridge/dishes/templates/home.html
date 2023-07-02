@@ -61,7 +61,7 @@
                 <div class="card-footer">
                     <form action="{% url 'social:favourite-add' data.id %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">Add to favourite</button>
+                        <button type="submit" class="btn btn-success">Add to favourite</button>
                     </form>
                 </div>
             </div>

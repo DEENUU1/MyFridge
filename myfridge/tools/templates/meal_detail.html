@@ -1,15 +1,21 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block meta_title%} MyFridge | {object.name} {% endblock %}
+{% block meta_title%} MyFridge | {{ object.name }} {% endblock %}
 
 
 {% block content %}
-
-
-{{object.name}}
-{{object.content}}
-{{object.url}}
-{{object.dish.name}}
-
+<div class="container-fluid py-5">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">{{ object.name }}</h2>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ object.content }}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Dish: {{ object.dish.name }}</small>
+        </div>
+    </div>
+</div>
 {% endblock %}

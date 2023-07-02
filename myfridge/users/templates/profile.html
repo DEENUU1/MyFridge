@@ -14,7 +14,7 @@
       {% endif %}
     </div>
     <div class="col-md-6">
-      <a class="btn btn-primary" href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
+      <a class="btn btn-warning" href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
       <h2>{{user.username}}</h2>
       <p>{{user.description}}</p>
     </div>
@@ -27,7 +27,7 @@
       {{data}}
     </div>
     <div class="card-footer">
-      <a class="btn btn-primary" href="{% url 'dishes:dish-update' data.id %}">Update</a>
+      <a class="btn btn-warning" href="{% url 'dishes:dish-update' data.id %}">Update</a>
       <form class="d-inline-block" action="{% url 'dishes:dish-delete' data.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete</button>
@@ -43,7 +43,7 @@
       {{data}}
     </div>
     <div class="card-footer">
-      <a class="btn btn-primary" href="{% url 'social:rate-update' data.id %}">Update</a>
+      <a class="btn btn-warning" href="{% url 'social:rate-update' data.id %}">Update</a>
       <form class="d-inline-block" action="{% url 'social:rate-delete' data.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete</button>
@@ -74,7 +74,7 @@
       {{data}}
     </div>
     <div class="card-footer">
-      <a class="btn btn-primary" href="{% url 'blog:update_post' data.id %}">Update</a>
+      <a class="btn btn-warning" href="{% url 'blog:update_post' data.id %}">Update</a>
       <form class="d-inline-block" action="{% url 'blog:delete_post' data.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete</button>
@@ -90,7 +90,7 @@
       {{data}}
     </div>
     <div class="card-footer">
-      <a class="btn btn-primary" href="{% url 'blog:update_comment' data.id %}">Update</a>
+      <a class="btn btn-warning" href="{% url 'blog:update_comment' data.id %}">Update</a>
       <form class="d-inline-block" action="{% url 'blog:delete_comment' data.id %}" method="post">
         {% csrf_token %}
         <button class="btn btn-danger" type="submit">Delete</button>

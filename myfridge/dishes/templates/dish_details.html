@@ -12,10 +12,10 @@
                 <div class="card-body">
                     <h2 class="card-title">{{object.name}} {% if object.get_newest_label %} <strong>Newest</strong> {% endif %}</strong></h2>
                         {% if object.author == user %}
-                        <a href="{% url 'blog:update_post' object.id %}">Edit</a>
-                        <form action="{% url 'blog:delete_post' object.id %}" method="POST">
+                        <a href="{% url 'dishes:dish-update' object.id %}" class="btn btn-warning">Edit</a>
+                        <form action="{% url 'dishes:dish-delete' object.id %}" method="POST">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-secondary mt-2">Delete</button>
+                            <button type="submit" class="btn btn-danger mt-2">Delete</button>
                         </form>
                         {% endif %}
                     <p class="card-text"><a href="{% url 'users:profile_detail' object.author.id %}">{{object.author}}</a> | {{object.date_created}}</p>
@@ -76,7 +76,7 @@
                               {% csrf_token %}
                               <button type="submit" class="btn btn-danger">Delete</button>
                           </form>
-                         <a href="{% url 'social:rate-update' object.id %}">Edit</a>
+                         <a href="{% url 'social:rate-update' object.id %}" class="btn btn-warning">Edit</a>
                         {% endif %}
                     </div>
                 </div>

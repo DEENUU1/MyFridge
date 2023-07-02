@@ -15,7 +15,7 @@
                             <strong>Newest</strong>
                           {% endif %}
                         {% if object.author == user %}
-                        <a href="{% url 'blog:update_post' object.id %}">Edit</a>
+                        <a href="{% url 'blog:update_post' object.id %}" style="btn btn-warning">Edit</a>
                         <form action="{% url 'blog:delete_post' object.id %}" method="POST">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-secondary mt-2">Delete</button>
@@ -43,7 +43,7 @@
                             <button type="submit" class="btn btn-secondary mt-2">Delete</button>
                         </form>
 
-                        <a href="{% url 'blog:update_comment' comment.id %}">Edit</a>
+                        <a href="{% url 'blog:update_comment' comment.id %}" class="btn btn-warning">Edit</a>
                         {% endif %}
                     </div>
                 </div>
