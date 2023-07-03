@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -17,7 +18,6 @@ from .models import (
     ShoppingList,
     Meal,
     MealDailyPlan,
-    UserStatistics,
     UserDailyStatistics,
 )
 from django.forms.widgets import DateInput
@@ -301,16 +301,17 @@ class ToolsHomePageTemplateView(TemplateView):
     template_name = "tools_home.html"
 
 
-class UserStatisticsCreateView(CreateView):
-    pass
-
-
-class UserStatisticsUpdateView(UpdateView):
-    pass
-
-
 class UserDailyStatisticsCreateView(CreateView):
-    pass
+    model = UserDailyStatistics
+    template_name = "user_daily_statistics_create.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            messages.error(self.request, "You are not authorized")
+        messages.success(self.request, "User Daily Statistics created successfully.")
+        return queryset
 
 
 class UserDailyStatisticsUpdateView(UpdateView):

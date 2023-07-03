@@ -123,19 +123,6 @@ class BmiStatistics(models.Model):
 
 
 # TODO pytest
-class UserStatistics(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    current_weight = models.FloatField()
-    current_height = models.FloatField()
-    dream_weight = models.FloatField()
-    date_created = models.DateTimeField(auto_now_add=True)
-    date_updated = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.user}"
-
-
-# TODO pytest
 class UserDailyStatistics(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     weight = models.FloatField()

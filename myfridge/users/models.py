@@ -10,6 +10,9 @@ class CustomUser(AbstractUser):
     following = models.ManyToManyField(
         "self", through="UserFollowing", related_name="followed_by", symmetrical=False
     )
+    dream_weight = models.FloatField(default=0)
+    current_weight = models.FloatField(default=0)
+    current_height = models.FloatField(default=0)
 
 
 class UserFollowing(models.Model):
