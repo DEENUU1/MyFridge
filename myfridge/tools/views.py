@@ -331,7 +331,16 @@ class UserDailyStatisticsCreateView(CreateView):
 
 
 class UserDailyStatisticsUpdateView(UpdateView):
-    pass
+    model = UserDailyStatistics
+    template_name = "user_daily_statistics_create.html"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            messages.error(self.request, "You are not authorized")
+        messages.success(self.request, "User Daily Statistics updated successfully.")
+        return queryset
 
 
 class UserDailyStatisticsReportView:
