@@ -52,4 +52,19 @@ urlpatterns = [
     path(
         "meal-plan/list", views.MealDailyPlanListView.as_view(), name="meal_plan_list"
     ),
+    path(
+        "daily-statistics/create",
+        views.UserDailyStatisticsCreateView.as_view(),
+        name="daily_statistics_create",
+    ),
+    path(
+        "daily-statistics/<int:pk>/update",
+        views.UserDailyStatisticsUpdateView.as_view(),
+        name="daily_statistics_update",
+    ),
+    path(
+        "daily-statistics",
+        views.UserDailyStatisticsReportView.as_view(),
+        name="daily_statistics_report",
+    ),
 ]

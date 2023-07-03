@@ -120,3 +120,17 @@ class BmiStatistics(models.Model):
 
     def __str__(self):
         return f"{self.height} {self.weight} {self.bmi}"
+
+
+# TODO pytest
+class UserDailyStatistics(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    weight = models.FloatField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_updated = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user}"
+
+    class Meta:
+        ordering = ["-date_created"]

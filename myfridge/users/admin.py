@@ -4,7 +4,15 @@ from .models import CustomUser, UserFollowing
 
 @admin.register(CustomUser)
 class UserModelAdmin(admin.ModelAdmin):
-    list_display = ["username", "email", "is_active", "points"]
+    list_display = [
+        "username",
+        "email",
+        "is_active",
+        "points",
+        "dream_weight",
+        "current_weight",
+        "current_height",
+    ]
 
     list_filter = ["is_active"]
 

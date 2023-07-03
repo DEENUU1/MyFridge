@@ -1,8 +1,11 @@
 from typing import Any, Dict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -13,7 +16,12 @@ from django.views.generic import (
 )
 
 from .forms import BMIForm, CaloricNeedsForm, PerfectWeightForm
-from .models import ShoppingList, Meal, MealDailyPlan
+from .models import (
+    ShoppingList,
+    Meal,
+    MealDailyPlan,
+    UserDailyStatistics,
+)
 from django.forms.widgets import DateInput
 from django.contrib import messages
 
@@ -293,3 +301,59 @@ class MealDailyPlanDetailView(LoginRequiredMixin, DetailView):
 
 class ToolsHomePageTemplateView(TemplateView):
     template_name = "tools_home.html"
+
+
+# TODO User should be able create only 1 object per day
+class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
+    model = UserDailyStatistics
+    template_name = "user_daily_statistics_create.html"
+    success_url = reverse_lazy("dishes:home")
+    fields = ("weight",)
+
+    def form_valid(self, form):
+        current_date = timezone.now().date()
+        user = self.request.user
+
+        if UserDailyStatistics.objects.filter(
+            user=user, date_created=current_date
+        ).exists():
+            messages.error(
+                self.request, "You can only add one UserDailyStatistics object per day."
+            )
+            return self.get_success_url()
+
+        form.instance.user = user
+        form.instance.date_created = current_date
+        messages.success(self.request, "User Daily Statistics created successfully.")
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.success_url
+
+
+class UserDailyStatisticsUpdateView(UpdateView):
+    model = UserDailyStatistics
+    template_name = "user_daily_statistics_update.html"
+    success_url = reverse_lazy("dishes:home")
+    fields = ("weight",)
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(user=self.request.user)
+        if not queryset.exists():
+            messages.error(self.request, "You are not authorized")
+        messages.success(self.request, "User Daily Statistics updated successfully.")
+        return queryset
+
+
+class UserDailyStatisticsReportView(View):
+    def get(self, request):
+        current_user = request.user.id
+        user_daily_statistics = UserDailyStatistics.objects.filter(
+            user=current_user
+        ).all()
+        return render(
+            request,
+            "user_daily_statistics_report.html",
+            {"current_user": current_user, "daily_statistics": user_daily_statistics},
+        )
