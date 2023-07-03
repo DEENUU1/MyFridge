@@ -331,7 +331,7 @@ class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
         return self.success_url
 
 
-class UserDailyStatisticsUpdateView(UpdateView):
+class UserDailyStatisticsUpdateView(LoginRequiredMixin, UpdateView):
     model = UserDailyStatistics
     template_name = "user_daily_statistics_update.html"
     success_url = reverse_lazy("dishes:home")
@@ -346,7 +346,7 @@ class UserDailyStatisticsUpdateView(UpdateView):
         return queryset
 
 
-class UserDailyStatisticsReportView(View):
+class UserDailyStatisticsReportView(LoginRequiredMixin, View):
     def get(self, request):
         current_user = request.user.id
         user_daily_statistics = UserDailyStatistics.objects.filter(
