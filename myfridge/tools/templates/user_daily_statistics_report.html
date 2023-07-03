@@ -1,11 +1,34 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block meta_title%} MyFridge | Daily Statistics Report {% endblock %}
-
+{% block meta_title %} MyFridge | Daily Statistics Report {% endblock %}
 
 {% block content %}
 
-<a href="{% url 'users:edit_profile' current_user %}">Edit your settings</a>
+<a href="{% url 'users:edit_profile' current_user %}" class="btn btn-primary">Edit your settings</a>
+<a href="{% url 'tools:daily_statistics_create' %}" class="btn btn-primary">Add daily statistics</a>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Date Created</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for data in daily_statistics %}
+            <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{ data.weight }}</td>
+                <td>{{ data.date_created }}</td>
+                <td><a class="btn btn-warning" href="{% url 'tools:daily_statistics_update' data.id %}">Update</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 {% endblock %}

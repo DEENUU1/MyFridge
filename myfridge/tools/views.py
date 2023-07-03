@@ -349,6 +349,11 @@ class UserDailyStatisticsUpdateView(UpdateView):
 class UserDailyStatisticsReportView(View):
     def get(self, request):
         current_user = request.user.id
+        user_daily_statistics = UserDailyStatistics.objects.filter(
+            user=current_user
+        ).all()
         return render(
-            request, "user_daily_statistics_report.html", {"current_user": current_user}
+            request,
+            "user_daily_statistics_report.html",
+            {"current_user": current_user, "daily_statistics": user_daily_statistics},
         )
