@@ -131,3 +131,6 @@ class UserDailyStatistics(models.Model):
 
     def __str__(self):
         return f"{self.user}"
+
+    class Meta:
+        ordering = ["-date_created"]
