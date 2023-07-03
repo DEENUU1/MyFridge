@@ -348,4 +348,7 @@ class UserDailyStatisticsUpdateView(UpdateView):
 
 class UserDailyStatisticsReportView(View):
     def get(self, request):
-        return HttpResponse("Hello World")
+        current_user = request.user.id
+        return render(
+            request, "user_daily_statistics_report.html", {"current_user": current_user}
+        )

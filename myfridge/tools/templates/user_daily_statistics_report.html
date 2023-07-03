@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block meta_title%} MyFridge | Daily Statistics Report {% endblock %}
+
+
+{% block content %}
+
+<a href="{% url 'users:edit_profile' current_user %}">Edit your settings</a>
+
+{% endblock %}
