@@ -1,10 +1,11 @@
 from typing import Any, Dict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.views import View
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -345,5 +346,6 @@ class UserDailyStatisticsUpdateView(UpdateView):
         return queryset
 
 
-class UserDailyStatisticsReportView:
-    pass
+class UserDailyStatisticsReportView(View):
+    def get(self, request):
+        return HttpResponse("Hello World")

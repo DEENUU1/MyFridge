@@ -62,4 +62,9 @@ urlpatterns = [
         views.UserDailyStatisticsUpdateView.as_view(),
         name="daily_statistics_update",
     ),
+    path(
+        "daily-statistics",
+        views.UserDailyStatisticsReportView.as_view(),
+        name="daily_statistics_report",
+    ),
 ]
