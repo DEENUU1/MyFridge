@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -312,6 +313,21 @@ class UserDailyStatisticsCreateView(CreateView):
             messages.error(self.request, "You are not authorized")
         messages.success(self.request, "User Daily Statistics created successfully.")
         return queryset
+
+    def form_valid(self, form):
+        current_date = timezone.now().date()
+        user = self.request.user
+
+        if UserDailyStatistics.objects.filter(user=user, date=current_date).exists():
+            messages.error(
+                self.request, "You can only add one UserDailyStatistics object per day."
+            )
+            return self.form_invalid(form)
+
+        form.instance.user = user
+        form.instance.date = current_date
+        messages.success(self.request, "User Daily Statistics created successfully.")
+        return super().form_valid(form)
 
 
 class UserDailyStatisticsUpdateView(UpdateView):
