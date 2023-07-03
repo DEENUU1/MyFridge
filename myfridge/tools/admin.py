@@ -3,7 +3,6 @@ from .models import (
     ShoppingList,
     Meal,
     MealDailyPlan,
-    UserStatistics,
     UserDailyStatistics,
 )
 
@@ -25,19 +24,6 @@ class MealModelAdmin(admin.ModelAdmin):
 class MealDailyPlanModelAdmin(admin.ModelAdmin):
     list_display = ["date", "month", "year", "user"]
     list_filter = ["date", "month", "year", "user"]
-
-
-@admin.register(UserStatistics)
-class UserStatisticsModelAdmin(admin.ModelAdmin):
-    list_display = [
-        "user",
-        "current_weight",
-        "dream_weight",
-        "current_height",
-        "date_created",
-        "date_updated",
-    ]
-    list_filter = ["user", "date_created", "date_updated"]
 
 
 @admin.register(UserDailyStatistics)

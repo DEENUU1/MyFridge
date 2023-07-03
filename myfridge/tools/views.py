@@ -302,37 +302,39 @@ class ToolsHomePageTemplateView(TemplateView):
     template_name = "tools_home.html"
 
 
-class UserDailyStatisticsCreateView(CreateView):
+# TODO User should be able create only 1 object per day
+class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
     model = UserDailyStatistics
     template_name = "user_daily_statistics_create.html"
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        queryset = queryset.filter(user=self.request.user)
-        if not queryset.exists():
-            messages.error(self.request, "You are not authorized")
-        messages.success(self.request, "User Daily Statistics created successfully.")
-        return queryset
+    success_url = reverse_lazy("dishes:home")
+    fields = ("weight",)
 
     def form_valid(self, form):
         current_date = timezone.now().date()
         user = self.request.user
 
-        if UserDailyStatistics.objects.filter(user=user, date=current_date).exists():
+        if UserDailyStatistics.objects.filter(
+            user=user, date_created=current_date
+        ).exists():
             messages.error(
                 self.request, "You can only add one UserDailyStatistics object per day."
             )
-            return self.form_invalid(form)
+            return self.get_success_url()
 
         form.instance.user = user
-        form.instance.date = current_date
+        form.instance.date_created = current_date
         messages.success(self.request, "User Daily Statistics created successfully.")
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return self.success_url
 
 
 class UserDailyStatisticsUpdateView(UpdateView):
     model = UserDailyStatistics
-    template_name = "user_daily_statistics_create.html"
+    template_name = "user_daily_statistics_update.html"
+    success_url = reverse_lazy("dishes:home")
+    fields = ("weight",)
 
     def get_queryset(self):
         queryset = super().get_queryset()
