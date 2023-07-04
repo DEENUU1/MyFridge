@@ -22,7 +22,15 @@ def calculate_weight_last_30_days(user_id):
     return None
 
 
-# TODO calculate weight in current year
+def calculate_weight_last_day(user_id):
+    current_date = datetime.now()
+    date_1_day_ago = current_date - timedelta(days=1)
 
+    weight_records = UserDailyStatistics.objects.filter(
+        date_created__gte=date_1_day_ago, user_id=user_id
+    ).order_by("date_created")
 
-# TODO display difference between current and previous day
+    if weight_records.exists():
+        return weight_records.last().weight
+
+    return None
