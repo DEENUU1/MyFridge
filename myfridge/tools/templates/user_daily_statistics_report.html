@@ -8,7 +8,13 @@
 <a href="{% url 'users:edit_profile' current_user %}" class="btn btn-primary">Edit your settings</a>
 <a href="{% url 'tools:daily_statistics_create' %}" class="btn btn-primary">Add daily statistics</a>
 
-<div class="table-responsive">
+{% if last_30_days_stats < 0 %}
+    You lost: {{last_30_days_stats}} kg in the last 30 days
+{% else %}
+    You gain: {{lost_30_days_stats}} kg in the last 30 days
+{% endif %}
+
+<div class="tab le-responsive">
     <table class="table table-striped">
         <thead>
             <tr>

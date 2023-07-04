@@ -24,6 +24,7 @@ from .models import (
 )
 from django.forms.widgets import DateInput
 from django.contrib import messages
+from .report import calculate_weight_last_30_days
 
 
 def bmiView(request):  # Remove camel case
@@ -352,8 +353,13 @@ class UserDailyStatisticsReportView(LoginRequiredMixin, View):
         user_daily_statistics = UserDailyStatistics.objects.filter(
             user=current_user
         ).all()
+        last_30_days_stats = calculate_weight_last_30_days(current_user)
         return render(
             request,
             "user_daily_statistics_report.html",
-            {"current_user": current_user, "daily_statistics": user_daily_statistics},
+            {
+                "current_user": current_user,
+                "daily_statistics": user_daily_statistics,
+                "last_30_days_stats": last_30_days_stats,
+            },
         )
