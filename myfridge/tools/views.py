@@ -1,7 +1,6 @@
 from typing import Any, Dict
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -24,7 +23,7 @@ from .models import (
 )
 from django.forms.widgets import DateInput
 from django.contrib import messages
-from .report import calculate_weight_last_30_days
+from .report import calculate_weight_last_30_days, calculate_weight_last_day
 
 
 def bmiView(request):  # Remove camel case
@@ -354,6 +353,7 @@ class UserDailyStatisticsReportView(LoginRequiredMixin, View):
             user=current_user
         ).all()
         last_30_days_stats = calculate_weight_last_30_days(current_user)
+        last_day_stats = calculate_weight_last_day(current_user)
         return render(
             request,
             "user_daily_statistics_report.html",
@@ -361,5 +361,6 @@ class UserDailyStatisticsReportView(LoginRequiredMixin, View):
                 "current_user": current_user,
                 "daily_statistics": user_daily_statistics,
                 "last_30_days_stats": last_30_days_stats,
+                "last_day_stats": last_day_stats,
             },
         )
