@@ -39,8 +39,8 @@
       {% endif %}
         </div>
       </div>
+      <h2 style="text-align:center;">New activity</h2>
 
-      <h3>User Dishes</h3>
       {% for dish in user_dishes %}
         <div>
           <h4>{{ dish.name }}</h4>
@@ -52,7 +52,6 @@
         </div>
       {% endfor %}
 
-      <h3>User Daily Meal Plan</h3>
       {% for plan in daily_meal_plan %}
         <div>
           <h4>{{plan.date}}</h4>
@@ -64,7 +63,6 @@
         </div>
       {% endfor %}
 
-      <h3>User Posts</h3>
       {% for post in user_posts %}
         <div>
           <h4>{{ post.title }}</h4>
@@ -75,7 +73,6 @@
           {% endif %}
         </div>
       {% endfor %}
-
 
     </div>
   </div>
