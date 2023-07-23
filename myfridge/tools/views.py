@@ -334,7 +334,7 @@ class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
 class UserDailyStatisticsUpdateView(LoginRequiredMixin, UpdateView):
     model = UserDailyStatistics
     template_name = "user_daily_statistics_update.html"
-    success_url = reverse_lazy("dishes:home")
+    success_url = reverse_lazy("tools:daily_statistics_report")
     fields = ("weight",)
 
     def get_queryset(self):
