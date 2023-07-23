@@ -16,11 +16,14 @@
     <div class="col-md-6">
       <a class="btn btn-warning" href="{% url 'users:edit_profile' user.id %}">Edit your profile</a>
       <h2>{{user.username}}</h2>
+      {% if user.description %}
       <p>{{user.description}}</p>
+      {% endif %}
     </div>
   </div>
-
+  {% if user_dishes %}
   <h3>Dishes</h3>
+
   {% for data in user_dishes %}
   <div class="card mb-3">
     <div class="card-body">
@@ -35,7 +38,8 @@
     </div>
   </div>
   {% endfor %}
-
+  {% endif %}
+  {% if user_rates %}
   <h3>Rates</h3>
   {% for data in user_rates %}
   <div class="card mb-3">
@@ -51,7 +55,8 @@
     </div>
   </div>
   {% endfor %}
-
+  {% endif %}
+  {% if user_favourite_dish %}
   <h3>Favourite Dishes</h3>
   {% for data in user_favourite_dish %}
   <div class="card mb-3">
@@ -66,7 +71,8 @@
     </div>
   </div>
   {% endfor %}
-
+  {% endif %}
+  {% if user_blog_post %}
   <h3>Posts</h3>
   {% for data in user_blog_post %}
   <div class="card mb-3">
@@ -82,7 +88,8 @@
     </div>
   </div>
   {% endfor %}
-
+  {% endif %}
+  {% if user_blog_comments %}
   <h3>Blog Comments</h3>
   {% for data in user_blog_comments %}
   <div class="card mb-3">
@@ -98,5 +105,6 @@
     </div>
   </div>
   {% endfor %}
+  {% endif %}
 </div>
 {% endblock %}
