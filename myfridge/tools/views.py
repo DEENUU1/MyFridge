@@ -307,7 +307,7 @@ class ToolsHomePageTemplateView(TemplateView):
 class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
     model = UserDailyStatistics
     template_name = "user_daily_statistics_create.html"
-    success_url = reverse_lazy("dishes:home")
+    success_url = reverse_lazy("tools:daily_statistics_report")
     fields = ("weight",)
 
     def form_valid(self, form):
@@ -315,15 +315,15 @@ class UserDailyStatisticsCreateView(LoginRequiredMixin, CreateView):
         user = self.request.user
 
         if UserDailyStatistics.objects.filter(
-            user=user, date_created=current_date
+            user=user, date_created__date=current_date
         ).exists():
             messages.error(
                 self.request, "You can only add one UserDailyStatistics object per day."
             )
-            return self.get_success_url()
+            return super().form_invalid(form)
 
         form.instance.user = user
-        form.instance.date_created = current_date
+        form.instance.date_created = timezone.now()
         messages.success(self.request, "User Daily Statistics created successfully.")
         return super().form_valid(form)
 
