@@ -155,9 +155,26 @@ python manage.py migrate
 # Restart / Run again all containers
 # If app doesn't work you need to restart myfridge-web-dev container 
 docker restart myfridge-web-dev
-
 ```
 
+### Tests
+```bash
+# Enter bash in django container 
+docker exec -it myfridge-web-dev bash
+
+# Run pytests
+pytest 
+```
+
+### Load fake data
+```bash
+# Enter bash in django container
+# Create fake data for models: User, DifficultyLevel
+# DishCategory, MainIngredients, OtherIngredients, TimeToMake, 
+# Types, Fak, Feedback, MealDailyPlan, Meal, ShoppingList
+
+python manage.py loaddata
+```
 
 
 <!-- LICENSE -->
