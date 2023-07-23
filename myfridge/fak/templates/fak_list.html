@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
 
-{% block meta_title%} MyFridge | Fak list {% endblock %}
+{% block meta_title %} MyFridge | Fak list {% endblock %}
 
 {% block content %}
-<a href="{% url 'fak:fak_create' %}" class="btn btn-success mb-3">Create fak</a>
-<div class="d-flex align-items-center justify-content-center vh-100">
-    <div class="container">
+<div class="d-flex flex-column justify-content-between min-vh-100">
+    <div class="container py-4 flex-grow-1">
+        <a href="{% url 'fak:fak_create' %}" class="btn btn-success mb-3">Create fak</a>
         <div class="row">
             <div class="col-sm-12">
                 {% if object_list %}
-                {% for data in object_list %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title"><a href="{% url 'fak:fak_detail' data.id %}">{{data}}</a></h5>
-                        <a href="{% url 'fak:fak_update' data.id %}" class="btn btn-warning">Update fak</a>
-
-                        <form method="POST" action="{% url 'fak:fak_delete' data.id %}" class="d-inline-block">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                    </div>
-                </div>
-                {% endfor %}
+                    {% for data in object_list %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><a href="{% url 'fak:fak_detail' data.id %}">{{ data }}</a></h5>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'fak:fak_update' data.id %}" class="btn btn-warning">Update fak</a>
+                                    <form method="POST" action="{% url 'fak:fak_delete' data.id %}" class="d-inline-block">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
                 {% else %}
-                <h2>There is no any Fak</h2>
+                    <div class="alert alert-info">There are no Faks available.</div>
                 {% endif %}
             </div>
         </div>
     </div>
+    {% include "pagination.html" %}
 </div>
-{% include "pagination.html" %}
 {% endblock %}
