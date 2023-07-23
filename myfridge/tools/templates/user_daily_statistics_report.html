@@ -13,7 +13,7 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    {% if last_30_days_stats < 0 %}
+                    {% if last_30_days_stats < 0%}
                         <h5 class="card-title">Last 30 Days Result</h5>
                         <p class="card-text">You lost: {{last_30_days_stats}} kg in the last 30 days</p>
                     {% else %}
@@ -26,9 +26,12 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    {% if last_day_stats %}
+                    {% if last_day_stats < 0 %}
                         <h5 class="card-title">Last Day Result</h5>
-                        <p class="card-text">{{last_day_stats}}</p>
+                        <p class="card-text">You lost: {{last_day_stats}} kg from last day</p>
+                    {% else %}
+                        <h5 class="card-title">Last Day Result</h5>
+                        <p class="card-text">You gained: {{last_day_stats}} kg from last day</p>
                     {% endif %}
                 </div>
             </div>

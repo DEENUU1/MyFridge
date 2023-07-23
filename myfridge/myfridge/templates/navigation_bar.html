@@ -1,87 +1,92 @@
 {% load notifications_tags %}
 {% notifications_unread as unread_count %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container-fluid">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-      <span class="navbar-toggler-icon"></span>
-      </button>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <!-- Container wrapper -->
+  <div class="container-fluid">
+    <!-- Toggle button -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <a class="navbar-brand mt-2 mt-lg-0" href="{% url 'dishes:home' %}">
-            <img
-                src="https://simpleicon.com/wp-content/uploads/dish.png"
-                height="35"
-                alt="MDB Logo"
-                loading="lazy"
-            />
-            </a>
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'dishes:home' %}">Dishes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'fak:fak_home' %}">Fak</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'social:user-ranking' %}">Ranking</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'contact:contact' %}">Contact</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tools:tools_home' %}">Tools</a>
-            </li>
-            </ul>
-        </div>
+    <!-- Collapsible wrapper -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Navbar brand -->
+      <a class="navbar-brand mt-2 mt-lg-0" href="#">
+        <img
+          src="https://simpleicon.com/wp-content/uploads/dish.png"
+          height="25"
+          alt="MDB Logo"
+          loading="lazy"
+        />
+      </a>
+      <!-- Left links -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'dishes:home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'fak:fak_home' %}">Fak</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'social:user-ranking' %}">Ranking</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'blog:post_list' %}">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'contact:contact' %}">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'tools:tools_home' %}">Tools</a>
+        </li>
+      </ul>
+      <!-- Left links -->
+    </div>
+    <!-- Collapsible wrapper -->
 
-        <div class="d-flex align-items-center">
+    <!-- Right elements -->
+    <div class="d-flex align-items-center">
 
-          <form class="d-flex" method="get" action="{% url 'users:search_users' %}">
-            <input class="form-control me-2" type="search" placeholder="Search users" aria-label="Search" name="q">
-            <button class="btn btn-outline-success" type="submit"><i class="uil uil-search"></i></button>
-          </form>
-
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            {% if user.is_authenticated %}
-              <li class="nav-item position-relative">
-                <a href="{% url 'users:notifications' %}" class="nav-link">
-                  <i class="fas fa-bell"></i>
-                  {% if unread_count %}
-                    <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-2 rounded-circle">
-                      {{unread_count}}
-                    </span>
-                  {% endif %}
-                </a>
-              </li>
-              <li class="nav-item" style="margin-right: 10px">
-                <a style="color: black; font-weight: 600" class="nav-link" href="{% url 'users:profile' %}">Profile</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
-              </li>
-            {% else %}
-              <li class="nav-item" style="margin-right: 10px">
-                <a class="nav-link" href="{% url 'users:register' %}">Register</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'users:login' %}">Login</a>
-              </li>
-            {% endif %}
-          </ul>
-
-        </div>
+      <!-- Notifications -->
+      {% if user.is_authenticated %}
+        <a
+          class="text-reset me-3"
+          href="{% url 'users:notifications' %}"
+        >
+          <i class="fas fa-bell"></i>
+          {% if unread_count %}
+          <span class="badge rounded-pill badge-notification bg-danger">{{ unread_count }}</span>
+          {% endif %}
+        </a>
+      {% endif %}
+      <!-- Avatar -->
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+          Profile
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          {% if user.is_authenticated %}
+            <li><a class="dropdown-item" href="{% url 'users:profile' %}">My profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a></li>
+          {% else %}
+            <li><a class="dropdown-item" href="{% url 'users:register' %}">Register</a></li>
+            <li><a class="dropdown-item" href="{% url 'users:login' %}">Login</a></li>
+          {% endif %}
+        </ul>
       </div>
     </div>
-  </nav>
+    <!-- Right elements -->
+  </div>
+  <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->

@@ -1,9 +1,8 @@
 from .models import UserDailyStatistics
-from users.models import CustomUser
 from datetime import datetime, timedelta
 
 
-def calculate_weight_last_30_days(user_id):
+def calculate_weight_last_30_days(user_id: int) -> int:
     current_date = datetime.now()
     date_30_days_ago = current_date - timedelta(days=30)
 
@@ -19,10 +18,10 @@ def calculate_weight_last_30_days(user_id):
 
         return diff
 
-    return None
+    return 0
 
 
-def calculate_weight_last_day(user_id):
+def calculate_weight_last_day(user_id: int) -> int:
     current_date = datetime.now()
     date_1_day_ago = current_date - timedelta(days=1)
 
@@ -33,4 +32,4 @@ def calculate_weight_last_day(user_id):
     if weight_records.exists():
         return weight_records.last().weight
 
-    return None
+    return 0
