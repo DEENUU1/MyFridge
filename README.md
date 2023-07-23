@@ -59,13 +59,13 @@
 The project is a Django-based application that allows users to browse various recipes and filter them by date, ingredients, dietary preferences, categories, and more. Additionally, the application features a perfect weight calculator, BMI calculator, and calorie needs calculator. Users can create shopping lists, write blog posts, follow other users, create meal plans, and share them with others. They can create medicine cabinets and add medications, and if a medication's expiration date passes, a notification is sent to the user's email. When browsing a recipe, users can send the required ingredients to their email. Users can register, log in, change passwords, delete accounts, add descriptions, and earn points by adding recipes to favorites or writing comments. There is a user ranking system. Users can add their daily weight statistics and view their analysis. They can also contact the site administrator if they have any questions. Users receive notifications within the application after being followed, receiving a review on their blog post or recipe.
 ### Built With
 - Python
-- Flask
-- HTML & CSS & Bootstrap
-- OLX API 
+- Django
+- HTML, CSS, BOOTSTRAP 5
 - Docker
-- AWS
-- SQLite
-- APScheduler
+- Redis
+- Celery
+- Django Celery Beat
+- Postgresql
 
 ## Key Features
 - Browse and filter recipes by various criteria (date, ingredients, preferences, categories, etc.)
@@ -84,14 +84,14 @@ The project is a Django-based application that allows users to browse various re
 - Send verification emails (register, password change)
 
 <img src="images/app1.jpg">
-<img src="images/app2.jpg">
-<img src="images/app3.jpg">
-<img src="images/app4.jpg">
-<img src="images/app5.jpg">
-<img src="images/app6.jpg">
-<img src="images/app7.jpg">
-<img src="images/bmi1.jpg">
-<img src="images/bmi2.jpg">
+<img src="images/app 2.jpg">
+<img src="images/app 3.jpg">
+<img src="images/app 4.jpg">
+<img src="images/app 5.jpg">
+<img src="images/app 6.jpg">
+<img src="images/app 7.jpg">
+<img src="images/bmi 1.jpg">
+<img src="images/bmi 2.jpg">
 <div style="display: flex;">
   <div style="flex: 1;">
         <img src="images/caloric 1.jpg">
