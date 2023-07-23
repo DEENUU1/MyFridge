@@ -48,7 +48,6 @@
       </ul>
     </li>
     <li><a href="#unit-tests">Tests</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#author">Author</a></li>
   </ol>
@@ -66,7 +65,8 @@ The project is a Django-based application that allows users to browse various re
 - Celery
 - Django Celery Beat
 - Postgresql
-
+- Sentry
+  
 ## Key Features
 - Browse and filter recipes by various criteria (date, ingredients, preferences, categories, etc.)
 - Perfect weight calculator, BMI calculator, and calorie needs calculator
@@ -74,7 +74,7 @@ The project is a Django-based application that allows users to browse various re
 - Write blog posts and follow other users
 - Create and share meal plans
 - Manage medicine cabinets and receive email notifications for expired medications
-- Email ingredients of a recipe to the user
+- Email the ingredients of a recipe to the user
 - User registration, login, password management, and account deletion
 - Add descriptions and earn points for favorites and comments
 - User ranking system
@@ -135,40 +135,29 @@ git clone <link>
 ```
 
 ### Configuration
-1. Add a .env file in the 'web' directory
 ```bash
-SECRET_KEY=<SOME SECRET KEY>
-EMAIL_USERNAME=<YOUR GMAIL EMAIL>
-EMAIL_PASSWORD=<YOUR PASSWORD TO GMAIL>
-````
-2. Then install all requirements
-```bash
-pip install -r requirements.txt
-```
-3. Run the project
-```bash
-python main.py
-```
+# Create .env file based on .env_example
+cp .env_example .env
 
-## Unit tests
-To run pytest you need to use this command
-```bash
-pytest
-```
+# Build local docker images
+docker-compose -f docker-compose.dev.yml build
 
-To get Coverage details type this command
-```bash
-coverage run -m pytest
+# Run app
+docker-compose -f docker-compose.dev.yml up
+
+# Enter bash in django container
+docker exec -it myfridge-web-dev bash
+
+# Inside container run this commands
+python manage.py makemigrations
+python manage.py migrate
+
+# Restart / Run again all containers
+# If app doesn't work you need to restart myfridge-web-dev container 
+docker restart myfridge-web-dev
+
 ```
 
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favourites to kick things off!
-
-* [Always Check for the Hidden API when Web Scraping](https://www.youtube.com/watch?v=DqtlR0y0suo)
 
 
 <!-- LICENSE -->
@@ -184,15 +173,15 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/DEENUU1/OLX-Analytics.svg?style=for-the-badge
-[contributors-url]: https://github.com/DEENUU1/OLX-Analytics/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/DEENUU1/OLX-Analytics.svg?style=for-the-badge
-[forks-url]: https://github.com/DEENUU1/OLX-Analytics/network/members
-[stars-shield]: https://img.shields.io/github/stars/DEENUU1/OLX-Analytics.svg?style=for-the-badge
-[stars-url]: https://github.com/DEENUU1/OLX-Analytics/stargazers
-[issues-shield]: https://img.shields.io/github/issues/DEENUU1/OLX-Analytics.svg?style=for-the-badge
-[issues-url]: https://github.com/DEENUU1/OLX-Analytics/issues
-[license-shield]: https://img.shields.io/github/license/DEENUU1/OLX-Analytics.svg?style=for-the-badge
-[license-url]: https://github.com/DEENUU1/OLX-Analytics/blob/main/LICENSE
+[contributors-shield]: https://img.shields.io/github/contributors/DEENUU1/Myfridge.svg?style=for-the-badge
+[contributors-url]: https://github.com/DEENUU1/Myfridge/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/DEENUU1/Myfridge.svg?style=for-the-badge
+[forks-url]: https://github.com/DEENUU1/Myfridge/network/members
+[stars-shield]: https://img.shields.io/github/stars/DEENUU1/Myfridge.svg?style=for-the-badge
+[stars-url]: https://github.com/DEENUU1/Myfridge/stargazers
+[issues-shield]: https://img.shields.io/github/issues/DEENUU1/Myfridge.svg?style=for-the-badge
+[issues-url]: https://github.com/DEENUU1/Myfridge/issues
+[license-shield]: https://img.shields.io/github/license/DEENUU1/Myfridge.svg?style=for-the-badge
+[license-url]: https://github.com/DEENUU1/Myfridge/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/kacper-wlodarczyk/
