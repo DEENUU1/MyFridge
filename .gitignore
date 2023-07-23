@@ -3,24 +3,12 @@ __pycache__/
 myfridge/pgdata
 *.py[cod]
 *$py.class
-myfridge/contact/migrations/
-myfridge/social/migrations/
-myfridge/users/migrations/
-myfridge/dishes/migrations/
-myfridge/blog/migrations/
-myfridge/fak/migrations/
-myfridge/tools/migrations/
-myfridge/users/migrations/
 data/
 # C extensions
 *.so
 .idea/
 .vscode/
-myfridge/dishes/migrations/0001_initial.py
-myfridge/dishes/migrations/0002_initial.py
 myfridge/media/
-myfridge/users/migrations/0001_initial.py
-myfridge/dishes/migrations/0003_delete_rate.py
 # Distribution / packaging
 .Python
 build/
