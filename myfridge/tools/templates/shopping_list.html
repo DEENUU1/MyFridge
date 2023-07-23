@@ -26,7 +26,7 @@
     <div class="card mb-3 w-50">
         <div class="card-body">
             <p class="card-text"><del>{{data.name}} {% if data.quantity > 0 %} <strong>{{data.quantity}}</strong> {%endif %}</del></p>
-            <a href="{% url 'tools:shopping_list_update' data.id %}" class="btn btn-primary">Edit</a>
+            <a href="{% url 'tools:shopping_list_update' data.id %}" class="btn btn-warning">Edit</a>
             <form method="POST" action="{% url 'tools:shopping_list_delete' data.id %}" class="d-inline-block">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Delete</button>
